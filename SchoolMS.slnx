@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="Directory.Packages.props" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/SchoolMS.Api/SchoolMS.Api.csproj" Id="5964cae0-e86c-4328-8172-3ce597f7fb63" />
+    <Project Path="src/SchoolMS.Application/SchoolMS.Application.csproj" Id="1b95d5bc-ce85-41dc-a535-691a7784a46d" />
+    <Project Path="src/SchoolMS.Contracts/SchoolMS.Contracts.csproj" Id="884e07c4-5a2b-466f-b6e9-ffb00bfa1514" />
+    <Project Path="src/SchoolMS.Domain/SchoolMS.Domain.csproj" Id="0be8b738-1650-425b-a3cb-51c3a5ef1acf" />
+    <Project Path="src/SchoolMS.Infrastructure/SchoolMS.Infrastructure.csproj" Id="5baecffe-8524-40dc-ae68-41969daa4f21" />
+  </Folder>
+</Solution>

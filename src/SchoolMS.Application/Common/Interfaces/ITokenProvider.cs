@@ -3,7 +3,7 @@ using SchoolMS.Domain.Common.Results;
 using SchoolMS.Domain.Users;
 using System.Security.Claims;
 
-namespace EedadyAbofam.Application.Common.Interfaces;
+namespace SchoolMS.Application.Common.Interfaces;
 
 public interface ITokenProvider
 {

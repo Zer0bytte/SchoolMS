@@ -1,6 +1,6 @@
-using EedadyAbofam.Application.Common.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using SchoolMS.Application.Common.Interfaces;
 using SchoolMS.Application.Features.Identity;
 using SchoolMS.Domain.Common.Results;
 using SchoolMS.Domain.Users;
@@ -8,7 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace EedadyAbofam.Infrastructure.Identity;
+namespace SchoolMS.Infrastructure.Identity;
 
 public class TokenProvider(IConfiguration configuration) : ITokenProvider
 {

@@ -9,4 +9,8 @@
     <Project Path="src/SchoolMS.Domain/SchoolMS.Domain.csproj" Id="0be8b738-1650-425b-a3cb-51c3a5ef1acf" />
     <Project Path="src/SchoolMS.Infrastructure/SchoolMS.Infrastructure.csproj" Id="5baecffe-8524-40dc-ae68-41969daa4f21" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/SchoolMS.Application.Tests/SchoolMS.Application.Tests.csproj" Id="4cce9cc9-ae63-45e9-9718-d4740651ac0a" />
+    <Project Path="tests/SchoolMS.Domain.Tests/SchoolMS.Domain.Tests.csproj" Id="c7167ed4-004b-44f3-b581-92c29af18871" />
+  </Folder>
 </Solution>

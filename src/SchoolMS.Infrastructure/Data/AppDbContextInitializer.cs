@@ -2,9 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using SchoolMS.Infrastructure.Data;
 
-namespace EedadyAbofam.Infrastructure.Data;
+namespace SchoolMS.Infrastructure.Data;
 
 public class AppDbContextInitializer(AppDbContext context, ILogger<AppDbContextInitializer> logger)
 {
@@ -36,7 +35,7 @@ public class AppDbContextInitializer(AppDbContext context, ILogger<AppDbContextI
 
     private async Task TrySeedAsync()
     {
-        
+
     }
 }
 public static class InitialiserExtensions

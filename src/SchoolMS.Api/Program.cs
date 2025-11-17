@@ -1,22 +1,35 @@
-using EedadyAbofam.Infrastructure.Data;
+using Microsoft.AspNetCore.Builder;
+using Scalar.AspNetCore;
+using SchoolMS.Api;
+using SchoolMS.Api.Endpoints;
+using SchoolMS.Application;
 using SchoolMS.Infrastructure;
+using SchoolMS.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services
+    .AddPresentation(builder.Configuration)
+    .AddApplication()
+    .AddInfrastructure(builder.Configuration);
 
-builder.Services.AddOpenApi();
 
-builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
 await app.InitialiseDatabaseAsync();
+
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+
+    app.MapScalarApiReference();
 }
 
-app.UseHttpsRedirection();
+app.UseCoreMiddlewares(builder.Configuration);
 
+
+app.MapIdentityEndpoints();
 
 
 app.Run();

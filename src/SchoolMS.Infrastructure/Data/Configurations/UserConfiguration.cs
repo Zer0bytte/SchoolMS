@@ -12,7 +12,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.HasKey(u => u.Id);
 
-        builder.Property(p=>p.IsActive)
+        builder.Property(p => p.IsActive)
             .HasDefaultValue(true);
 
         builder.Property(u => u.Name)

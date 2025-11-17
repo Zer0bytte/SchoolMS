@@ -1,7 +1,4 @@
-﻿using EedadyAbofam.Application.Common.Interfaces;
-using EedadyAbofam.Infrastructure.Data;
-using EedadyAbofam.Infrastructure.Identity;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -10,9 +7,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using SchoolMS.Application.Common.Interfaces;
-using SchoolMS.Domain.Users;
 using SchoolMS.Infrastructure.Data;
 using SchoolMS.Infrastructure.Data.Interceptors;
+using SchoolMS.Infrastructure.Identity;
+using SchoolMS.Infrastructure.PasswordHashing;
 using System.Text;
 
 namespace SchoolMS.Infrastructure;
@@ -39,6 +37,7 @@ public static class DependencyInjection
         services.AddScoped<AppDbContextInitializer>();
 
         services.AddScoped<ITokenProvider, TokenProvider>();
+        services.AddScoped<IPasswordHasher, PasswordHasher>();
 
         services.AddAuthentication(options =>
         {
@@ -63,7 +62,14 @@ public static class DependencyInjection
             };
         });
 
-     
+        services.AddAuthorizationBuilder()
+                .AddPolicy("Admin", policy => policy.RequireRole("Admin"));
+
+        services.AddAuthorizationBuilder()
+               .AddPolicy("Teacher", policy => policy.RequireRole("Teacher"));
+
+        services.AddAuthorizationBuilder()
+               .AddPolicy("Student", policy => policy.RequireRole("Student"));
 
 
         services.AddHybridCache(options => options.DefaultEntryOptions = new HybridCacheEntryOptions

@@ -1,6 +1,4 @@
-﻿using MediatR;
-using SchoolMS.Domain.Common.Results;
-using SchoolMS.Domain.Users.Enums;
+﻿using SchoolMS.Domain.Users.Enums;
 
 namespace SchoolMS.Application.Features.Identity.Commands.RegisterUser;
 

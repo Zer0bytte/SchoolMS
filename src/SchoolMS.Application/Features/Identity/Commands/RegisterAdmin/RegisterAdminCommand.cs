@@ -1,7 +1,4 @@
-﻿using MediatR;
-using SchoolMS.Domain.Common.Results;
-
-namespace SchoolMS.Application.Features.Identity.Commands.RegisterAdmin;
+﻿namespace SchoolMS.Application.Features.Identity.Commands.RegisterAdmin;
 
 public class RegisterAdminCommand : IRequest<Result<Created>>
 {

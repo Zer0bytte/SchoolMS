@@ -3,7 +3,8 @@ using Moq;
 using SchoolMS.Application.Common.Interfaces;
 using SchoolMS.Application.Features.Identity;
 using SchoolMS.Application.Features.Identity.Commands.RegisterUser;
-using SchoolMS.Application.Tests.Users.Shared;
+using SchoolMS.Application.Features.Identity.Dtos;
+using SchoolMS.Application.Tests.Shared;
 using SchoolMS.Domain.Common.Results;
 using SchoolMS.Domain.Users;
 using SchoolMS.Domain.Users.Enums;
@@ -51,7 +52,7 @@ public class RegisterUserCommandHandlerTests
         // Assert
         Assert.True(result.IsError);
         // Ensure no token was generated
-        tokenProvider.Verify(tp => tp.GenerateJwtTokenAsync(It.IsAny<User>(), It.IsAny<CancellationToken>()), Times.Never);
+        tokenProvider.Verify(tp => tp.GenerateJwtTokenAsync(It.IsAny<AppUserDto>(), It.IsAny<CancellationToken>()), Times.Never);
         // Ensure no additional user was added
         Assert.Equal(1, context.Users.Count());
     }
@@ -74,7 +75,7 @@ public class RegisterUserCommandHandlerTests
 
         var tokenProvider = new Mock<ITokenProvider>();
         tokenProvider
-            .Setup(tp => tp.GenerateJwtTokenAsync(It.IsAny<User>(), It.IsAny<CancellationToken>()))
+            .Setup(tp => tp.GenerateJwtTokenAsync(It.IsAny<AppUserDto>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync((Result<TokenResponse>)expectedToken);
 
         var handler = new RegisterUserCommandHandler(context, passwordHasher.Object, tokenProvider.Object);
@@ -101,6 +102,6 @@ public class RegisterUserCommandHandlerTests
         Assert.Equal($"hashed-{command.Password}", userInDb.Password);
         Assert.Equal(command.Role, userInDb.Role);
 
-        tokenProvider.Verify(tp => tp.GenerateJwtTokenAsync(It.Is<User>(u => u.Email == command.Email), It.IsAny<CancellationToken>()), Times.Once);
+        tokenProvider.Verify(tp => tp.GenerateJwtTokenAsync(It.Is<AppUserDto>(u => u.Email == command.Email), It.IsAny<CancellationToken>()), Times.Once);
     }
 }

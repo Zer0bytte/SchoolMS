@@ -9,7 +9,7 @@ using System.Net.Mail;
 
 namespace SchoolMS.Domain.Users;
 
-public class User : AuditableEntity
+public sealed class User : AuditableEntity
 {
     private User() { }
 

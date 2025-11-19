@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\SchoolMS.Application\SchoolMS.Application.csproj" />
+    <ProjectReference Include="..\..\src\SchoolMS.Domain\SchoolMS.Domain.csproj" />
     <ProjectReference Include="..\..\src\SchoolMS.Infrastructure\SchoolMS.Infrastructure.csproj" />
   </ItemGroup>
 

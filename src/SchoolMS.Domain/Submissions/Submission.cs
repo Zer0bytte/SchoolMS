@@ -4,7 +4,7 @@ using SchoolMS.Domain.Users;
 
 namespace SchoolMS.Domain.Submissions;
 
-public class Submission : Entity
+public sealed class Submission : Entity
 {
     public Guid AssignmentId { get; set; }
     public Guid StudentId { get; set; }

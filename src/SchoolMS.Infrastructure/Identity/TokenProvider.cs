@@ -1,20 +1,21 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using SchoolMS.Application.Common.Interfaces;
 using SchoolMS.Application.Features.Identity;
+using SchoolMS.Application.Features.Identity.Dtos;
 using SchoolMS.Domain.Common.Results;
-using SchoolMS.Domain.Users;
+using SchoolMS.Domain.RefreshTokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace SchoolMS.Infrastructure.Identity;
 
-public class TokenProvider(IConfiguration configuration) : ITokenProvider
+public class TokenProvider(IConfiguration configuration, IAppDbContext context) : ITokenProvider
 {
-    private readonly IConfiguration _configuration = configuration;
-
-    public async Task<Result<TokenResponse>> GenerateJwtTokenAsync(User user, CancellationToken ct = default)
+    public async Task<Result<TokenResponse>> GenerateJwtTokenAsync(AppUserDto user, CancellationToken ct = default)
     {
         Result<TokenResponse> tokenResult = await CreateAsync(user, ct);
 
@@ -31,11 +32,11 @@ public class TokenProvider(IConfiguration configuration) : ITokenProvider
         TokenValidationParameters tokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Secret"]!)),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:Secret"]!)),
             ValidateIssuer = true,
-            ValidIssuer = _configuration["JwtSettings:Issuer"],
+            ValidIssuer = configuration["JwtSettings:Issuer"],
             ValidateAudience = true,
-            ValidAudience = _configuration["JwtSettings:Audience"],
+            ValidAudience = configuration["JwtSettings:Audience"],
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero
         };
@@ -52,19 +53,19 @@ public class TokenProvider(IConfiguration configuration) : ITokenProvider
         return principal;
     }
 
-    private async Task<Result<TokenResponse>> CreateAsync(User user, CancellationToken ct = default)
+    private async Task<Result<TokenResponse>> CreateAsync(AppUserDto user, CancellationToken ct = default)
     {
-        IConfigurationSection jwtSettings = _configuration.GetSection("JwtSettings");
+        IConfigurationSection jwtSettings = configuration.GetSection("JwtSettings");
 
         string issuer = jwtSettings["Issuer"]!;
         string audience = jwtSettings["Audience"]!;
         string key = jwtSettings["Secret"]!;
 
         DateTime expires = DateTime.UtcNow.AddMinutes(int.Parse(jwtSettings["TokenExpirationInMinutes"]!));
-
+        int refreshTokenExpirationInDays = int.Parse(jwtSettings["RefreshTokenExpirationInDays"]!);
         List<Claim> claims = new List<Claim>
         {
-            new (JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+            new (JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
             new (JwtRegisteredClaimNames.Email, user.Email!),
             new(ClaimTypes.Role, user.Role.ToString())
         };
@@ -84,13 +85,39 @@ public class TokenProvider(IConfiguration configuration) : ITokenProvider
 
         SecurityToken securityToken = tokenHandler.CreateToken(descriptor);
 
+        await context.RefreshTokens
+             .Where(rt => rt.UserId == user.UserId)
+             .ExecuteDeleteAsync(ct);
 
+        Result<RefreshToken> refreshTokenResult = RefreshToken.Create(
+            Guid.NewGuid(),
+            GenerateRefreshToken(),
+            user.UserId,
+            DateTime.UtcNow.AddDays(refreshTokenExpirationInDays),
+            DateTimeOffset.UtcNow);
+
+        if (refreshTokenResult.IsError)
+        {
+            return refreshTokenResult.Errors;
+        }
+
+        RefreshToken refreshToken = refreshTokenResult.Value;
+
+        context.RefreshTokens.Add(refreshToken);
+
+        await context.SaveChangesAsync(ct);
 
         return new TokenResponse
         {
             AccessToken = tokenHandler.WriteToken(securityToken),
+            RefreshToken = refreshToken.Token,
             ExpiresOnUtc = expires
         };
+    }
+
+    private static string GenerateRefreshToken()
+    {
+        return Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
     }
 
 }

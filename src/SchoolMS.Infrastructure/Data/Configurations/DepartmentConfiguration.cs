@@ -16,6 +16,9 @@ public class DepartmentConfiguration : IEntityTypeConfiguration<Department>
             .IsRequired()
             .HasMaxLength(100);
 
+        builder.HasIndex(d => d.Name).IsUnique();
+
+
         builder.Property(d => d.Description)
             .HasMaxLength(500);
 

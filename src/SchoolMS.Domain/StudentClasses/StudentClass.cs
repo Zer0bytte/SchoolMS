@@ -4,7 +4,7 @@ using SchoolMS.Domain.Users;
 
 namespace SchoolMS.Domain.StudentClasses;
 
-public class StudentClass : Entity
+public sealed class StudentClass : Entity
 {
     public Guid StudentId { get; set; }
     public Guid ClassId { get; set; }

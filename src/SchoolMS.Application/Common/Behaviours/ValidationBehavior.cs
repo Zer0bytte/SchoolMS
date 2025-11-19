@@ -1,7 +1,5 @@
 using FluentValidation;
 using FluentValidation.Results;
-using MediatR;
-using SchoolMS.Domain.Common.Results;
 namespace SchoolMS.Application.Common.Behaviours;
 
 public class ValidationBehavior<TRequest, TResponse>(IValidator<TRequest>? validator = null)

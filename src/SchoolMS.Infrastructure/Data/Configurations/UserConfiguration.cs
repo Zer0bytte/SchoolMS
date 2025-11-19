@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SchoolMS.Domain.Users;
+using SchoolMS.Domain.Users.Enums;
 
 namespace SchoolMS.Infrastructure.Data.Configurations;
 
@@ -32,7 +33,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.Property(u => u.Role)
             .IsRequired()
-            .HasMaxLength(20);
+            .HasConversion(r => r.ToString(), r => (Role)Enum.Parse(typeof(Role), r));
 
 
         builder.HasMany(u => u.ManagedDepartments)

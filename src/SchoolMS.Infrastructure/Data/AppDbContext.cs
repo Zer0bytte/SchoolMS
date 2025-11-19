@@ -6,6 +6,7 @@ using SchoolMS.Domain.Classes;
 using SchoolMS.Domain.Courses;
 using SchoolMS.Domain.Departments;
 using SchoolMS.Domain.Notifications;
+using SchoolMS.Domain.RefreshTokens;
 using SchoolMS.Domain.StudentClasses;
 using SchoolMS.Domain.Submissions;
 using SchoolMS.Domain.Users;
@@ -24,6 +25,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<Notification> Notifications => Set<Notification>();
     public DbSet<StudentClass> StudentClasses => Set<StudentClass>();
     public DbSet<Submission> Submissions => Set<Submission>();
+    public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

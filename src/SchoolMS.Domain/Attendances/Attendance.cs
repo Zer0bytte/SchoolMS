@@ -4,7 +4,7 @@ using SchoolMS.Domain.Users;
 
 namespace SchoolMS.Domain.Attendances;
 
-public class Attendance
+public sealed class Attendance
 {
     public Guid Id { get; set; }
     public Guid ClassId { get; set; }

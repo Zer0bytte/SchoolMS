@@ -5,7 +5,7 @@ using SchoolMS.Domain.Users;
 
 namespace SchoolMS.Domain.Assignments;
 
-public class Assignment : Entity
+public sealed class Assignment : Entity
 {
     public Guid ClassId { get; set; }
     public string Title { get; set; } = default!;

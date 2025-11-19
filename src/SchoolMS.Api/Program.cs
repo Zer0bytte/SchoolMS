@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Builder;
 using Scalar.AspNetCore;
 using SchoolMS.Api;
 using SchoolMS.Api.Endpoints;
@@ -30,6 +29,6 @@ app.UseCoreMiddlewares(builder.Configuration);
 
 
 app.MapIdentityEndpoints();
-
+app.MapDepartmentEndpoints();
 
 app.Run();

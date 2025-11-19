@@ -2,7 +2,7 @@
 using Moq;
 using SchoolMS.Application.Common.Interfaces;
 using SchoolMS.Application.Features.Identity.Commands.RegisterAdmin;
-using SchoolMS.Application.Tests.Users.Shared;
+using SchoolMS.Application.Tests.Shared;
 using SchoolMS.Domain.Common.Results;
 using SchoolMS.Domain.Users;
 using SchoolMS.Domain.Users.Enums;

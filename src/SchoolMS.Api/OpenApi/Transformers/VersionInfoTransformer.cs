@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.OpenApi;
-using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
 
 namespace SchoolMS.Api.OpenApi.Transformers;

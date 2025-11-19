@@ -7,12 +7,13 @@ using SchoolMS.Domain.Classes;
 using SchoolMS.Domain.Courses;
 using SchoolMS.Domain.Departments;
 using SchoolMS.Domain.Notifications;
+using SchoolMS.Domain.RefreshTokens;
 using SchoolMS.Domain.StudentClasses;
 using SchoolMS.Domain.Submissions;
 using SchoolMS.Domain.Users;
 using SchoolMS.Infrastructure.Data;
 
-namespace SchoolMS.Application.Tests.Users.Shared;
+namespace SchoolMS.Application.Tests.Shared;
 
 public class TestAppDbContext : DbContext, IAppDbContext
 {
@@ -27,6 +28,7 @@ public class TestAppDbContext : DbContext, IAppDbContext
     public DbSet<Notification> Notifications { get; set; } = null!;
     public DbSet<StudentClass> StudentClasses { get; set; } = null!;
     public DbSet<Submission> Submissions { get; set; } = null!;
+    public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
 
     public new DatabaseFacade Database => base.Database;
 

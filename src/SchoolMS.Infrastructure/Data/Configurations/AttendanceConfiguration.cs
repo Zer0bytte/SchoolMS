@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SchoolMS.Domain.Attendances;
+using SchoolMS.Domain.Attendances.Enums;
 
 namespace SchoolMS.Infrastructure.Data.Configurations;
 
@@ -23,7 +24,7 @@ public class AttendanceConfiguration : IEntityTypeConfiguration<Attendance>
 
         builder.Property(a => a.Status)
             .IsRequired()
-            .HasMaxLength(20);
+            .HasConversion(st => st.ToString(), s => (AttendanceStatus)Enum.Parse(typeof(AttendanceStatus), s));
 
         builder.Property(a => a.MarkedByTeacherId)
             .IsRequired();

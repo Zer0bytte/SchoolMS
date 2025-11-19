@@ -4,7 +4,7 @@ using SchoolMS.Domain.Departments;
 
 namespace SchoolMS.Domain.Courses;
 
-public class Course : AuditableEntity
+public sealed class Course : AuditableEntity
 {
     public string Name { get; set; } = default!;
     public string Code { get; set; } = default!;

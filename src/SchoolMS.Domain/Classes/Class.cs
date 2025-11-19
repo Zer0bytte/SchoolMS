@@ -7,7 +7,7 @@ using SchoolMS.Domain.Users;
 
 namespace SchoolMS.Domain.Classes;
 
-public class Class : AuditableEntity
+public sealed class Class : AuditableEntity
 {
     public string Name { get; set; } = default!;
     public Guid CourseId { get; set; }

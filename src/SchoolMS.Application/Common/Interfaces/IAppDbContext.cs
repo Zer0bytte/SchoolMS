@@ -1,11 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
+﻿using Microsoft.EntityFrameworkCore.Infrastructure;
 using SchoolMS.Domain.Assignments;
 using SchoolMS.Domain.Attendances;
 using SchoolMS.Domain.Classes;
 using SchoolMS.Domain.Courses;
 using SchoolMS.Domain.Departments;
 using SchoolMS.Domain.Notifications;
+using SchoolMS.Domain.RefreshTokens;
 using SchoolMS.Domain.StudentClasses;
 using SchoolMS.Domain.Submissions;
 using SchoolMS.Domain.Users;
@@ -23,6 +23,7 @@ public interface IAppDbContext
     public DbSet<Notification> Notifications { get; }
     public DbSet<StudentClass> StudentClasses { get; }
     public DbSet<Submission> Submissions { get; }
+    public DbSet<RefreshToken> RefreshTokens { get; }
     public DatabaseFacade Database { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 

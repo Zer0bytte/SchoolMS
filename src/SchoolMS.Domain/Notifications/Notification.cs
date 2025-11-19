@@ -4,7 +4,7 @@ using SchoolMS.Domain.Users.Enums;
 
 namespace SchoolMS.Domain.Notifications;
 
-public class Notification : Entity
+public sealed class Notification : Entity
 {
     public string Title { get; set; } = default!;
     public string Message { get; set; } = default!;

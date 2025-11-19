@@ -1,8 +1,5 @@
-﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
-using SchoolMS.Application.Common.Errors;
-using SchoolMS.Application.Common.Interfaces;
-using SchoolMS.Domain.Common.Results;
+﻿using SchoolMS.Application.Common.Errors;
+using SchoolMS.Application.Features.Identity.Dtos;
 using SchoolMS.Domain.Users;
 
 namespace SchoolMS.Application.Features.Identity.Commands.RegisterUser;
@@ -24,8 +21,13 @@ public class RegisterUserCommandHandler(IAppDbContext context, IPasswordHasher p
         context.Users.Add(user.Value);
 
         await context.SaveChangesAsync(cancellationToken);
-
-        var token = await tokenProvider.GenerateJwtTokenAsync(user.Value, cancellationToken);
+        var userDto = new AppUserDto
+       (
+            user.Value.Id,
+            user.Value.Email,
+            user.Value.Role
+            );
+        var token = await tokenProvider.GenerateJwtTokenAsync(userDto, cancellationToken);
 
         return token;
     }

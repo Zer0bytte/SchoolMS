@@ -1,8 +1,4 @@
-﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
-using SchoolMS.Application.Common.Errors;
-using SchoolMS.Application.Common.Interfaces;
-using SchoolMS.Domain.Common.Results;
+﻿using SchoolMS.Application.Common.Errors;
 using SchoolMS.Domain.Users;
 using SchoolMS.Domain.Users.Enums;
 

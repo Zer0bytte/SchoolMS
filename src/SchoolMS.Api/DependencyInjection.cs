@@ -1,9 +1,7 @@
 ﻿using Asp.Versioning;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Options;
-using Microsoft.OpenApi;
 using SchoolMS.Api.OpenApi.Transformers;
 using SchoolMS.Api.Services;
 using SchoolMS.Application.Common.Interfaces;
@@ -27,7 +25,7 @@ public static class DependencyInjection
             options.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
         });
 
-        
+
         services.AddCustomProblemDetails()
                 .AddCustomApiVersioning()
                 .AddApiDocumentation()

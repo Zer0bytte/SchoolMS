@@ -15,20 +15,13 @@ namespace SchoolMS.Application.Tests.Departments.UpdateDepertmentTests;
 
 public class UpdateDepartmentCommandHandlerTests
 {
-    private TestAppDbContext CreateContext(string dbName)
-    {
-        var options = new DbContextOptionsBuilder<TestAppDbContext>()
-            .UseInMemoryDatabase(dbName)
-            .Options;
-        return new TestAppDbContext(options);
-    }
 
     [Fact]
     public async Task Handle_GivenValidRequest_ShouldUpdateDepartment()
     {
         // Arrange
         var dbName = Guid.NewGuid().ToString();
-        await using var context = CreateContext(dbName);
+        await using var context = TestDbHelper.CreateContext();
 
         var department = Department.Create(Guid.NewGuid(), "Mathematics", "Department of Mathematics", Guid.NewGuid()).Value;
 
@@ -58,7 +51,7 @@ public class UpdateDepartmentCommandHandlerTests
     {
         // Arrange
         var dbName = Guid.NewGuid().ToString();
-        await using var context = CreateContext(dbName);
+        await using var context = TestDbHelper.CreateContext();
         var handler = new UpdateDepartmentCommandHandler(context);
         var command = new UpdateDepartmentCommand
         {
@@ -80,7 +73,7 @@ public class UpdateDepartmentCommandHandlerTests
     {
         // Arrange
         var dbName = Guid.NewGuid().ToString();
-        await using var context = CreateContext(dbName);
+        await using var context = TestDbHelper.CreateContext();
         var department1 = Department.Create(Guid.NewGuid(), "Biology", "Department of Biology", Guid.NewGuid()).Value;
         var department2 = Department.Create(Guid.NewGuid(), "Chemistry", "Department of Chemistry", Guid.NewGuid()).Value;
         context.Departments.Add(department1);
@@ -105,7 +98,7 @@ public class UpdateDepartmentCommandHandlerTests
     {
         // Arrange
         var dbName = Guid.NewGuid().ToString();
-        await using var context = CreateContext(dbName);
+        await using var context = TestDbHelper.CreateContext();
         var department = Department.Create(Guid.NewGuid(), "History", "Department of History", Guid.NewGuid()).Value;
         context.Departments.Add(department);
         await context.SaveChangesAsync();
@@ -133,7 +126,7 @@ public class UpdateDepartmentCommandHandlerTests
     {
         // Arrange
         var dbName = Guid.NewGuid().ToString();
-        await using var context = CreateContext(dbName);
+        await using var context = TestDbHelper.CreateContext();
         var department = Department.Create(Guid.NewGuid(), "Geography", "Department of Geography", Guid.NewGuid()).Value;
         context.Departments.Add(department);
         await context.SaveChangesAsync();
@@ -143,7 +136,7 @@ public class UpdateDepartmentCommandHandlerTests
             Id = department.Id,
             Name = "Geography",
             Description = "Updated Department of Geography",
-            HeadOfDepartmentId = Guid.NewGuid() 
+            HeadOfDepartmentId = Guid.NewGuid()
         };
         // Act
         var result = await handler.Handle(command, CancellationToken.None);
@@ -151,4 +144,38 @@ public class UpdateDepartmentCommandHandlerTests
         Assert.True(result.IsError);
         Assert.Equal(ApplicationErrors.UserNotFound, result.Errors.First());
     }
+
+
+    [Fact]
+    public async Task Handle_GivenValidHeadOfDepartmentId_ShouldUpdateDepartment_RetrunNewHeadName()
+    {
+        // Arrange
+        var dbName = Guid.NewGuid().ToString();
+        await using var context = TestDbHelper.CreateContext();
+        var teacher1 = TestDbHelper.CreateTeacher();
+        var teacher2 = TestDbHelper.CreateTeacher();
+        context.Users.Add(teacher1);
+        context.Users.Add(teacher2);
+        var department = Department.Create(Guid.NewGuid(), "English", "Department of English", teacher1.Id).Value;
+        context.Departments.Add(department);
+        await context.SaveChangesAsync();
+        var handler = new UpdateDepartmentCommandHandler(context);
+        var command = new UpdateDepartmentCommand
+        {
+            Id = department.Id,
+            Name = "English",
+            Description = "Updated Department of English",
+            HeadOfDepartmentId = teacher2.Id
+        };
+
+
+        // Act
+        var result = await handler.Handle(command, CancellationToken.None);
+
+        // Assert
+
+        Assert.NotNull(result.Value);
+        Assert.Equal(result.Value.HeadOfDepartmentName, teacher2.Name);
+    }
+
 }

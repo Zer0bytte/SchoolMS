@@ -1,6 +1,7 @@
 ﻿using SchoolMS.Application.Common.Errors;
 using SchoolMS.Application.Features.Departments.Dtos;
 using SchoolMS.Domain.Departments;
+using SchoolMS.Domain.Users;
 
 namespace SchoolMS.Application.Features.Departments.Commands.UpdateDepartment;
 
@@ -8,7 +9,15 @@ public class UpdateDepartmentCommandHandler(IAppDbContext context) : IRequestHan
 {
     public async Task<Result<DepartmentDto>> Handle(UpdateDepartmentCommand command, CancellationToken cancellationToken)
     {
-        var department = await context.Departments.FirstOrDefaultAsync(dep => dep.Id == command.Id, cancellationToken);
+        var departmentQuery = context.Departments.AsQueryable();
+
+        if (!command.HeadOfDepartmentId.HasValue)
+        {
+            departmentQuery = departmentQuery.Include(d => d.HeadOfDepartment);
+        }
+
+        var department = await departmentQuery.FirstOrDefaultAsync(dep => dep.Id == command.Id, cancellationToken);
+
         if (department is null)
         {
             return DepartmentErrors.NotFound;
@@ -24,13 +33,12 @@ public class UpdateDepartmentCommandHandler(IAppDbContext context) : IRequestHan
 
         if (command.HeadOfDepartmentId.HasValue)
         {
-            var headOfDepartmentExists = await context.Users.AnyAsync(u => u.Id == command.HeadOfDepartmentId, cancellationToken);
+            var headOfDepartment = await context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == command.HeadOfDepartmentId, cancellationToken);
 
-            if (!headOfDepartmentExists)
+            if (headOfDepartment is null)
             {
                 return ApplicationErrors.UserNotFound;
             }
-
         }
 
         department.Update(
@@ -46,10 +54,8 @@ public class UpdateDepartmentCommandHandler(IAppDbContext context) : IRequestHan
             Id = department.Id,
             Name = department.Name,
             Description = department.Description,
-            HeadOfDepartment = new HeadOfDepartmentDto
-            {
-                Id = department.HeadOfDepartmentId
-            }
+            HeadOfDepartmentId = department.HeadOfDepartmentId,
+            HeadOfDepartmentName = department.HeadOfDepartment.Name
         };
     }
 }

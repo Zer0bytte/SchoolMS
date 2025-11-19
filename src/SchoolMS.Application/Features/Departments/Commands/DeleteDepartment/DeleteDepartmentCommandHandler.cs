@@ -2,9 +2,9 @@
 
 namespace SchoolMS.Application.Features.Departments.Commands.RemoveDepartment;
 
-public class DeleteDepartmentCommandHandler(IAppDbContext context) : IRequestHandler<DeleteDepartmentCommand, Result<Deleted>>
+public class DeleteDepartmentCommandHandler(IAppDbContext context) : IRequestHandler<DeleteDepartmentCommand, Result<Success>>
 {
-    public async Task<Result<Deleted>> Handle(DeleteDepartmentCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Success>> Handle(DeleteDepartmentCommand request, CancellationToken cancellationToken)
     {
         var department = await context.Departments.FirstOrDefaultAsync(d => d.Id == request.DepartmentId, cancellationToken);
 
@@ -15,6 +15,6 @@ public class DeleteDepartmentCommandHandler(IAppDbContext context) : IRequestHan
 
         await context.SaveChangesAsync(cancellationToken);
 
-        return Result.Deleted;
+        return Result.Success;
     }
 }

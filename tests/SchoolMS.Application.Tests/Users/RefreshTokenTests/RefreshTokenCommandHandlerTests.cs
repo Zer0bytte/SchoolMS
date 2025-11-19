@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Moq;
 using SchoolMS.Application.Common.Errors;
 using SchoolMS.Application.Common.Interfaces;
@@ -16,21 +15,13 @@ namespace SchoolMS.Application.Tests.Users.RefreshTokenTests;
 
 public class RefreshTokenCommandHandlerTests
 {
-    private TestAppDbContext CreateContext(string dbName)
-    {
-        var options = new DbContextOptionsBuilder<TestAppDbContext>()
-            .UseInMemoryDatabase(dbName)
-            .Options;
-
-        return new TestAppDbContext(options);
-    }
 
     [Fact]
     public async Task Handle_RefreshTokenExpired_ReturnsError()
     {
         // Arrange
         var dbName = Guid.NewGuid().ToString();
-        await using var context = CreateContext(dbName);
+        await using var context = TestDbHelper.CreateContext();
 
         var userId = Guid.NewGuid();
         var user = User.Create(userId, "Test User", "email@email.com", "hashedPassword", Role.Teacher).Value;
@@ -78,7 +69,7 @@ public class RefreshTokenCommandHandlerTests
     {
         // Arrange
         var dbName = Guid.NewGuid().ToString();
-        await using var context = CreateContext(dbName);
+        await using var context = TestDbHelper.CreateContext();
 
         var userId = Guid.NewGuid();
         var validRefresh = "refresh-valid";

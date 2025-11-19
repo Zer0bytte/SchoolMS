@@ -9,51 +9,18 @@ namespace SchoolMS.Application.Tests.Departments.GetDepartmentsTests;
 
 public class GetDepartmentsQueryHandlerTests
 {
-    private TestAppDbContext CreateContext(string dbName)
-    {
-        var options = new DbContextOptionsBuilder<TestAppDbContext>()
-            .UseInMemoryDatabase(dbName)
-            .Options;
-
-        return new TestAppDbContext(options);
-    }
-
-    private User CreateTeacher(string name = "Teacher")
-    {
-        return User.Create(
-            Guid.NewGuid(),
-            name,
-            $"{Guid.NewGuid()}@email.com",
-            "SecurePass123",
-            Role.Teacher
-        ).Value;
-    }
-
-    private Department CreateDepartment(string name, string desc, Guid headId, DateTimeOffset created)
-    {
-        var department = Department.Create(
-            Guid.NewGuid(),
-            name,
-            desc,
-            headId
-        ).Value;
-
-        department.CreatedDateUtc = created;
-        return department;
-    }
-
     [Fact]
     public async Task Handle_ShouldReturnDepartments()
     {
         // Arrange
         var dbName = Guid.NewGuid().ToString();
-        await using var context = CreateContext(dbName);
+        await using var context = TestDbHelper.CreateContext();
 
-        var teacher = CreateTeacher();
+        var teacher = TestDbHelper.CreateTeacher();
         context.Users.Add(teacher);
 
-        var dept1 = CreateDepartment("CS", "Computer Science", teacher.Id, DateTimeOffset.UtcNow.AddHours(-2));
-        var dept2 = CreateDepartment("Math", "Mathematics", teacher.Id, DateTimeOffset.UtcNow.AddHours(-1));
+        var dept1 = TestDbHelper.CreateDepartment(teacher);
+        var dept2 = TestDbHelper.CreateDepartment(teacher);
 
         context.Departments.AddRange(dept1, dept2);
         await context.SaveChangesAsync();
@@ -77,13 +44,13 @@ public class GetDepartmentsQueryHandlerTests
     {
         // Arrange
         var dbName = Guid.NewGuid().ToString();
-        await using var context = CreateContext(dbName);
+        await using var context = TestDbHelper.CreateContext();
 
-        var teacher = CreateTeacher();
+        var teacher = TestDbHelper.CreateTeacher();
         context.Users.Add(teacher);
 
-        var dept1 = CreateDepartment("Computer Science", "CS Dept", teacher.Id, DateTimeOffset.UtcNow);
-        var dept2 = CreateDepartment("History", "History Dept", teacher.Id, DateTimeOffset.UtcNow);
+        var dept1 = TestDbHelper.CreateDepartment(teacher,"Computer Science");
+        var dept2 = TestDbHelper.CreateDepartment(teacher,"Information technology");
 
         context.Departments.AddRange(dept1, dept2);
         await context.SaveChangesAsync();
@@ -109,7 +76,7 @@ public class GetDepartmentsQueryHandlerTests
     {
         // Arrange
         var dbName = Guid.NewGuid().ToString();
-        await using var context = CreateContext(dbName);
+        await using var context = TestDbHelper.CreateContext();
 
         var handler = new GetDepartmentsQueryHandler(context);
         var query = new GetDepartmentsQuery
@@ -131,16 +98,16 @@ public class GetDepartmentsQueryHandlerTests
     {
         // Arrange
         var dbName = Guid.NewGuid().ToString();
-        await using var context = CreateContext(dbName);
+        await using var context = TestDbHelper.CreateContext();
 
-        var teacher = CreateTeacher();
+        var teacher = TestDbHelper.CreateTeacher();
         context.Users.Add(teacher);
 
         var now = DateTimeOffset.UtcNow;
 
-        var dept1 = CreateDepartment("Dept A", "A", teacher.Id, now.AddMinutes(-1));
-        var dept2 = CreateDepartment("Dept B", "B", teacher.Id, now.AddMinutes(-2));
-        var dept3 = CreateDepartment("Dept C", "C", teacher.Id, now.AddMinutes(-3));
+        var dept1 = TestDbHelper.CreateDepartment(teacher);
+        var dept2 = TestDbHelper.CreateDepartment(teacher);
+        var dept3 = TestDbHelper.CreateDepartment(teacher);
 
         context.Departments.AddRange(dept1, dept2, dept3);
         await context.SaveChangesAsync();
@@ -159,6 +126,6 @@ public class GetDepartmentsQueryHandlerTests
         Assert.False(result.IsError);
         Assert.Equal(2, result.Value.Items.Count);
         Assert.True(result.Value.HasMore);
-        Assert.NotNull(result.Value.Cursor); 
+        Assert.NotNull(result.Value.Cursor);
     }
 }

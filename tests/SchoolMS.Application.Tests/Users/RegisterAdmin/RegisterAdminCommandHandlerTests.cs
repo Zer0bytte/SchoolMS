@@ -11,20 +11,13 @@ namespace SchoolMS.Application.Tests.Users.RegisterAdmin;
 
 public class RegisterAdminCommandHandlerTests
 {
-    private TestAppDbContext CreateContext(string dbName)
-    {
-        var options = new DbContextOptionsBuilder<TestAppDbContext>()
-            .UseInMemoryDatabase(dbName)
-            .Options;
-        return new TestAppDbContext(options);
-    }
-
+   
     [Fact]
     public async Task Handle_EmailAlreadyExists_ReturnsError()
     {
         // Arrange
         var dbName = Guid.NewGuid().ToString();
-        await using var context = CreateContext(dbName);
+        await using var context = TestDbHelper.CreateContext();
 
         var existingUserResult = User.Create(Guid.NewGuid(), "Existing User", "exists@school.test", "plain", Role.Student);
         Assert.False(existingUserResult.IsError);
@@ -57,7 +50,7 @@ public class RegisterAdminCommandHandlerTests
     {
         // Arrange
         var dbName = Guid.NewGuid().ToString();
-        await using var context = CreateContext(dbName);
+        await using var context = TestDbHelper.CreateContext();
 
         var passwordHasher = new Mock<IPasswordHasher>();
         passwordHasher.Setup(ph => ph.HashPassword(It.IsAny<string>())).Returns((string p) => $"hashed-{p}");

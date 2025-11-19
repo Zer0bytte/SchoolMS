@@ -15,9 +15,9 @@ public class CreateDepartmentCommandHandler(IAppDbContext context) : IRequestHan
             return DepartmentErrors.DublicateName;
         }
 
-        var headOfDepartmentExists = await context.Users.AnyAsync(u => u.Id == command.HeadOfDepartmentId, cancellationToken);
+        var headOfDepartment = await context.Users.FirstOrDefaultAsync(u => u.Id == command.HeadOfDepartmentId, cancellationToken);
 
-        if (!headOfDepartmentExists)
+        if (headOfDepartment is null)
         {
             return ApplicationErrors.UserNotFound;
         }
@@ -45,10 +45,9 @@ public class CreateDepartmentCommandHandler(IAppDbContext context) : IRequestHan
             Id = department.Id,
             Name = department.Name,
             Description = department.Description,
-            HeadOfDepartment = new HeadOfDepartmentDto
-            {
-                Id = department.HeadOfDepartmentId,
-            }
+            HeadOfDepartmentId = headOfDepartment.Id,
+            HeadOfDepartmentName = headOfDepartment.Name,
+            CreatedDateUtc = department.CreatedDateUtc
         };
     }
 }

@@ -28,20 +28,18 @@ public class GetDepartmentsQueryHandler(IAppDbContext context) : IRequestHandler
         }
 
         var items = await dbQuery
+            .AsNoTracking()
             .OrderByDescending(d => d.CreatedDateUtc)
             .ThenByDescending(d => d.Id)
             .Take(query.Limit + 1)
-            .Select(d=> new DepartmentDto
+            .Select(d => new DepartmentDto
             {
                 Id = d.Id,
                 Name = d.Name,
                 Description = d.Description,
                 CreatedDateUtc = d.CreatedDateUtc,
-                HeadOfDepartment = new HeadOfDepartmentDto
-                {
-                    Id = d.HeadOfDepartment.Id,
-                    Name = d.HeadOfDepartment.Name
-                },
+                HeadOfDepartmentId = d.HeadOfDepartmentId,
+                HeadOfDepartmentName = d.HeadOfDepartment.Name
             })
             .ToListAsync(cancellationToken);
 

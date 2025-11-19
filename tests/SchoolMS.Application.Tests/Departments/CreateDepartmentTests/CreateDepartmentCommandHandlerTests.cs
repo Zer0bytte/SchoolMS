@@ -8,21 +8,14 @@ namespace SchoolMS.Application.Tests.Departments.CreateDepartmentTests;
 
 public class CreateDepartmentCommandHandlerTests
 {
-    private TestAppDbContext CreateContext(string dbName)
-    {
-        var options = new DbContextOptionsBuilder<TestAppDbContext>()
-            .UseInMemoryDatabase(dbName)
-            .Options;
-        return new TestAppDbContext(options);
-    }
-
+    
     [Fact]
     public async Task Handle_GivenValidRequest_ShouldCreateDepartment()
     {
         // Arrange
 
         var dbName = Guid.NewGuid().ToString();
-        await using var context = CreateContext(dbName);
+        await using var context = TestDbHelper.CreateContext();
         var teacher = User.Create(Guid.NewGuid(), "Alice Smith", "email@email.com", "SecurePass123", Role.Teacher).Value;
         context.Users.Add(teacher);
         await context.SaveChangesAsync();
@@ -56,7 +49,7 @@ public class CreateDepartmentCommandHandlerTests
     {
         // Arrange
         var dbName = Guid.NewGuid().ToString();
-        using var context = CreateContext(dbName);
+        using var context = TestDbHelper.CreateContext();
         var handler = new CreateDepartmentCommandHandler(context);
         var command = new CreateDepartmentCommand
         {
@@ -79,7 +72,7 @@ public class CreateDepartmentCommandHandlerTests
     {
         // Arrange
         var dbName = Guid.NewGuid().ToString();
-        await using var context = CreateContext(dbName);
+        await using var context = TestDbHelper.CreateContext();
         var existingDepartment = SchoolMS.Domain.Departments.Department.Create(
             Guid.NewGuid(),
             "Physics",

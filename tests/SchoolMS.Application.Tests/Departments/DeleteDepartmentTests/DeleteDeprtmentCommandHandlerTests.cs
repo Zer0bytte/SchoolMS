@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SchoolMS.Application.Features.Departments.Commands.RemoveDepartment;
 using SchoolMS.Application.Tests.Shared;
 using SchoolMS.Domain.Departments;
 using SchoolMS.Domain.Users;
@@ -14,28 +15,41 @@ namespace SchoolMS.Application.Tests.Departments.DeleteDepartmentTests;
 public class DeleteDeprtmentCommandHandlerTests
 {
 
-    private TestAppDbContext CreateContext(string dbName)
-    {
-        var options = new DbContextOptionsBuilder<TestAppDbContext>()
-            .UseInMemoryDatabase(dbName)
-            .Options;
 
-        return new TestAppDbContext(options);
+    [Fact]
+    public async Task Handle_GivenValidDepartmentId_ShouldDeleteDepartment()
+    {
+        // Arrange
+        var dbName = Guid.NewGuid().ToString();
+        using var context = TestDbHelper.CreateContext();
+        var teacher = TestDbHelper.CreateTeacher();
+        context.Users.Add(teacher);
+        var department = TestDbHelper.CreateDepartment(teacher);
+        context.Departments.Add(department);
+        await context.SaveChangesAsync();
+
+        var handler = new DeleteDepartmentCommandHandler(context);
+        var command = new DeleteDepartmentCommand() { DepartmentId = department.Id };
+        // Act
+        var result = await handler.Handle(command, CancellationToken.None);
+        // Assert
+        Assert.True(result.IsSuccess);
+        var deletedDepartment = await context.Departments.FindAsync(department.Id);
+        Assert.Null(deletedDepartment);
     }
 
-    private User CreateTeacher()
+    [Fact]
+    public async Task Handle_GivenInvalidDepartmentId_ShouldReturnNotFoundError()
     {
-        var user = User.Create(Guid.NewGuid(), "John Doe", "email@email.com", "haspass", Role.Teacher).Value;
-        return user;
-    }
-    private Department CreateDepartment()
-    {
-        var departmentResult = Department.Create(
-            Guid.NewGuid(),
-            "Computer Science",
-            "Department of Computer Science",
-            Guid.NewGuid()
-        );
-        return departmentResult.Value;
+        // Arrange
+        var dbName = Guid.NewGuid().ToString();
+        using var context = TestDbHelper.CreateContext();
+        var handler = new DeleteDepartmentCommandHandler(context);
+        var command = new DeleteDepartmentCommand() { DepartmentId = Guid.NewGuid() };
+        // Act
+        var result = await handler.Handle(command, CancellationToken.None);
+        // Assert
+        Assert.True(result.IsError);
+        Assert.Equal(DepartmentErrors.NotFound.Code, result.TopError.Code);
     }
 }

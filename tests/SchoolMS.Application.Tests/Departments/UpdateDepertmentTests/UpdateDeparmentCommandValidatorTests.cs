@@ -1,16 +1,9 @@
 ﻿using SchoolMS.Application.Features.Departments.Commands.UpdateDepartment;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SchoolMS.Application.Tests.Departments.UpdateDepertmentTests;
 
 public class UpdateDeparmentCommandValidatorTests
 {
- 
-
     [Fact]
     public void Validate_ShouldHaveError_WhenNameExceedsMaxLength()
     {

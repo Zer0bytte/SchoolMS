@@ -30,5 +30,5 @@ app.UseCoreMiddlewares(builder.Configuration);
 
 app.MapIdentityEndpoints();
 app.MapDepartmentEndpoints();
-
+app.MapCourseEndpoints();
 app.Run();

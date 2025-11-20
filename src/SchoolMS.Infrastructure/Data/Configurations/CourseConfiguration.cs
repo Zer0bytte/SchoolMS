@@ -24,7 +24,7 @@ public class CourseConfiguration : IEntityTypeConfiguration<Course>
             .IsRequired()
             .HasMaxLength(20);
 
-        builder.HasIndex(c => c.Code)
+        builder.HasIndex(c => new { c.Code, c.DepartmentId })
             .IsUnique();
 
         builder.Property(c => c.Description)

@@ -35,7 +35,7 @@ public static class DependencyInjection
                 .AddConfiguredCors(configuration)
                 .AddIdentityInfrastructure()
                 .AddAppRateLimiting()
-                .AddAppOutputCaching()
+                //.AddAppOutputCaching()
                 .AddSignalR();
 
         return services;
@@ -182,7 +182,7 @@ public static class DependencyInjection
 
         app.UseAuthorization();
 
-        app.UseOutputCache();
+        //app.UseOutputCache();
 
         return app;
     }

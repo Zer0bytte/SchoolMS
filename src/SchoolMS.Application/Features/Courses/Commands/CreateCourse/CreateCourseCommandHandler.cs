@@ -15,11 +15,17 @@ public sealed class CreateCourseCommandHandler(IAppDbContext context) : IRequest
         if (department is null)
             return DepartmentErrors.NotFound;
 
-        bool exists = await context.Courses
+        bool codeExists = await context.Courses
             .AnyAsync(x => x.Code == command.Code && x.DepartmentId == command.DepartmentId, ct);
 
-        if (exists)
+        if (codeExists)
             return CourseErrors.DuplicateCode;
+
+        bool nameExists = await context.Courses
+            .AnyAsync(x => x.Name == command.Name && x.DepartmentId == command.DepartmentId, ct);
+
+        if (nameExists)
+            return CourseErrors.DuplicateName;
 
         var course = Course.Create(Guid.CreateVersion7(), command.Name, command.Code, command.Description, command.DepartmentId, command.Credits);
 

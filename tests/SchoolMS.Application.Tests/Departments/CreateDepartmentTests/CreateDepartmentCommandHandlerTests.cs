@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SchoolMS.Application.Common.Errors;
 using SchoolMS.Application.Features.Departments.Commands.CreateDepartment;
 using SchoolMS.Application.Tests.Shared;
 using SchoolMS.Domain.Users;
@@ -8,7 +9,7 @@ namespace SchoolMS.Application.Tests.Departments.CreateDepartmentTests;
 
 public class CreateDepartmentCommandHandlerTests
 {
-    
+
     [Fact]
     public async Task Handle_GivenValidRequest_ShouldCreateDepartment()
     {
@@ -84,7 +85,7 @@ public class CreateDepartmentCommandHandlerTests
         var handler = new CreateDepartmentCommandHandler(context);
         var command = new CreateDepartmentCommand
         {
-            Name = "Physics", 
+            Name = "Physics",
             Description = "Another Department of Physics",
             HeadOfDepartmentId = Guid.NewGuid()
         };
@@ -95,5 +96,28 @@ public class CreateDepartmentCommandHandlerTests
         // Assert
         Assert.True(result.IsError);
         Assert.True(result.Errors.Any(e => e.Code == "Department.Name.Exists"));
+    }
+
+    [Fact]
+    public async Task Handle_GivenHeadOfDepartmentIsNotTeacher_ShouldReturnError()
+    {
+        // Arrange
+        var dbName = Guid.NewGuid().ToString();
+        await using var context = TestDbHelper.CreateContext();
+        var student = TestDbHelper.CreateStudent();
+        context.Users.Add(student);
+        await context.SaveChangesAsync();
+        var handler = new CreateDepartmentCommandHandler(context);
+        var command = new CreateDepartmentCommand
+        {
+            Name = "Biology",
+            Description = "Department of Biology",
+            HeadOfDepartmentId = student.Id
+        };
+        // Act
+        var result = await handler.Handle(command, CancellationToken.None);
+        // Assert
+        Assert.True(result.IsError);
+        Assert.Equal(result.TopError,ApplicationErrors.HeadOfDepartmentShouldBeTeacher);
     }
 }

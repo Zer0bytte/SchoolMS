@@ -22,6 +22,13 @@ public class TestDbHelper
         var user = User.Create(Guid.NewGuid(), Guid.NewGuid().ToString(), "email@email.com", "haspass", Role.Teacher).Value;
         return user;
     }
+
+    public static User CreateStudent()
+    {
+        var user = User.Create(Guid.NewGuid(), Guid.NewGuid().ToString(), "email@email.com", "haspass", Role.Student).Value;
+        return user;
+    }
+
     public static Department CreateDepartment(User teacher, string departmentName = "Computer Science")
     {
         var departmentResult = Department.Create(

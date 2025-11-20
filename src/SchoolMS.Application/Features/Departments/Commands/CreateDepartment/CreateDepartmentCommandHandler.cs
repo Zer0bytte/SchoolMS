@@ -1,6 +1,7 @@
 ﻿using SchoolMS.Application.Common.Errors;
 using SchoolMS.Application.Features.Departments.Dtos;
 using SchoolMS.Domain.Departments;
+using SchoolMS.Domain.Users.Enums;
 
 namespace SchoolMS.Application.Features.Departments.Commands.CreateDepartment;
 
@@ -22,6 +23,10 @@ public class CreateDepartmentCommandHandler(IAppDbContext context) : IRequestHan
             return ApplicationErrors.UserNotFound;
         }
 
+        if (headOfDepartment.Role != Role.Teacher)
+        {
+            return ApplicationErrors.HeadOfDepartmentShouldBeTeacher;
+        }
 
         var departmentResult = Department.Create(
             Guid.CreateVersion7(),

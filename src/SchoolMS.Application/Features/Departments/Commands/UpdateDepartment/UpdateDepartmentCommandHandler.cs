@@ -2,6 +2,7 @@
 using SchoolMS.Application.Features.Departments.Dtos;
 using SchoolMS.Domain.Departments;
 using SchoolMS.Domain.Users;
+using SchoolMS.Domain.Users.Enums;
 
 namespace SchoolMS.Application.Features.Departments.Commands.UpdateDepartment;
 
@@ -38,6 +39,11 @@ public class UpdateDepartmentCommandHandler(IAppDbContext context) : IRequestHan
             if (headOfDepartment is null)
             {
                 return ApplicationErrors.UserNotFound;
+            }
+
+            if (headOfDepartment.Role != Role.Teacher)
+            {
+                return ApplicationErrors.HeadOfDepartmentShouldBeTeacher;
             }
         }
 

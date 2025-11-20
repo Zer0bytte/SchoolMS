@@ -178,4 +178,30 @@ public class UpdateDepartmentCommandHandlerTests
         Assert.Equal(result.Value.HeadOfDepartmentName, teacher2.Name);
     }
 
+    [Fact]
+    public async Task Handle_GivenHeadOfDepartmentIdIsNotATeacher_ShouldReturnError()
+    {
+        // Arrange
+        var dbName = Guid.NewGuid().ToString();
+        await using var context = TestDbHelper.CreateContext();
+        var student = TestDbHelper.CreateStudent();
+        context.Users.Add(student);
+        var department = Department.Create(Guid.NewGuid(), "Art", "Department of Art", Guid.NewGuid()).Value;
+        context.Departments.Add(department);
+        await context.SaveChangesAsync();
+        var handler = new UpdateDepartmentCommandHandler(context);
+        var command = new UpdateDepartmentCommand
+        {
+            Id = department.Id,
+            Name = "Art",
+            Description = "Updated Department of Art",
+            HeadOfDepartmentId = student.Id
+        };
+        // Act
+        var result = await handler.Handle(command, CancellationToken.None);
+        // Assert
+        Assert.True(result.IsError);
+        Assert.Equal(ApplicationErrors.HeadOfDepartmentShouldBeTeacher, result.TopError);
+    }
+
 }

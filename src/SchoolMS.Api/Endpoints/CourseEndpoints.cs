@@ -14,7 +14,7 @@ public static class CourseEndpoints
 {
     public static void MapCourseEndpoints(this IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/api/courses");
+        var group = app.MapGroup("/api/courses").RequireAuthorization("Admin");
 
         group.MapGet("", GetCourses);
         group.MapGet("/{id:guid}", GetCourseById);
@@ -31,9 +31,9 @@ public static class CourseEndpoints
 
         var result = await sender.Send(query);
 
-      return  result.Match(
-           dto => Results.Ok(dto),
-           errors => errors.ToProblem());
+        return result.Match(
+             dto => Results.Ok(dto),
+             errors => errors.ToProblem());
 
     }
 
@@ -51,9 +51,9 @@ public static class CourseEndpoints
 
         var result = await sender.Send(command);
 
-    return    result.Match(
-           dto => Results.NoContent(),
-           errors => errors.ToProblem());
+        return result.Match(
+               dto => Results.NoContent(),
+               errors => errors.ToProblem());
     }
 
     private static async Task<IResult> CreateCourse(CreateCourseRequest request, ISender sender)

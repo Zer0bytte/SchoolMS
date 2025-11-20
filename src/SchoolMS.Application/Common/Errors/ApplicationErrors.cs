@@ -28,5 +28,10 @@ public static class ApplicationErrors
               "Auth.InvalidCredentials",
               "The provided credentials are invalid.");
 
-  
+    public static Error HeadOfDepartmentShouldBeTeacher =>
+     Error.Failure(
+         "Department.HeadOfDepartment.InvalidRole",
+         "Head of Department should be a user with Teacher role.");
+
+
 }

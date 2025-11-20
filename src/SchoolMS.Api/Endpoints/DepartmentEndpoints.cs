@@ -1,11 +1,9 @@
 ﻿
 using MediatR;
-using Microsoft.AspNetCore.Server.IIS;
 using SchoolMS.Api.Extensions;
 using SchoolMS.Application.Features.Departments.Commands.CreateDepartment;
 using SchoolMS.Application.Features.Departments.Commands.RemoveDepartment;
 using SchoolMS.Application.Features.Departments.Commands.UpdateDepartment;
-using SchoolMS.Application.Features.Departments.Dtos;
 using SchoolMS.Application.Features.Departments.Queries.GetDepartments;
 using SchoolMS.Contracts.Departments;
 
@@ -15,7 +13,7 @@ public static class DepartmentEndpoints
 {
     public static void MapDepartmentEndpoints(this IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/api/admin/departments");//.RequireAuthorization("Admin");
+        var group = app.MapGroup("/api/admin/departments").RequireAuthorization("Admin");
 
         group.MapGet("", GetDepartments);
         group.MapGet("/{id:guid}", GetDepartment);
@@ -32,12 +30,12 @@ public static class DepartmentEndpoints
 
     }
 
-    private static async Task<IResult> DeleteDepartment(Guid id,  ISender sender)
+    private static async Task<IResult> DeleteDepartment(Guid id, ISender sender)
     {
         var command = new DeleteDepartmentCommand
         {
             DepartmentId = id
-        };  
+        };
 
         var result = await sender.Send(command);
 

@@ -1,9 +1,9 @@
 ﻿
 using MediatR;
 using SchoolMS.Api.Extensions;
-using SchoolMS.Application.Common.Interfaces;
 using SchoolMS.Application.Features.Courses.Commands.CreateCourse;
 using SchoolMS.Application.Features.Courses.Commands.UpdateCourse;
+using SchoolMS.Application.Features.Courses.Dtos;
 using SchoolMS.Application.Features.Courses.Queries.GetCourseById;
 using SchoolMS.Application.Features.Courses.Queries.GetCourses;
 using SchoolMS.Contracts.Courses;
@@ -14,12 +14,34 @@ public static class CourseEndpoints
 {
     public static void MapCourseEndpoints(this IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/api/courses").RequireAuthorization("Admin");
+        var group = app.MapGroup("/api/courses").WithTags("Courses");
 
-        group.MapGet("", GetCourses);
-        group.MapGet("/{id:guid}", GetCourseById);
-        group.MapPost("", CreateCourse);
-        group.MapPost("/{id:guid}", UpdateCourse);
+        group.MapGet("", GetCourses)
+            .WithSummary("Get list of courses")
+            .WithDescription("Returns a paginated list of courses optionally filtered by department or search term.")
+            .Produces<CoursesResultDto>(StatusCodes.Status200OK)
+            .ProducesProblem(StatusCodes.Status400BadRequest);
+
+        group.MapGet("/{id:guid}", GetCourseById)
+            .WithSummary("Get course by ID")
+            .WithDescription("Returns a specific course using its unique identifier.")
+            .Produces<CourseDto>(StatusCodes.Status200OK)
+            .ProducesProblem(StatusCodes.Status404NotFound);
+
+        group.MapPost("", CreateCourse)
+            .WithSummary("Create a new course")
+            .WithDescription("Creates a new course record in the system.")
+            .Accepts<CreateCourseRequest>("application/json")
+            .Produces<CourseDto>(StatusCodes.Status201Created)
+            .ProducesProblem(StatusCodes.Status400BadRequest);
+
+        group.MapPatch("/{id:guid}", UpdateCourse)
+            .WithSummary("Update an existing course")
+            .WithDescription("Updates an existing course using its ID.")
+            .Accepts<UpdateCourseRequest>("application/json")
+            .Produces(StatusCodes.Status204NoContent)
+            .ProducesProblem(StatusCodes.Status404NotFound)
+            .ProducesProblem(StatusCodes.Status400BadRequest);
     }
 
     private static async Task<IResult> GetCourseById(Guid id, ISender sender)

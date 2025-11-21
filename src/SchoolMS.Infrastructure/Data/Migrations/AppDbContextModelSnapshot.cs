@@ -104,8 +104,8 @@ namespace SchoolMS.Infrastructure.Data.Migrations
                     b.Property<DateTimeOffset>("CreatedDateUtc")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<DateTimeOffset>("EndDate")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateOnly>("EndDate")
+                        .HasColumnType("date");
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
@@ -122,8 +122,8 @@ namespace SchoolMS.Infrastructure.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<DateTimeOffset>("StartDate")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateOnly>("StartDate")
+                        .HasColumnType("date");
 
                     b.Property<Guid>("TeacherId")
                         .HasColumnType("uniqueidentifier");

@@ -34,4 +34,7 @@ public static class ApplicationErrors
          "Head of Department should be a user with Teacher role.");
 
 
+
+    public static Error StudentIdsEmpty => Error.Validation("StudentIds.Empty", "At least one student must be provided.");
+
 }

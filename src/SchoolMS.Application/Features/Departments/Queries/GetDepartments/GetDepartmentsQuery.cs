@@ -3,7 +3,7 @@ using SchoolMS.Application.Features.Departments.Dtos;
 
 namespace SchoolMS.Application.Features.Departments.Queries.GetDepartments;
 
-public class GetDepartmentsQuery : CursorQuery, IRequest<Result<DepartmentResult>>
+public class GetDepartmentsQuery : CursorQuery, IRequest<Result<DepartmentsResult>>
 {
     public string? DepartmentName { get; set; }
 }

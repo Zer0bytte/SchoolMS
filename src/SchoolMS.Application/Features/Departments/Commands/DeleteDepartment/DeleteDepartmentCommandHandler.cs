@@ -1,6 +1,6 @@
 ﻿using SchoolMS.Domain.Departments;
 
-namespace SchoolMS.Application.Features.Departments.Commands.RemoveDepartment;
+namespace SchoolMS.Application.Features.Departments.Commands.DeleteDepartment;
 
 public class DeleteDepartmentCommandHandler(IAppDbContext context) : IRequestHandler<DeleteDepartmentCommand, Result<Success>>
 {

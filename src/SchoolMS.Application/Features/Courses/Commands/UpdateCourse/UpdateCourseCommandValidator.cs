@@ -6,7 +6,7 @@ public class UpdateCourseCommandValidator : AbstractValidator<UpdateCourseComman
 {
     public UpdateCourseCommandValidator()
     {
-        RuleFor(x=>x.Id)
+        RuleFor(x => x.Id)
             .NotEmpty().WithMessage("Course ID is required.");
 
         RuleFor(x => x.Name)

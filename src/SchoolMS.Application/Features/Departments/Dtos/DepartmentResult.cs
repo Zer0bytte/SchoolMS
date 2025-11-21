@@ -2,7 +2,7 @@
 
 namespace SchoolMS.Application.Features.Departments.Dtos;
 
-public class DepartmentResult : CurosrResult
+public class DepartmentsResult : CurosrResult
 {
     public List<DepartmentDto> Items { get; set; } = [];
 }

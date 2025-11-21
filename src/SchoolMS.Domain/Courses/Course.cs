@@ -1,8 +1,6 @@
 ﻿using SchoolMS.Domain.Classes;
 using SchoolMS.Domain.Common;
 using SchoolMS.Domain.Departments;
-using System.Net;
-using System.Xml.Linq;
 
 namespace SchoolMS.Domain.Courses;
 

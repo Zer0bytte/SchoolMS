@@ -9,7 +9,7 @@ public sealed class Attendance
     public Guid Id { get; set; }
     public Guid ClassId { get; set; }
     public Guid StudentId { get; set; }
-    public DateTimeOffset Date { get; set; }
+    public DateOnly Date { get; set; }
     public AttendanceStatus Status { get; set; }
     public Guid MarkedByTeacherId { get; set; }
     public Class Class { get; set; } = default!;

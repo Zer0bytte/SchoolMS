@@ -3,9 +3,9 @@ using SchoolMS.Application.Features.Departments.Dtos;
 
 namespace SchoolMS.Application.Features.Departments.Queries.GetDepartments;
 
-public class GetDepartmentsQueryHandler(IAppDbContext context) : IRequestHandler<GetDepartmentsQuery, Result<DepartmentResult>>
+public class GetDepartmentsQueryHandler(IAppDbContext context) : IRequestHandler<GetDepartmentsQuery, Result<DepartmentsResult>>
 {
-    public async Task<Result<DepartmentResult>> Handle(GetDepartmentsQuery query, CancellationToken cancellationToken)
+    public async Task<Result<DepartmentsResult>> Handle(GetDepartmentsQuery query, CancellationToken cancellationToken)
     {
         var dbQuery = context.Departments.AsQueryable();
 
@@ -48,7 +48,7 @@ public class GetDepartmentsQueryHandler(IAppDbContext context) : IRequestHandler
         DateTimeOffset? nextDate = items.Count > query.Limit ? items[^1].CreatedDateUtc : null;
         Guid? nextId = items.Count > query.Limit ? items[^1].Id : null;
 
-        return new DepartmentResult
+        return new DepartmentsResult
         {
             Items = finalItems,
             Cursor = nextDate is not null && nextId is not null

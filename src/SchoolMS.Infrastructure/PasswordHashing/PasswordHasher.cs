@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
-using SchoolMS.Application.Common.Interfaces;
+﻿using SchoolMS.Application.Common.Interfaces;
 using System.Security.Cryptography;
 
 namespace SchoolMS.Infrastructure.PasswordHashing;

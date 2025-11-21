@@ -1,7 +1,6 @@
 ﻿using SchoolMS.Application.Common.Errors;
 using SchoolMS.Application.Features.Departments.Dtos;
 using SchoolMS.Domain.Departments;
-using SchoolMS.Domain.Users;
 using SchoolMS.Domain.Users.Enums;
 
 namespace SchoolMS.Application.Features.Departments.Commands.UpdateDepartment;

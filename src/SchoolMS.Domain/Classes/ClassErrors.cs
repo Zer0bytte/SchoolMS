@@ -2,7 +2,7 @@
 
 public static class ClassErrors
 {
-
+    public static Error DublicateName => Error.Conflict("Class.Name.Exists", "A class with the same name already exists.");
     public static Error NameRequired => Error.Validation("Class.Name.Required", "Class name is required.");
     public static Error NotFound => Error.Validation("Class.NotFound", "The class with the given ID could not be found");
     public static Error CourseIdInvalid => Error.Validation("Class.CourseId.Invalid", "CourseId is invalid.");

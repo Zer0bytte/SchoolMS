@@ -4,6 +4,8 @@ using SchoolMS.Application.Common.Interfaces;
 using SchoolMS.Application.Features.Classes.Commands.UpdateClass;
 using SchoolMS.Application.Tests.Shared;
 using SchoolMS.Domain.Classes;
+using SchoolMS.Domain.Courses;
+using System.Linq.Expressions;
 
 namespace SchoolMS.Application.Tests.ClassTests.UpdateClass;
 
@@ -18,7 +20,7 @@ public class UpdateClassCommandHandlerTests
         var teacher = TestDbHelper.CreateTeacher();
         var department = TestDbHelper.CreateDepartment(teacher);
         var course = TestDbHelper.CreateCourse(department);
-        var cls = TestDbHelper.CraeteClass(course, teacher);
+        var cls = TestDbHelper.CreateClass(course, teacher);
 
         context.Users.Add(teacher);
         context.Departments.Add(department);
@@ -83,7 +85,40 @@ public class UpdateClassCommandHandlerTests
         Assert.Equal(result.TopError, ClassErrors.NotFound);
     }
 
+    [Fact]
+    public async Task Handle_ShouldReturnDuplicateNameError_WhenClassNameAlreadyExists()
+    {
+        // Arrange
+        var context = TestDbHelper.CreateContext();
+        var user = new Mock<IUser>();
+        var teacher = TestDbHelper.CreateTeacher();
+        var department = TestDbHelper.CreateDepartment(teacher);
+        var course = TestDbHelper.CreateCourse(department);
+        var cls = TestDbHelper.CreateClass(course, teacher, "Class 1");
+        var cls2 = TestDbHelper.CreateClass(course, teacher, "Class 2");
+        context.Users.Add(teacher);
+        context.Departments.Add(department);
+        context.Courses.Add(course);
+        context.Classes.Add(cls);
+        context.Classes.Add(cls2);
+        await context.SaveChangesAsync();
+        user.Setup(u => u.Id).Returns(teacher.Id.ToString());
+        var command = new UpdateClassCommand
+        {
+            Id = cls.Id,
+            Name = cls2.Name,
+        };
+        var handler = new UpdateClassCommandHandler(context, user.Object);
+        // Act
 
+        var result = await handler.Handle(command, CancellationToken.None);
+
+        // Assert
+
+        Assert.NotNull(result);
+        Assert.True(result.IsError);
+        Assert.Equal(ClassErrors.DublicateName, result.TopError);
+    }
 
 
 }

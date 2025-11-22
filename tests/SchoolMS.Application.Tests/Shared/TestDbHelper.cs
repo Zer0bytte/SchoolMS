@@ -54,10 +54,10 @@ public class TestDbHelper
 
         return courseResult.Value;
     }
-    public static Class CraeteClass(Course course, User teacher)
+    public static Class CreateClass(Course course, User teacher, string className = "clsName")
     {
         var start = new DateOnly(2025, 1, 10);
         var end = new DateOnly(2025, 1, 20);
-        return Class.Create(Guid.NewGuid(), Guid.NewGuid().ToString(), course.Id, teacher.Id, Guid.NewGuid().ToString(), start, end).Value;
+        return Class.Create(Guid.NewGuid(), className, course.Id, teacher.Id, Guid.NewGuid().ToString(), start, end).Value;
     }
 }

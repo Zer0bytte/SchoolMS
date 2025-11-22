@@ -60,7 +60,7 @@ public sealed class Class : AuditableEntity
         return new Class(id, name, courseId, teacherId, semester, startDate, endDate);
     }
 
-    public Result<Class> Update(string name, string semester, DateOnly startDate, DateOnly endDate)
+    public Result<Class> Update(string? name, string? semester, DateOnly? startDate, DateOnly? endDate)
     {
         if (!string.IsNullOrWhiteSpace(name))
             Name = name;
@@ -68,19 +68,16 @@ public sealed class Class : AuditableEntity
         if (!string.IsNullOrWhiteSpace(semester))
             Semester = semester;
 
-        if (startDate != default)
-            StartDate = startDate;
+        if (startDate.HasValue)
+            StartDate = startDate.Value;
 
-        if (endDate != default)
-            EndDate = endDate;
+        if (endDate.HasValue)
+            EndDate = endDate.Value;
 
         if (endDate < startDate)
             return ClassErrors.EndDateBeforeStartDate;
 
-        Name = name;
-        Semester = semester;
-        StartDate = startDate;
-        EndDate = endDate;
+       
 
         return this;
     }

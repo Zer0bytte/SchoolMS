@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace SchoolMS.Infrastructure.Data.Migrations
+namespace SchoolMS.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration
@@ -11,6 +12,22 @@ namespace SchoolMS.Infrastructure.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "RefreshTokens",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Token = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ExpiresOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    CreatedDateUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdatedDateUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefreshTokens", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -18,7 +35,7 @@ namespace SchoolMS.Infrastructure.Data.Migrations
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     Password = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    Role = table.Column<int>(type: "int", maxLength: 20, nullable: false),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     CreatedDateUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     UpdatedDateUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
@@ -107,8 +124,8 @@ namespace SchoolMS.Infrastructure.Data.Migrations
                     CourseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TeacherId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Semester = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    StartDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    EndDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    StartDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    EndDate = table.Column<DateOnly>(type: "date", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     CreatedDateUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     UpdatedDateUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
@@ -138,8 +155,8 @@ namespace SchoolMS.Infrastructure.Data.Migrations
                     ClassId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
-                    DueDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    CreatedDateUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    DueDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    CreatedDateUtc = table.Column<DateOnly>(type: "date", nullable: false),
                     CreatedByTeacherId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -166,8 +183,8 @@ namespace SchoolMS.Infrastructure.Data.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ClassId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     StudentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Date = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    Status = table.Column<int>(type: "int", maxLength: 20, nullable: false),
+                    Date = table.Column<DateOnly>(type: "date", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MarkedByTeacherId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -291,9 +308,9 @@ namespace SchoolMS.Infrastructure.Data.Migrations
                 column: "TeacherId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Courses_Code",
+                name: "IX_Courses_Code_DepartmentId",
                 table: "Courses",
-                column: "Code",
+                columns: new[] { "Code", "DepartmentId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -305,6 +322,12 @@ namespace SchoolMS.Infrastructure.Data.Migrations
                 name: "IX_Departments_HeadOfDepartmentId",
                 table: "Departments",
                 column: "HeadOfDepartmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Departments_Name",
+                table: "Departments",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Notifications_RecipientId",
@@ -358,6 +381,9 @@ namespace SchoolMS.Infrastructure.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Notifications");
+
+            migrationBuilder.DropTable(
+                name: "RefreshTokens");
 
             migrationBuilder.DropTable(
                 name: "StudentClasses");

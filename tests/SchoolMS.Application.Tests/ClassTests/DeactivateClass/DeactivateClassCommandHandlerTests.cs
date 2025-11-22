@@ -17,7 +17,7 @@ public class DeactivateClassCommandHandlerTests
         var teacher = TestDbHelper.CreateTeacher();
         var department = TestDbHelper.CreateDepartment(teacher);
         var course = TestDbHelper.CreateCourse(department);
-        var cls = TestDbHelper.CraeteClass(course, teacher);
+        var cls = TestDbHelper.CreateClass(course, teacher);
         context.Users.Add(teacher);
         context.Departments.Add(department);
         context.Courses.Add(course);

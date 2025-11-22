@@ -21,6 +21,11 @@ public class UpdateClassCommandHandler(IAppDbContext context, IUser user)
         if (existingClass is null)
             return ClassErrors.NotFound;
 
+        var clsExist = await context.Classes.AnyAsync(cls => cls.Id != request.Id && cls.Name == request.Name && cls.CourseId == existingClass.CourseId);
+        if (clsExist)
+        {
+            return ClassErrors.DublicateName;
+        }
 
         var updateResult = existingClass.Update(
             request.Name,

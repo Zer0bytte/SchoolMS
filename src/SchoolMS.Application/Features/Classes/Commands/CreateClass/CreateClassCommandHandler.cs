@@ -15,9 +15,18 @@ public class CreateClassCommandHandler(IAppDbContext context, IUser user) : IReq
             return CourseErrors.NotFound;
         }
 
+
+
         if (string.IsNullOrWhiteSpace(user.Id))
         {
             return ApplicationErrors.UserNotFound;
+        }
+
+        var clsExist = await context.Classes.AnyAsync(cls => cls.CourseId == request.CourseId && cls.Name == request.Name);
+
+        if (clsExist)
+        {
+            return ClassErrors.DublicateName;
         }
 
         var newClass = Class.Create(Guid.CreateVersion7(),

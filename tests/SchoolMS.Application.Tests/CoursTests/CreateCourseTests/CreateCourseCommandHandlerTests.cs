@@ -1,4 +1,6 @@
-﻿using SchoolMS.Application.Features.Courses.Commands.CreateCourse;
+﻿using Moq;
+using SchoolMS.Application.Common.Interfaces;
+using SchoolMS.Application.Features.Courses.Commands.CreateCourse;
 using SchoolMS.Application.Tests.Shared;
 using SchoolMS.Domain.Courses;
 using SchoolMS.Domain.Departments;
@@ -15,12 +17,12 @@ public class CreateCourseCommandHandlerTests
         using var dbContext = TestDbHelper.CreateContext();
         var teacher = TestDbHelper.CreateTeacher();
         var department = TestDbHelper.CreateDepartment(teacher);
-
         dbContext.Users.Add(teacher);
         dbContext.Departments.Add(department);
         await dbContext.SaveChangesAsync();
-
-        var handler = new CreateCourseCommandHandler(dbContext);
+        var user = new Mock<IUser>();
+        user.Setup(u => u.Id).Returns(teacher.Id.ToString());
+        var handler = new CreateCourseCommandHandler(dbContext, user.Object);
         var command = new CreateCourseCommand
         {
             Name = "Introduction to Programming",
@@ -56,7 +58,9 @@ public class CreateCourseCommandHandlerTests
         var existingCourse = TestDbHelper.CreateCourse(department);
         dbContext.Courses.Add(existingCourse);
         await dbContext.SaveChangesAsync();
-        var handler = new CreateCourseCommandHandler(dbContext);
+        var user = new Mock<IUser>();
+        user.Setup(u => u.Id).Returns(teacher.Id.ToString());
+        var handler = new CreateCourseCommandHandler(dbContext, user.Object);
         var command = new CreateCourseCommand
         {
             Name = "Advanced Programming",
@@ -86,7 +90,9 @@ public class CreateCourseCommandHandlerTests
         var existingCourse = TestDbHelper.CreateCourse(department);
         dbContext.Courses.Add(existingCourse);
         await dbContext.SaveChangesAsync();
-        var handler = new CreateCourseCommandHandler(dbContext);
+        var user = new Mock<IUser>();
+        user.Setup(u => u.Id).Returns(teacher.Id.ToString());
+        var handler = new CreateCourseCommandHandler(dbContext, user.Object);
         var command = new CreateCourseCommand
         {
             Name = existingCourse.Name,
@@ -108,7 +114,12 @@ public class CreateCourseCommandHandlerTests
     {
         //Arrange
         using var dbContext = TestDbHelper.CreateContext();
-        var handler = new CreateCourseCommandHandler(dbContext);
+        var teacher = TestDbHelper.CreateTeacher();
+        dbContext.Users.Add(teacher);
+        await dbContext.SaveChangesAsync();
+        var user = new Mock<IUser>();
+        user.Setup(u => u.Id).Returns(teacher.Id.ToString());
+        var handler = new CreateCourseCommandHandler(dbContext, user.Object);
         var command = new CreateCourseCommand
         {
             Name = "Data Structures",
@@ -142,8 +153,9 @@ public class CreateCourseCommandHandlerTests
         var existingCourse = TestDbHelper.CreateCourse(department);
         dbContext.Courses.Add(existingCourse);
         await dbContext.SaveChangesAsync();
-
-        var handler = new CreateCourseCommandHandler(dbContext);
+        var user = new Mock<IUser>();
+        user.Setup(u => u.Id).Returns(teacher.Id.ToString());
+        var handler = new CreateCourseCommandHandler(dbContext, user.Object);
 
         var command = new CreateCourseCommand
         {
@@ -179,7 +191,9 @@ public class CreateCourseCommandHandlerTests
         var existingCourse = TestDbHelper.CreateCourse(department);
         dbContext.Courses.Add(existingCourse);
         await dbContext.SaveChangesAsync();
-        var handler = new CreateCourseCommandHandler(dbContext);
+        var user = new Mock<IUser>();
+        user.Setup(u => u.Id).Returns(teacher.Id.ToString());
+        var handler = new CreateCourseCommandHandler(dbContext, user.Object);
         var command = new CreateCourseCommand
         {
             Name = existingCourse.Name,

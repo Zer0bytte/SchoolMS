@@ -9,13 +9,11 @@ public class CreateClassCommandHandler(IAppDbContext context, IUser user) : IReq
 {
     public async Task<Result<ClassDto>> Handle(CreateClassCommand request, CancellationToken cancellationToken)
     {
-        var course = await context.Courses.FirstOrDefaultAsync(c => c.Id == request.CourseId);
+        var course = await context.Courses.FirstOrDefaultAsync(c => c.Id == request.CourseId && c.Department.HeadOfDepartmentId == Guid.Parse(user.Id));
         if (course is null)
         {
             return CourseErrors.NotFound;
         }
-
-
 
         if (string.IsNullOrWhiteSpace(user.Id))
         {

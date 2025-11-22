@@ -4,9 +4,11 @@ using SchoolMS.Application.Common.Interfaces;
 using SchoolMS.Application.Features.Classes.Commands.MarkAttendance;
 using SchoolMS.Application.Features.Classes.Dtos;
 using SchoolMS.Application.Tests.Shared;
+using SchoolMS.Domain.Attendances;
 using SchoolMS.Domain.Attendances.Enums;
 using SchoolMS.Domain.Classes;
 using SchoolMS.Domain.Common.Results;
+using SchoolMS.Domain.StudentClasses;
 
 namespace SchoolMS.Application.Tests.ClassTests.MarkAttendanceTests;
 
@@ -29,12 +31,18 @@ public class MarkAttendanceCommandHandlerTests
         context.Departments.Add(department);
         context.Courses.Add(course);
         context.Classes.Add(cls);
+        context.StudentClasses.Add(new StudentClass
+        {
+            ClassId = cls.Id,
+            StudentId = student.Id,
+            EnrollmentDate = DateTime.Now,
+        });
         await context.SaveChangesAsync();
         user.Setup(u => u.Id).Returns(teacher.Id.ToString());
         var command = new MarkAttendanceCommand
         {
             ClassId = cls.Id,
-            Students = 
+            Students =
             {
                 new StudentAttendanceEntry
                 {

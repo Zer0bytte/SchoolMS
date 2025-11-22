@@ -5,12 +5,12 @@ using SchoolMS.Domain.Departments;
 
 namespace SchoolMS.Application.Features.Courses.Commands.CreateCourse;
 
-public sealed class CreateCourseCommandHandler(IAppDbContext context) : IRequestHandler<CreateCourseCommand, Result<CourseDto>>
+public sealed class CreateCourseCommandHandler(IAppDbContext context, IUser user) : IRequestHandler<CreateCourseCommand, Result<CourseDto>>
 {
     public async Task<Result<CourseDto>> Handle(CreateCourseCommand command, CancellationToken ct)
     {
         var department = await context.Departments
-            .FirstOrDefaultAsync(x => x.Id == command.DepartmentId, ct);
+            .FirstOrDefaultAsync(x => x.Id == command.DepartmentId && x.HeadOfDepartmentId == Guid.Parse(user.Id), ct);
 
         if (department is null)
             return DepartmentErrors.NotFound;

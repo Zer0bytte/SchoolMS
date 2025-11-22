@@ -1,6 +1,7 @@
 ﻿using SchoolMS.Application.Common.Errors;
 using SchoolMS.Domain.Attendances;
 using SchoolMS.Domain.Classes;
+using SchoolMS.Domain.StudentClasses;
 using SchoolMS.Domain.Users.Enums;
 
 namespace SchoolMS.Application.Features.Classes.Commands.MarkAttendance;
@@ -21,19 +22,18 @@ public class MarkAttendanceCommandHandler(IAppDbContext context, IUser user) : I
         if (classEntity == null)
             return ClassErrors.NotFound;
 
+        var assignedStudents = classEntity.StudentClasses.Select(s => s.StudentId).ToList();
+
         var studentIds = command.Students.Select(s => s.StudentId).ToList();
 
-        var students = await context.Users
-            .Where(s => studentIds.Contains(s.Id) && s.Role == Role.Student)
-            .ToListAsync(cancellationToken);
-
-
-        if (students.Count != command.Students.Count)
+        foreach (var item in studentIds)
         {
-            var foundIds = students.Select(s => s.Id).ToHashSet();
-            var missingIds = studentIds.Where(id => !foundIds.Contains(id)).ToList();
-            return Error.NotFound("Students.NotFound", $"Students not found: {string.Join(", ", missingIds)}");
+            if (!assignedStudents.Contains(item))
+            {
+                return Error.NotFound("Students.NotFound", $"Students not found.");
+            }
         }
+
 
         foreach (var student in command.Students)
         {

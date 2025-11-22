@@ -13,7 +13,7 @@ public static class TeacherAttendanceEndpoints
         var group = app.MapGroup("/api/teacher/attendance");
 
         group.MapPost("", MarkAttendance);
-        group.MapPost("/{classId:guid}", GetAttendanceHistory);
+        group.MapGet("/{classId:guid}", GetAttendanceHistory);
     }
 
     private static async Task<IResult> GetAttendanceHistory(Guid classId, ISender sender)

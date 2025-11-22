@@ -37,11 +37,20 @@ public class CreateCourseCommandHandlerTests
 
         //Assert
         Assert.True(result.IsSuccess);
+
         Assert.Equal(command.Name, result.Value.Name);
         Assert.Equal(command.Description, result.Value.Description);
         Assert.Equal(command.DepartmentId, result.Value.DepartmentId);
         Assert.Equal(command.Code, result.Value.Code);
         Assert.Equal(command.Credits, result.Value.Credits);
+
+
+        var dbcourse = dbContext.Courses.SingleOrDefault(c => c.Id == result.Value.Id);
+        Assert.Equal(dbcourse.Name, result.Value.Name);
+        Assert.Equal(dbcourse.Description, result.Value.Description);
+        Assert.Equal(dbcourse.DepartmentId, result.Value.DepartmentId);
+        Assert.Equal(dbcourse.Code, result.Value.Code);
+        Assert.Equal(dbcourse.Credits, result.Value.Credits);
     }
 
 

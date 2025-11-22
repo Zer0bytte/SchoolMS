@@ -57,12 +57,13 @@ public class MarkAttendanceCommandHandlerTests
         //Act
         var result = await handler.Handle(command, CancellationToken.None);
 
-        var attendanceCount = await context.Attendances.CountAsync(a => a.ClassId == cls.Id);
 
         //Assert
         Assert.NotNull(result);
         Assert.True(result.IsSuccess);
         Assert.Equal(Result.Success, result.Value);
+        
+        var attendanceCount = await context.Attendances.CountAsync(a => a.ClassId == cls.Id);
         Assert.Equal(1, attendanceCount);
     }
 

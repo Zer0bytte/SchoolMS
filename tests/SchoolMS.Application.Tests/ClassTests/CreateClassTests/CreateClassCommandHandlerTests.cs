@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using Microsoft.EntityFrameworkCore;
+using Moq;
 using SchoolMS.Application.Common.Interfaces;
 using SchoolMS.Application.Features.Classes.Commands.CreateClass;
 using SchoolMS.Application.Tests.Shared;
@@ -40,6 +41,11 @@ public class CreateClassCommandHandlerTests
 
         // Assert
         Assert.True(result.IsSuccess);
+
+
+
+        var count = await context.Classes.CountAsync();
+        Assert.Equal(1, count);
     }
 
 

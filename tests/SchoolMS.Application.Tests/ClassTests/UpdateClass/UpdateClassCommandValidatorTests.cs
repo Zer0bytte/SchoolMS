@@ -1,6 +1,6 @@
 ﻿using SchoolMS.Application.Features.Classes.Commands.UpdateClass;
 
-namespace SchoolMS.Application.Tests.DepartmentTests.UpdateDepertmentTests;
+namespace SchoolMS.Application.Tests.ClassTests.UpdateClass;
 
 public class UpdateClassCommandValidatorTests
 {

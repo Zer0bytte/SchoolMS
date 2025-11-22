@@ -4,8 +4,6 @@ using SchoolMS.Application.Common.Interfaces;
 using SchoolMS.Application.Features.Classes.Commands.UpdateClass;
 using SchoolMS.Application.Tests.Shared;
 using SchoolMS.Domain.Classes;
-using SchoolMS.Domain.Courses;
-using System.Linq.Expressions;
 
 namespace SchoolMS.Application.Tests.ClassTests.UpdateClass;
 

@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Moq;
 using SchoolMS.Application.Common.Interfaces;
-using SchoolMS.Application.Features.Classes.Commands.AssignStudents;
 using SchoolMS.Application.Features.Classes.Commands.MarkAttendance;
+using SchoolMS.Application.Features.Classes.Dtos;
 using SchoolMS.Application.Tests.Shared;
 using SchoolMS.Domain.Attendances.Enums;
 using SchoolMS.Domain.Classes;
@@ -34,7 +34,9 @@ public class MarkAttendanceCommandHandlerTests
         var command = new MarkAttendanceCommand
         {
             ClassId = cls.Id,
-            Students = {new StudentAttendanceEntry
+            Students = 
+            {
+                new StudentAttendanceEntry
                 {
                     StudentId = student.Id,
                     Status = AttendanceStatus.Present,

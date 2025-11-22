@@ -77,7 +77,7 @@ public sealed class Class : AuditableEntity
         if (endDate < startDate)
             return ClassErrors.EndDateBeforeStartDate;
 
-       
+
 
         return this;
     }

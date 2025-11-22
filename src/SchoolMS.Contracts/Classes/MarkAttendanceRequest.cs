@@ -1,8 +1,8 @@
 ﻿using SchoolMS.Application.Features.Classes.Dtos;
 
-namespace SchoolMS.Application.Features.Classes.Commands.MarkAttendance;
+namespace SchoolMS.Contracts.Classes;
 
-public class MarkAttendanceCommand : IRequest<Result<Success>>
+public class MarkAttendanceRequest
 {
     public Guid ClassId { get; set; }
     public List<StudentAttendanceEntry> Students { get; set; } = [];

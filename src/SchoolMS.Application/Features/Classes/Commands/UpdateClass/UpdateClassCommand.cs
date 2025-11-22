@@ -1,5 +1,4 @@
-﻿using SchoolMS.Application.Features.Classes.Commands.CreateClass;
-using SchoolMS.Application.Features.Classes.Dtos;
+﻿using SchoolMS.Application.Features.Classes.Dtos;
 
 namespace SchoolMS.Application.Features.Classes.Commands.UpdateClass;
 

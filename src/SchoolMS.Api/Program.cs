@@ -32,4 +32,5 @@ app.MapIdentityEndpoints();
 app.MapDepartmentEndpoints();
 app.MapCourseEndpoints();
 app.MapTeacherClassEndpoints();
+app.MapTeacherAttendanceEndpoints();
 app.Run();

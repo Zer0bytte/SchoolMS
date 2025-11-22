@@ -6,7 +6,7 @@ namespace SchoolMS.Application.Features.Classes.Queries.GetTeacherClasses;
 public class GetTeacherClassesQueryHandler(IAppDbContext context, IUser user) : IRequestHandler<GetTeacherClassesQuery, Result<ClassesResultDto>>
 {
     public async Task<Result<ClassesResultDto>> Handle(GetTeacherClassesQuery query, CancellationToken cancellationToken)
-    { 
+    {
         var dbQuery = context.Classes.Where(c => c.TeacherId == Guid.Parse(user.Id)).AsQueryable();
         if (!string.IsNullOrWhiteSpace(query.Cursor))
         {

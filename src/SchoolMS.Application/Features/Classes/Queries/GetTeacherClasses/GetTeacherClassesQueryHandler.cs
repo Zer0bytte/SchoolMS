@@ -3,9 +3,9 @@ using SchoolMS.Application.Features.Classes.Dtos;
 
 namespace SchoolMS.Application.Features.Classes.Queries.GetTeacherClasses;
 
-public class GetTeacherClassesQueryHandler(IAppDbContext context, IUser user) : IRequestHandler<GetTeacherClassesQuery, Result<ClassesResultDto>>
+public class GetTeacherClassesQueryHandler(IAppDbContext context, IUser user) : IRequestHandler<GetTeacherClassesQuery, Result<CursorResult<ClassDto>>>
 {
-    public async Task<Result<ClassesResultDto>> Handle(GetTeacherClassesQuery query, CancellationToken cancellationToken)
+    public async Task<Result<CursorResult<ClassDto>>> Handle(GetTeacherClassesQuery query, CancellationToken cancellationToken)
     {
         var dbQuery = context.Classes.Where(c => c.TeacherId == Guid.Parse(user.Id)).AsQueryable();
         if (!string.IsNullOrWhiteSpace(query.Cursor))
@@ -43,13 +43,11 @@ public class GetTeacherClassesQueryHandler(IAppDbContext context, IUser user) : 
         DateTimeOffset? nextDate = items.Count > query.Limit ? items[^1].CreatedDateUtc : null;
         Guid? nextId = items.Count > query.Limit ? items[^1].Id : null;
 
-        var result = new ClassesResultDto
-        {
-            Items = finalItems,
-            Cursor = nextDate is not null && nextId is not null
-                ? Cursor.Encode(nextDate.Value, nextId.Value) : null,
-            HasMore = items.Count > query.Limit
-        };
+        var cursor = nextDate is not null && nextId is not null ? Cursor.Encode(nextDate.Value, nextId.Value) : null;
+
+        var hasMore = items.Count > query.Limit;
+
+        var result = CursorResult<ClassDto>.Create(cursor, hasMore, finalItems);
 
         return result;
     }

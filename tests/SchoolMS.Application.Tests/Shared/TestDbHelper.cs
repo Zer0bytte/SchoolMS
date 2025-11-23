@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using SchoolMS.Domain.Assignments;
 using SchoolMS.Domain.Classes;
 using SchoolMS.Domain.Courses;
 using SchoolMS.Domain.Departments;
@@ -17,7 +18,11 @@ public class TestDbHelper
 
         return new TestAppDbContext(options);
     }
-
+    public static User CreateAdmin()
+    {
+        var user = User.Create(Guid.NewGuid(), Guid.NewGuid().ToString(), "email@email.com", "haspass", Role.Admin).Value;
+        return user;
+    }
     public static User CreateTeacher()
     {
         var user = User.Create(Guid.NewGuid(), Guid.NewGuid().ToString(), "email@email.com", "haspass", Role.Teacher).Value;
@@ -56,8 +61,18 @@ public class TestDbHelper
     }
     public static Class CreateClass(Course course, User teacher, string className = "clsName")
     {
-        var start = new DateOnly(2025, 1, 10);
-        var end = new DateOnly(2025, 1, 20);
+        var now = DateOnly.FromDateTime(DateTime.UtcNow);
+
+        var start = now.AddDays(1);
+        var end = now.AddDays(30);
         return Class.Create(Guid.NewGuid(), className, course.Id, teacher.Id, Guid.NewGuid().ToString(), start, end).Value;
+    }
+
+    public static Assignment CreateAssignment(Class cls, User teacher)
+    {
+        var dueDate = new DateOnly(2025, 12, 20).AddDays(10);
+
+        var now = DateOnly.FromDateTime(DateTime.UtcNow);
+        return Assignment.Create(Guid.NewGuid(), cls.Id, Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), dueDate, teacher.Id, now).Value;
     }
 }

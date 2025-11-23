@@ -4,7 +4,6 @@ using SchoolMS.Application.Common.Interfaces;
 using SchoolMS.Application.Features.Assignments.Commands.CreateAssignment;
 using SchoolMS.Application.Tests.Shared;
 using SchoolMS.Domain.Classes;
-using SchoolMS.Domain.Common.Results;
 
 namespace SchoolMS.Application.Tests.AssignmentTests.CreateAssignment;
 

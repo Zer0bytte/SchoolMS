@@ -1,23 +1,18 @@
 ﻿using SchoolMS.Application.Common.Models;
-using SchoolMS.Application.Features.Departments.Dtos;
-using SchoolMS.Domain.Users.Enums;
+using SchoolMS.Application.Features.Assignments.Dtos;
+using SchoolMS.Domain.Classes;
 
-namespace SchoolMS.Application.Features.Departments.Queries.GetDepartments;
+namespace SchoolMS.Application.Features.Assignments.Qureies.GetAssignments;
 
-public class GetDepartmentsQueryHandler(IAppDbContext context, IUser user) : IRequestHandler<GetDepartmentsQuery, Result<CursorResult<DepartmentDto>>>
+public class GetAssignmentsQueryHandler(IAppDbContext context, IUser user) : IRequestHandler<GetAssignmentsQuery, Result<CursorResult<AssignmentDto>>>
 {
-    public async Task<Result<CursorResult<DepartmentDto>>> Handle(GetDepartmentsQuery query, CancellationToken cancellationToken)
+    public async Task<Result<CursorResult<AssignmentDto>>> Handle(GetAssignmentsQuery query, CancellationToken cancellationToken)
     {
-        var dbQuery = context.Departments.AsQueryable();
-        if (user.Role == Role.Teacher.ToString())
-        {
-            dbQuery = dbQuery.Where(d => d.HeadOfDepartmentId == Guid.Parse(user.Id));
-        }
 
-        if (!string.IsNullOrWhiteSpace(query.DepartmentName))
-        {
-            dbQuery = dbQuery.Where(d => d.Name.Contains(query.DepartmentName));
-        }
+        var cls = await context.Classes.AnyAsync(c => c.Id == query.ClassId && c.TeacherId == Guid.Parse(user.Id));
+        if (!cls) return ClassErrors.NotFound;
+
+        var dbQuery = context.Assignments.Where(a => a.ClassId == query.ClassId).AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(query.Cursor))
         {
@@ -37,14 +32,13 @@ public class GetDepartmentsQueryHandler(IAppDbContext context, IUser user) : IRe
             .OrderByDescending(d => d.CreatedDateUtc)
             .ThenByDescending(d => d.Id)
             .Take(query.Limit + 1)
-            .Select(d => new DepartmentDto
+            .Select(d => new AssignmentDto
             {
                 Id = d.Id,
-                Name = d.Name,
+                Title = d.Title,
                 Description = d.Description,
-                CreatedDateUtc = d.CreatedDateUtc,
-                HeadOfDepartmentId = d.HeadOfDepartmentId,
-                HeadOfDepartmentName = d.HeadOfDepartment.Name
+                DueDate = d.DueDate
+
             })
             .ToListAsync(cancellationToken);
 
@@ -56,7 +50,6 @@ public class GetDepartmentsQueryHandler(IAppDbContext context, IUser user) : IRe
         var cursor = nextDate is not null && nextId is not null ? Cursor.Encode(nextDate.Value, nextId.Value) : null;
         var hasMore = items.Count > query.Limit;
 
-        return CursorResult<DepartmentDto>.Create(cursor, hasMore, finalItems);
-
+        return CursorResult<AssignmentDto>.Create(cursor, hasMore, finalItems);
     }
 }

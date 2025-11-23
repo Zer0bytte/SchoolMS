@@ -1,6 +1,7 @@
 ﻿
 using MediatR;
 using SchoolMS.Api.Extensions;
+using SchoolMS.Application.Common.Models;
 using SchoolMS.Application.Features.Courses.Commands.CreateCourse;
 using SchoolMS.Application.Features.Courses.Commands.UpdateCourse;
 using SchoolMS.Application.Features.Courses.Dtos;
@@ -19,7 +20,7 @@ public static class CourseEndpoints
         group.MapGet("", GetCourses)
             .WithSummary("Get list of courses")
             .WithDescription("Returns a paginated list of courses optionally filtered by department or search term.")
-            .Produces<CoursesResultDto>(StatusCodes.Status200OK)
+            .Produces<CursorResult<CourseDto>>(StatusCodes.Status200OK)
             .ProducesProblem(StatusCodes.Status400BadRequest);
 
         group.MapGet("/{id:guid}", GetCourseById)

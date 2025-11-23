@@ -1,23 +1,15 @@
 ﻿using SchoolMS.Application.Common.Models;
-using SchoolMS.Application.Features.Departments.Dtos;
+using SchoolMS.Application.Features.Users.Dtos;
 using SchoolMS.Domain.Users.Enums;
 
-namespace SchoolMS.Application.Features.Departments.Queries.GetDepartments;
+namespace SchoolMS.Application.Features.Users.Queries.GetStudents;
 
-public class GetDepartmentsQueryHandler(IAppDbContext context, IUser user) : IRequestHandler<GetDepartmentsQuery, Result<CursorResult<DepartmentDto>>>
+public class GetStudentsQueryHandler(IAppDbContext context) : IRequestHandler<GetStudentsQuery, Result<CursorResult<StudentDto>>>
 {
-    public async Task<Result<CursorResult<DepartmentDto>>> Handle(GetDepartmentsQuery query, CancellationToken cancellationToken)
+    public async Task<Result<CursorResult<StudentDto>>> Handle(GetStudentsQuery query, CancellationToken cancellationToken)
     {
-        var dbQuery = context.Departments.AsQueryable();
-        if (user.Role == Role.Teacher.ToString())
-        {
-            dbQuery = dbQuery.Where(d => d.HeadOfDepartmentId == Guid.Parse(user.Id));
-        }
+        var dbQuery = context.Users.Where(u => u.Role == Role.Student).AsQueryable();
 
-        if (!string.IsNullOrWhiteSpace(query.DepartmentName))
-        {
-            dbQuery = dbQuery.Where(d => d.Name.Contains(query.DepartmentName));
-        }
 
         if (!string.IsNullOrWhiteSpace(query.Cursor))
         {
@@ -37,14 +29,11 @@ public class GetDepartmentsQueryHandler(IAppDbContext context, IUser user) : IRe
             .OrderByDescending(d => d.CreatedDateUtc)
             .ThenByDescending(d => d.Id)
             .Take(query.Limit + 1)
-            .Select(d => new DepartmentDto
+            .Select(d => new StudentDto
             {
                 Id = d.Id,
                 Name = d.Name,
-                Description = d.Description,
-                CreatedDateUtc = d.CreatedDateUtc,
-                HeadOfDepartmentId = d.HeadOfDepartmentId,
-                HeadOfDepartmentName = d.HeadOfDepartment.Name
+                CreatedDateUtc = d.CreatedDateUtc
             })
             .ToListAsync(cancellationToken);
 
@@ -53,10 +42,11 @@ public class GetDepartmentsQueryHandler(IAppDbContext context, IUser user) : IRe
         DateTimeOffset? nextDate = items.Count > query.Limit ? items[^1].CreatedDateUtc : null;
         Guid? nextId = items.Count > query.Limit ? items[^1].Id : null;
 
+
         var cursor = nextDate is not null && nextId is not null ? Cursor.Encode(nextDate.Value, nextId.Value) : null;
         var hasMore = items.Count > query.Limit;
 
-        return CursorResult<DepartmentDto>.Create(cursor, hasMore, finalItems);
+        return CursorResult<StudentDto>.Create(cursor, hasMore, finalItems);
 
     }
 }

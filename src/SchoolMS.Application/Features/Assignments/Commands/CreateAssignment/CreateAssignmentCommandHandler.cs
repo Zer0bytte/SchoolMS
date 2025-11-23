@@ -16,7 +16,7 @@ public class CreateAssignmentCommandHandler(IAppDbContext context, IUser user) :
 
         var assignment = Assignment.Create(Guid.NewGuid(), command.ClassId,
             command.Title, command.Description,
-            command.DueDate, dateNow, Guid.Parse(user.Id), dateNow);
+            command.DueDate, Guid.Parse(user.Id), dateNow);
 
         if (assignment.IsError) return assignment.Errors;
 

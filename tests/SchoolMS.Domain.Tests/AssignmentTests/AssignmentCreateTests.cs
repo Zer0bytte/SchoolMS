@@ -27,7 +27,6 @@ public class AssignmentCreateTests
             "Math Homework",
             "Solve problems",
             dueDate,
-            _today,
             _teacherId,
             _today
         );
@@ -50,7 +49,6 @@ public class AssignmentCreateTests
             "",
             "Description",
             dueDate,
-            _today,
             _teacherId,
             _today
         );
@@ -68,9 +66,8 @@ public class AssignmentCreateTests
             _assignmentId,
             _classId,
             "Title",
-            "",                 // invalid description
+            "",               
             dueDate,
-            _today,
             _teacherId,
             _today
         );
@@ -82,7 +79,7 @@ public class AssignmentCreateTests
     [Fact]
     public void Create_ShouldFail_WhenDueDateIsToday()
     {
-        var dueDate = _today;  // due date = today → invalid
+        var dueDate = _today;  
 
         var result = Assignment.Create(
             _assignmentId,
@@ -90,7 +87,6 @@ public class AssignmentCreateTests
             "Title",
             "Description",
             dueDate,
-            _today,
             _teacherId,
             _today
         );
@@ -110,7 +106,6 @@ public class AssignmentCreateTests
             "Title",
             "Description",
             dueDate,
-            _today,
             _teacherId,
             _today
         );

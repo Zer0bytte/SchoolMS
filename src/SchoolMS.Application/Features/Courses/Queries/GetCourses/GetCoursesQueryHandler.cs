@@ -3,9 +3,9 @@ using SchoolMS.Application.Features.Courses.Dtos;
 
 namespace SchoolMS.Application.Features.Courses.Queries.GetCourses;
 
-public class GetCoursesQueryHandler(IAppDbContext context) : IRequestHandler<GetCoursesQuery, Result<CoursesResultDto>>
+public class GetCoursesQueryHandler(IAppDbContext context) : IRequestHandler<GetCoursesQuery, Result<CursorResult<CourseDto>>>
 {
-    public async Task<Result<CoursesResultDto>> Handle(GetCoursesQuery query, CancellationToken cancellationToken)
+    public async Task<Result<CursorResult<CourseDto>>> Handle(GetCoursesQuery query, CancellationToken cancellationToken)
     {
         var dbQuery = context.Courses.AsQueryable();
 
@@ -60,13 +60,12 @@ public class GetCoursesQueryHandler(IAppDbContext context) : IRequestHandler<Get
         DateTimeOffset? nextDate = items.Count > query.Limit ? items[^1].CreatedDateUTC : null;
         Guid? nextId = items.Count > query.Limit ? items[^1].Id : null;
 
-        var result = new CoursesResultDto
-        {
-            Items = finalItems,
-            Cursor = nextDate is not null && nextId is not null
-                ? Cursor.Encode(nextDate.Value, nextId.Value) : null,
-            HasMore = items.Count > query.Limit
-        };
+        var cursor = nextDate is not null && nextId is not null ? Cursor.Encode(nextDate.Value, nextId.Value) : null;
+        
+        var hasMore = items.Count > query.Limit;
+
+        var result = CursorResult<CourseDto>.Create(cursor, hasMore, finalItems);
+
 
         return result;
     }

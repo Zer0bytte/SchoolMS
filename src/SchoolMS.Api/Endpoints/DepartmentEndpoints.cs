@@ -1,6 +1,7 @@
 ﻿
 using MediatR;
 using SchoolMS.Api.Extensions;
+using SchoolMS.Application.Common.Models;
 using SchoolMS.Application.Features.Departments.Commands.CreateDepartment;
 using SchoolMS.Application.Features.Departments.Commands.DeleteDepartment;
 using SchoolMS.Application.Features.Departments.Commands.UpdateDepartment;
@@ -20,13 +21,13 @@ public static class DepartmentEndpoints
         group.MapGet("", GetDepartments)
               .WithSummary("Get all departments")
               .WithDescription("Returns a paginated/filterable list of departments. Only accessible by Admin users.")
-              .Produces<DepartmentsResult>(StatusCodes.Status200OK)
+              .Produces<CursorResult<DepartmentDto>>(StatusCodes.Status200OK)
               .ProducesProblem(StatusCodes.Status400BadRequest);
 
         group.MapGet("/{id:guid}", GetDepartment)
             .WithSummary("Get department by ID")
             .WithDescription("Returns a specific department using its unique identifier. Only accessible by Admin users.")
-            .Produces<DepartmentsResult>(StatusCodes.Status200OK)
+            .Produces<DepartmentDto>(StatusCodes.Status200OK)
             .ProducesProblem(StatusCodes.Status404NotFound);
 
         group.MapPost("", CreateDepartment)

@@ -62,22 +62,21 @@ public sealed class Class : AuditableEntity
 
     public Result<Class> Update(string? name, string? semester, DateOnly? startDate, DateOnly? endDate)
     {
-        if (!string.IsNullOrWhiteSpace(name))
-            Name = name;
+        var effectiveStartDate = startDate ?? StartDate;
+        var effectiveEndDate = endDate ?? EndDate;
 
-        if (!string.IsNullOrWhiteSpace(semester))
-            Semester = semester;
-
-        if (startDate.HasValue)
-            StartDate = startDate.Value;
-
-        if (endDate.HasValue)
-            EndDate = endDate.Value;
-
-        if (endDate < startDate)
+        if (effectiveEndDate < effectiveStartDate)
             return ClassErrors.EndDateBeforeStartDate;
 
 
+        if (!string.IsNullOrWhiteSpace(name))
+            Name = name.Trim();
+
+        if (!string.IsNullOrWhiteSpace(semester))
+            Semester = semester.Trim();
+
+        StartDate = effectiveStartDate;
+        EndDate = effectiveEndDate;
 
         return this;
     }

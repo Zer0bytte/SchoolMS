@@ -17,7 +17,6 @@
 	  <ProjectReference Include="..\SchoolMS.Domain\SchoolMS.Domain.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Features\Assignments\Qureies\" />
 	  <Folder Include="Features\Departments\Commands\UpdateDepartment\NewFolder\" />
 	</ItemGroup>
 </Project>

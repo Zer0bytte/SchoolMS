@@ -5,24 +5,22 @@ using SchoolMS.Domain.Users;
 
 namespace SchoolMS.Domain.Assignments;
 
-public sealed class Assignment : Entity
+public sealed class Assignment : AuditableEntity
 {
     public Guid ClassId { get; private set; }
     public string Title { get; private set; } = default!;
     public string Description { get; private set; } = default!;
     public DateOnly DueDate { get; private set; }
-    public DateOnly CreatedDateUtc { get; private set; }
     public Guid CreatedByTeacherId { get; private set; }
     public Class Class { get; private set; } = default!;
     public User CreatedByTeacher { get; private set; } = default!;
     public ICollection<Submission> Submissions { get; private set; } = [];
-    private Assignment(Guid id, Guid classId, string title, string description, DateOnly dueDate, DateOnly createdDateUtc, Guid createdByTeacherId) : base(id)
+    private Assignment(Guid id, Guid classId, string title, string description, DateOnly dueDate, Guid createdByTeacherId) : base(id)
     {
         ClassId = classId;
         Title = title;
         Description = description;
         DueDate = dueDate;
-        CreatedDateUtc = createdDateUtc;
         CreatedByTeacherId = createdByTeacherId;
     }
 
@@ -32,7 +30,6 @@ public sealed class Assignment : Entity
       string title,
       string description,
       DateOnly dueDate,
-      DateOnly createdDateUtc,
       Guid createdByTeacherId,
       DateOnly todayUtc)
     {
@@ -51,7 +48,6 @@ public sealed class Assignment : Entity
             title,
             description,
             dueDate,
-            createdDateUtc,
             createdByTeacherId
         );
 

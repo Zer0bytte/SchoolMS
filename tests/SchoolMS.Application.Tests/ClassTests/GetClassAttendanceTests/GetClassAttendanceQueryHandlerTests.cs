@@ -26,6 +26,12 @@ public class GetClassAttendanceQueryHandlerTests
         context.Users.Add(teacher);
         context.Departments.Add(department);
         context.Courses.Add(course);
+        cls.StudentClasses.Add(new Domain.StudentClasses.StudentClass
+        {
+            ClassId = cls.Id,
+            EnrollmentDate = new DateTime(2025, 1, 1),
+            StudentId = student.Id
+        });
         context.Classes.Add(cls);
         await context.SaveChangesAsync();
         user.Setup(u => u.Id).Returns(teacher.Id.ToString());

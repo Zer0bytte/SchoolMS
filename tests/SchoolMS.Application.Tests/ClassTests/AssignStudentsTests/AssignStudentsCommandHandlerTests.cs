@@ -5,7 +5,7 @@ using SchoolMS.Application.Features.Classes.Commands.AssignStudents;
 using SchoolMS.Application.Tests.Shared;
 using SchoolMS.Domain.Classes;
 
-namespace SchoolMS.Application.Tests.ClassTests.AssignStudents;
+namespace SchoolMS.Application.Tests.ClassTests.AssignStudentsTests;
 
 public class AssignStudentsCommandHandlerTests
 {

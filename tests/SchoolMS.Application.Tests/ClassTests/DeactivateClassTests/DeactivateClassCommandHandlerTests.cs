@@ -4,7 +4,7 @@ using SchoolMS.Application.Common.Interfaces;
 using SchoolMS.Application.Features.Classes.Commands.DeactivateClass;
 using SchoolMS.Application.Tests.Shared;
 
-namespace SchoolMS.Application.Tests.ClassTests.DeactivateClass;
+namespace SchoolMS.Application.Tests.ClassTests.DeactivateClassTests;
 
 public class DeactivateClassCommandHandlerTests
 {

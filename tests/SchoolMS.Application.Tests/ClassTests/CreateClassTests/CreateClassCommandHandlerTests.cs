@@ -5,7 +5,7 @@ using SchoolMS.Application.Features.Classes.Commands.CreateClass;
 using SchoolMS.Application.Tests.Shared;
 using SchoolMS.Domain.Courses;
 
-namespace SchoolMS.Application.Tests.ClassTests.CreateClass;
+namespace SchoolMS.Application.Tests.ClassTests.CreateClassTests;
 
 public class CreateClassCommandHandlerTests
 {

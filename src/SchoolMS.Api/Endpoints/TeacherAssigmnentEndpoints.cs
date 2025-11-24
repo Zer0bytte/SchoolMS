@@ -13,7 +13,7 @@ public static class TeacherAssigmnentEndpoints
 {
     public static void MapTeacherassignmentEndpoints(this IEndpointRouteBuilder app)
     {
-        RouteGroupBuilder group = app.MapGroup("/api/teacher/assignments");
+        RouteGroupBuilder group = app.MapGroup("/api/teacher/assignments").RequireAuthorization("Teacher");
 
         group.MapPost("", CreateAssignment);
         group.MapGet("/{classId:guid}", GetAssignments);

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SchoolMS.Domain.Notifications;
+using SchoolMS.Domain.Notifications.Enums;
 
 namespace SchoolMS.Infrastructure.Data.Configurations;
 
@@ -28,6 +29,9 @@ public class NotificationConfiguration : IEntityTypeConfiguration<Notification>
             .HasDefaultValue(false);
 
         builder.HasIndex(n => new { n.RecipientRole, n.RecipientId, n.IsRead });
+
+        builder.Property(p => p.RecipientRole).HasConversion(r => r.ToString(), dbR => (RecipientRole)Enum.Parse(typeof(RecipientRole), dbR));
+
 
         builder.HasOne(n => n.Recipient)
             .WithMany()

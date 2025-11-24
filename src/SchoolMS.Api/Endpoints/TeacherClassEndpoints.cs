@@ -15,7 +15,7 @@ public static class TeacherClassEndpoints
     public static void MapTeacherClassEndpoints(this IEndpointRouteBuilder app)
     {
         var group = app.MapGroup("/api/teacher/classes")
-               .WithTags("Teacher - Classes");
+               .WithTags("Teacher - Classes").RequireAuthorization("Teacher");
 
         group.MapGet("", GetClasses);
 

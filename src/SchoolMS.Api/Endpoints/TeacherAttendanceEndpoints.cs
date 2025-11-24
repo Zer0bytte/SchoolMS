@@ -10,7 +10,7 @@ public static class TeacherAttendanceEndpoints
 {
     public static void MapTeacherAttendanceEndpoints(this IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/api/teacher/attendance");
+        var group = app.MapGroup("/api/teacher/attendance").RequireAuthorization("Teacher"); ;
 
         group.MapPost("", MarkAttendance);
         group.MapGet("/{classId:guid}", GetAttendanceHistory);

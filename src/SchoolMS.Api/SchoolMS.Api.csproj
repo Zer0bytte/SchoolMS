@@ -22,5 +22,8 @@
 		<ProjectReference Include="..\SchoolMS.Contracts\SchoolMS.Contracts.csproj" />
 		<ProjectReference Include="..\SchoolMS.Infrastructure\SchoolMS.Infrastructure.csproj" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="wwwroot\" />
+	</ItemGroup>
 
 </Project>

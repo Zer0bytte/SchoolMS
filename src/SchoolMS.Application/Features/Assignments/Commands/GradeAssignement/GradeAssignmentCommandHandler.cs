@@ -8,8 +8,7 @@ public class GradeAssignmentCommandHandler(IAppDbContext context, IUser user) : 
     {
         Submission? submission = await context.Submissions
             .FirstOrDefaultAsync(
-            s => s.StudentId == command.StudentId
-            && s.Id == command.SubmissionId
+            s => s.Id == command.SubmissionId
             && s.Assignment.CreatedByTeacherId == Guid.Parse(user.Id), cancellationToken);
 
         if (submission is null)

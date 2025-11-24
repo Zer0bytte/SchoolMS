@@ -7,6 +7,7 @@ using SchoolMS.Application.Features.Courses.Commands.UpdateCourse;
 using SchoolMS.Application.Features.Courses.Dtos;
 using SchoolMS.Application.Features.Courses.Queries.GetCourseById;
 using SchoolMS.Application.Features.Courses.Queries.GetCourses;
+using SchoolMS.Application.Features.Courses.Queries.GetTeacherCourses;
 using SchoolMS.Contracts.Courses;
 
 namespace SchoolMS.Api.Endpoints;
@@ -15,7 +16,7 @@ public static class CourseEndpoints
 {
     public static void MapCourseEndpoints(this IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/api/courses").WithTags("Courses");
+        RouteGroupBuilder group = app.MapGroup("/api/admin/courses").WithTags("Courses").RequireAuthorization("Admin");
 
         group.MapGet("", GetCourses)
             .WithSummary("Get list of courses")
@@ -43,6 +44,29 @@ public static class CourseEndpoints
             .Produces(StatusCodes.Status204NoContent)
             .ProducesProblem(StatusCodes.Status404NotFound)
             .ProducesProblem(StatusCodes.Status400BadRequest);
+
+
+        app.MapGet("/api/teacher/courses", GetTeacherCourses)
+            .RequireAuthorization("Teacher")
+            .WithName("GetTeacherCourses")
+            .WithTags("Courses")
+            .WithSummary("Retrieve courses for the authenticated teacher")
+            .WithDescription("Retrieves all courses that are assigned to the authenticated teacher.")
+            .Produces<List<CourseDto>>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status403Forbidden)
+            .Produces(StatusCodes.Status500InternalServerError);
+    }
+
+    private static async Task<IResult> GetTeacherCourses(ISender sender)
+    {
+        var query = new GetTeacherCoursesQuery();
+
+        Domain.Common.Results.Result<List<CourseDto>> result = await sender.Send(query);
+
+        return result.Match(
+             dto => Results.Ok(dto),
+             errors => errors.ToProblem());
     }
 
     private static async Task<IResult> GetCourseById(Guid id, ISender sender)
@@ -52,7 +76,7 @@ public static class CourseEndpoints
             Id = id
         };
 
-        var result = await sender.Send(query);
+        Domain.Common.Results.Result<CourseDto> result = await sender.Send(query);
 
         return result.Match(
              dto => Results.Ok(dto),
@@ -72,7 +96,7 @@ public static class CourseEndpoints
             Credits = request.Credits
         };
 
-        var result = await sender.Send(command);
+        Domain.Common.Results.Result<CourseDto> result = await sender.Send(command);
 
         return result.Match(
                dto => Results.NoContent(),
@@ -90,7 +114,7 @@ public static class CourseEndpoints
             Credits = request.Credits
         };
 
-        var result = await sender.Send(command);
+        Domain.Common.Results.Result<CourseDto> result = await sender.Send(command);
 
         return result.Match(
            dto => Results.Created($"/api/courses/{dto.Id}", dto),
@@ -109,7 +133,7 @@ public static class CourseEndpoints
             Limit = request.Limit
         };
 
-        var result = await sender.Send(query);
+        Domain.Common.Results.Result<CursorResult<CourseDto>> result = await sender.Send(query);
 
         return result.Match(
            dto => Results.Ok(dto),

@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using SchoolMS.Api.Extensions;
 using SchoolMS.Application.Features.Classes.Commands.MarkAttendance;
+using SchoolMS.Application.Features.Classes.Dtos;
 using SchoolMS.Application.Features.Classes.Queries.Teacher.GetClassAttendance;
 using SchoolMS.Contracts.Classes;
 
@@ -10,20 +11,45 @@ public static class TeacherAttendanceEndpoints
 {
     public static void MapTeacherAttendanceEndpoints(this IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/api/teacher/attendance").RequireAuthorization("Teacher"); ;
+        RouteGroupBuilder group = app.MapGroup("/api/teacher/attendance")
+            .RequireAuthorization("Teacher")
+            .WithTags("Teacher Attendance");
 
-        group.MapPost("", MarkAttendance);
-        group.MapGet("/{classId:guid}", GetAttendanceHistory);
+
+        group.MapPost("", MarkAttendance)
+            .WithName("MarkAttendance")
+            .WithSummary("Mark attendance for students in a class")
+            .WithDescription("""
+                Allows the authenticated teacher to mark attendance for students in a specific class.  
+                The request should include the Class ID and a list of students with their attendance status.
+                """)
+            .Accepts<MarkAttendanceRequest>("application/json")
+            .Produces(StatusCodes.Status204NoContent)
+            .ProducesValidationProblem()
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status403Forbidden)
+            .Produces(StatusCodes.Status500InternalServerError);
+
+        group.MapGet("/{classId:guid}", GetAttendanceHistory)
+            .WithName("GetClassAttendance")
+            .WithSummary("Retrieve attendance history for a class")
+            .WithDescription("Returns the attendance records for all students in the specified class.")
+            .Produces<List<StudentAttendanceEntry>>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status403Forbidden)
+            .Produces(StatusCodes.Status404NotFound)
+            .Produces(StatusCodes.Status500InternalServerError);
     }
 
     private static async Task<IResult> GetAttendanceHistory(Guid classId, ISender sender)
     {
-        var query = new GetClassAttendanceQuery
+        GetClassAttendanceQuery query = new GetClassAttendanceQuery
         {
             ClassId = classId,
         };
 
-        var result = await sender.Send(query);
+        Domain.Common.Results.Result<List<StudentAttendanceEntry>> result = await sender.Send(query);
 
         return result.Match
                (result => Results.Ok(result),
@@ -32,13 +58,13 @@ public static class TeacherAttendanceEndpoints
 
     private static async Task<IResult> MarkAttendance(MarkAttendanceRequest request, ISender sender)
     {
-        var command = new MarkAttendanceCommand
+        MarkAttendanceCommand command = new MarkAttendanceCommand
         {
             ClassId = request.ClassId,
             Students = request.Students,
         };
 
-        var result = await sender.Send(command);
+        Domain.Common.Results.Result<Domain.Common.Results.Success> result = await sender.Send(command);
 
         return result.Match
                  (result => Results.NoContent(),

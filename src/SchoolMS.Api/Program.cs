@@ -14,7 +14,7 @@ builder.Services
 
 
 var app = builder.Build();
-
+app.UseStaticFiles();
 await app.InitialiseDatabaseAsync();
 
 
@@ -34,6 +34,7 @@ app.MapCourseEndpoints();
 app.MapTeacherClassEndpoints();
 app.MapTeacherAttendanceEndpoints();
 app.MapTeacherassignmentEndpoints();
-app.MapTeacherNotificationEndpoints();
 app.MapStudentClassesEndpoints();
+app.MapStudentAssignmentEndpoints();
+app.MapNotificationEndpoints();
 app.Run();

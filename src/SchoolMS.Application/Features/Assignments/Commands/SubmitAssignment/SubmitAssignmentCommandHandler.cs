@@ -25,7 +25,7 @@ public class SubmitAssignmentCommandHandler(IAppDbContext context, IUser user, I
                         && s.StudentId == studentId, cancellationToken);
 
         if (alreadySubmitted)
-            return SubmissionErrors.AlreadYSubmitted;
+            return SubmissionErrors.AlreadySubmitted;
 
 
 

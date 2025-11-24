@@ -1,6 +1,4 @@
-﻿using SchoolMS.Application.Common.Models;
-
-namespace SchoolMS.Application.Features.Assignments.Dtos;
+﻿namespace SchoolMS.Application.Features.Assignments.Dtos;
 
 public class AssignmentDto
 {

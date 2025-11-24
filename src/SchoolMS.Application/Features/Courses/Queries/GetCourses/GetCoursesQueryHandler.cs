@@ -61,7 +61,7 @@ public class GetCoursesQueryHandler(IAppDbContext context) : IRequestHandler<Get
         Guid? nextId = items.Count > query.Limit ? items[^1].Id : null;
 
         var cursor = nextDate is not null && nextId is not null ? Cursor.Encode(nextDate.Value, nextId.Value) : null;
-        
+
         var hasMore = items.Count > query.Limit;
 
         var result = CursorResult<CourseDto>.Create(cursor, hasMore, finalItems);

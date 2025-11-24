@@ -4,13 +4,12 @@ using SchoolMS.Application.Common.Interfaces;
 using SchoolMS.Application.Features.Classes.Commands.MarkAttendance;
 using SchoolMS.Application.Features.Classes.Dtos;
 using SchoolMS.Application.Tests.Shared;
-using SchoolMS.Domain.Attendances;
 using SchoolMS.Domain.Attendances.Enums;
 using SchoolMS.Domain.Classes;
 using SchoolMS.Domain.Common.Results;
 using SchoolMS.Domain.StudentClasses;
 
-namespace SchoolMS.Application.Tests.ClassTests.MarkAttendanceTests;
+namespace SchoolMS.Application.Tests.ClassTests.Teacher.MarkAttendanceTests;
 
 public class MarkAttendanceCommandHandlerTests
 {
@@ -62,7 +61,7 @@ public class MarkAttendanceCommandHandlerTests
         Assert.NotNull(result);
         Assert.True(result.IsSuccess);
         Assert.Equal(Result.Success, result.Value);
-        
+
         var attendanceCount = await context.Attendances.CountAsync(a => a.ClassId == cls.Id);
         Assert.Equal(1, attendanceCount);
     }

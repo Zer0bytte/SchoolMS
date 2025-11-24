@@ -1,7 +1,7 @@
 ﻿using SchoolMS.Application.Common.Models;
 using SchoolMS.Application.Features.Classes.Dtos;
 
-namespace SchoolMS.Application.Features.Classes.Queries.GetTeacherClasses;
+namespace SchoolMS.Application.Features.Classes.Queries.Teacher.GetTeacherClasses;
 
 public class GetTeacherClassesQueryHandler(IAppDbContext context, IUser user) : IRequestHandler<GetTeacherClassesQuery, Result<CursorResult<ClassDto>>>
 {

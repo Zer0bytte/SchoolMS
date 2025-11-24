@@ -5,7 +5,7 @@ using SchoolMS.Application.Features.Classes.Commands.CreateClass;
 using SchoolMS.Application.Features.Classes.Commands.DeactivateClass;
 using SchoolMS.Application.Features.Classes.Commands.UpdateClass;
 using SchoolMS.Application.Features.Classes.Dtos;
-using SchoolMS.Application.Features.Classes.Queries.GetTeacherClasses;
+using SchoolMS.Application.Features.Classes.Queries.Teacher.GetTeacherClasses;
 using SchoolMS.Contracts.Classes;
 
 namespace SchoolMS.Api.Endpoints;

@@ -1,6 +1,7 @@
 ﻿using SchoolMS.Application.Features.Assignments.Commands.CreateAssignment;
 
 namespace SchoolMS.Application.Tests.AssignmentTests.CreateAssignment;
+
 public class CreateAssignmentCommandValidatorTests
 {
     private readonly CreateAssignmentCommandValidator _validator;

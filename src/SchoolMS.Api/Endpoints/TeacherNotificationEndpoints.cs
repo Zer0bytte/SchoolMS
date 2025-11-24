@@ -9,7 +9,7 @@ public static class TeacherNotificationEndpoints
 {
     public static void MapTeacherNotificationEndpoints(this IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/api/teacher/notifications").RequireAuthorization("Teacher"); 
+        var group = app.MapGroup("/api/teacher/notifications").RequireAuthorization("Teacher");
         group.MapPost("", SendNotification);
     }
 

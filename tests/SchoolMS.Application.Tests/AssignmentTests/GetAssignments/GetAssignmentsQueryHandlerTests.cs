@@ -4,7 +4,6 @@ using SchoolMS.Application.Features.Assignments.Qureies.GetAssignments;
 using SchoolMS.Application.Tests.Shared;
 using SchoolMS.Domain.Assignments;
 using SchoolMS.Domain.Classes;
-using Serilog.Parsing;
 
 namespace SchoolMS.Application.Tests.AssignmentTests.GetAssignments;
 

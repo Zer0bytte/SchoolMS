@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using SchoolMS.Api.Extensions;
 using SchoolMS.Application.Features.Classes.Commands.MarkAttendance;
-using SchoolMS.Application.Features.Classes.Queries.GetClassAttendance;
+using SchoolMS.Application.Features.Classes.Queries.Teacher.GetClassAttendance;
 using SchoolMS.Contracts.Classes;
 
 namespace SchoolMS.Api.Endpoints;

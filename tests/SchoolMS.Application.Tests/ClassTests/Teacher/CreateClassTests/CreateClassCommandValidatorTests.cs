@@ -1,6 +1,6 @@
 ﻿using SchoolMS.Application.Features.Classes.Commands.CreateClass;
 
-namespace SchoolMS.Application.Tests.ClassTests.CreateClassTests;
+namespace SchoolMS.Application.Tests.ClassTests.Teacher.CreateClassTests;
 
 public class CreateClassCommandValidatorTests
 {

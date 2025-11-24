@@ -1,9 +1,4 @@
 ﻿using SchoolMS.Domain.Assignments;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SchoolMS.Domain.Tests.AssignmentTests;
 
@@ -66,7 +61,7 @@ public class AssignmentCreateTests
             _assignmentId,
             _classId,
             "Title",
-            "",               
+            "",
             dueDate,
             _teacherId,
             _today
@@ -79,7 +74,7 @@ public class AssignmentCreateTests
     [Fact]
     public void Create_ShouldFail_WhenDueDateIsToday()
     {
-        var dueDate = _today;  
+        var dueDate = _today;
 
         var result = Assignment.Create(
             _assignmentId,

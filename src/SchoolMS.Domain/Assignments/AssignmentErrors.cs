@@ -2,6 +2,11 @@
 
 public static class AssignmentErrors
 {
+    public static Error NotFound =>
+        Error.NotFound("Assignment.NotFound", "Assignment is not found.");
+
+
+
     public static Error TitleRequired =>
         Error.Validation("Assignment.TitleRequired", "Title is required.");
 

@@ -1,6 +1,6 @@
 ﻿using SchoolMS.Application.Features.Classes.Dtos;
 
-namespace SchoolMS.Application.Features.Classes.Queries.GetClassAttendance;
+namespace SchoolMS.Application.Features.Classes.Queries.Teacher.GetClassAttendance;
 
 public class GetClassAttendanceQuery : IRequest<Result<List<StudentAttendanceEntry>>>
 {

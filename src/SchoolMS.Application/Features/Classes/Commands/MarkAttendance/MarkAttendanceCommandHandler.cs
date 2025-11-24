@@ -1,8 +1,6 @@
 ﻿using SchoolMS.Application.Common.Errors;
 using SchoolMS.Domain.Attendances;
 using SchoolMS.Domain.Classes;
-using SchoolMS.Domain.StudentClasses;
-using SchoolMS.Domain.Users.Enums;
 
 namespace SchoolMS.Application.Features.Classes.Commands.MarkAttendance;
 

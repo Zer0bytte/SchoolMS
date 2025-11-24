@@ -1,5 +1,4 @@
-﻿using Castle.Components.DictionaryAdapter;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SchoolMS.Application.Common.Errors;
 using SchoolMS.Application.Features.Notifications.Commands;
 using SchoolMS.Application.Tests.Shared;

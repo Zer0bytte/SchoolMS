@@ -2,11 +2,11 @@
 using SchoolMS.Application.Common.Interfaces;
 using SchoolMS.Application.Features.Classes.Commands.MarkAttendance;
 using SchoolMS.Application.Features.Classes.Dtos;
-using SchoolMS.Application.Features.Classes.Queries.GetClassAttendance;
+using SchoolMS.Application.Features.Classes.Queries.Teacher.GetClassAttendance;
 using SchoolMS.Application.Tests.Shared;
 using SchoolMS.Domain.Attendances.Enums;
 
-namespace SchoolMS.Application.Tests.ClassTests.GetClassAttendanceTests;
+namespace SchoolMS.Application.Tests.ClassTests.Teacher.GetClassAttendanceTests;
 
 public class GetClassAttendanceQueryHandlerTests
 {

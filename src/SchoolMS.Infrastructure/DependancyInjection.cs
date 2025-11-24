@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using SchoolMS.Application.Common.Interfaces;
 using SchoolMS.Infrastructure.Data;
 using SchoolMS.Infrastructure.Data.Interceptors;
+using SchoolMS.Infrastructure.FileSaving;
 using SchoolMS.Infrastructure.Identity;
 using SchoolMS.Infrastructure.PasswordHashing;
 using System.Text;
@@ -37,6 +38,7 @@ public static class DependencyInjection
 
         services.AddScoped<ITokenProvider, TokenProvider>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
+        services.AddScoped<IFileStorageService, FileStorageService>();
 
         services.AddAuthentication(options =>
         {

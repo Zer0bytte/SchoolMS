@@ -1,7 +1,7 @@
 ﻿using SchoolMS.Application.Features.Classes.Dtos;
 using SchoolMS.Domain.Classes;
 
-namespace SchoolMS.Application.Features.Classes.Queries.GetClassAttendance;
+namespace SchoolMS.Application.Features.Classes.Queries.Teacher.GetClassAttendance;
 
 public class GetClassAttendanceQueryHandler(IAppDbContext context, IUser user) : IRequestHandler<GetClassAttendanceQuery, Result<List<StudentAttendanceEntry>>>
 {

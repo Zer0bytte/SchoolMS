@@ -5,7 +5,7 @@ using SchoolMS.Application.Features.Classes.Commands.UpdateClass;
 using SchoolMS.Application.Tests.Shared;
 using SchoolMS.Domain.Classes;
 
-namespace SchoolMS.Application.Tests.ClassTests.UpdateClass;
+namespace SchoolMS.Application.Tests.ClassTests.Teacher.UpdateClass;
 
 public class UpdateClassCommandHandlerTests
 {

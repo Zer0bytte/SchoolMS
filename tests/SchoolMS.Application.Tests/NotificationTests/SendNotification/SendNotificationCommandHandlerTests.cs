@@ -1,6 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Moq;
 using SchoolMS.Application.Common.Errors;
+using SchoolMS.Application.Features.Classes.Queries.Student.GetStudentAttendance;
 using SchoolMS.Application.Features.Notifications.Commands;
+using SchoolMS.Application.Features.Notifications.Commands.SendNotification;
 using SchoolMS.Application.Tests.Shared;
 using SchoolMS.Domain.Classes;
 using SchoolMS.Domain.Notifications.Enums;
@@ -10,6 +14,8 @@ namespace SchoolMS.Application.Tests.NotificationTests.SendNotification;
 
 public class SendNotificationCommandHandlerTests
 {
+    public Mock<ILogger<SendNotificationCommandHandler>> Logger { get; set; } = new();
+
     [Fact]
     public async Task Handle_WhenStudentDoesNotExist_ReturnsUserNotFound()
     {
@@ -23,7 +29,7 @@ public class SendNotificationCommandHandlerTests
             Message = "World"
         };
 
-        var handler = new SendNotificationCommandHandler(context);
+        var handler = new SendNotificationCommandHandler(context, Logger.Object);
 
         var result = await handler.Handle(command, CancellationToken.None);
 
@@ -48,7 +54,7 @@ public class SendNotificationCommandHandlerTests
             Message = "World"
         };
 
-        var handler = new SendNotificationCommandHandler(context);
+        var handler = new SendNotificationCommandHandler(context, Logger.Object);
 
         //Act
         var result = await handler.Handle(command, CancellationToken.None);
@@ -84,7 +90,7 @@ public class SendNotificationCommandHandlerTests
             Message = "World"
         };
 
-        var handler = new SendNotificationCommandHandler(context);
+        var handler = new SendNotificationCommandHandler(context, Logger.Object);
 
         //Act
         var result = await handler.Handle(command, CancellationToken.None);
@@ -132,7 +138,7 @@ public class SendNotificationCommandHandlerTests
             Message = "World"
         };
 
-        var handler = new SendNotificationCommandHandler(context);
+        var handler = new SendNotificationCommandHandler(context, Logger.Object);
 
         //Act
         var result = await handler.Handle(command, CancellationToken.None);

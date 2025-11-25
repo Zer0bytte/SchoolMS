@@ -1,13 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Moq;
 using SchoolMS.Application.Common.Interfaces;
 using SchoolMS.Application.Features.Classes.Commands.DeactivateClass;
+using SchoolMS.Application.Features.Classes.Queries.Student.GetStudentAttendance;
 using SchoolMS.Application.Tests.Shared;
 
 namespace SchoolMS.Application.Tests.ClassTests.Teacher.DeactivateClassTests;
 
 public class DeactivateClassCommandHandlerTests
 {
+    public Mock<ILogger<DeactivateClassCommandHandler>> Logger { get; set; } = new();
+
     [Fact]
     public async Task Handle_WithValidParams_ShouldDeactivateClass()
     {
@@ -29,7 +33,7 @@ public class DeactivateClassCommandHandlerTests
             Id = cls.Id
         };
 
-        var handler = new DeactivateClassCommandHandler(context, user.Object);
+        var handler = new DeactivateClassCommandHandler(context, user.Object, Logger.Object);
 
         //Act
         var result = await handler.Handle(command, CancellationToken.None);

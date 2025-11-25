@@ -29,7 +29,7 @@ public class MarkAttendanceCommandHandler(
                 "Mark attendance failed: user id missing. ClassId={ClassId}",
                 command.ClassId
             );
-            return ClassErrors.NotFound; // or ApplicationErrors.UserNotFound if you use it here
+            return ClassErrors.NotFound;
         }
 
         var teacherId = Guid.Parse(user.Id);
@@ -41,6 +41,7 @@ public class MarkAttendanceCommandHandler(
 
         var classEntity = await context.Classes
             .Include(c => c.StudentClasses)
+            .Include(c => c.Attendances)
             .FirstOrDefaultAsync(
                 c => c.Id == command.ClassId
                      && c.TeacherId == teacherId
@@ -57,7 +58,8 @@ public class MarkAttendanceCommandHandler(
         }
 
         var assignedStudents = classEntity.StudentClasses.Select(s => s.StudentId).ToHashSet();
-        var studentIds = command.Students.Select(s => s.StudentId).ToList();
+        command.Students = command.Students.DistinctBy(s => s.StudentId).ToList();
+        var studentIds = command.Students.DistinctBy(s => s.StudentId).Select(s => s.StudentId).ToList();
 
         var missingIds = studentIds.Where(id => !assignedStudents.Contains(id)).ToList();
         if (missingIds.Any())
@@ -70,6 +72,26 @@ public class MarkAttendanceCommandHandler(
         }
 
         var attendanceDate = DateOnly.FromDateTime(DateTime.UtcNow);
+
+        var alreadyMarkedIds = await context.Attendances
+            .Where(a => a.ClassId == command.ClassId
+                        && a.Date == attendanceDate
+                        && studentIds.Contains(a.StudentId))
+            .Select(a => a.StudentId)
+            .ToListAsync(cancellationToken);
+
+        if (alreadyMarkedIds.Any())
+        {
+            logger.LogWarning(
+                "Mark attendance failed: already marked for some students. ClassId={ClassId}, TeacherId={TeacherId}, Date={Date}, AlreadyMarkedIds={AlreadyMarkedIds}",
+                command.ClassId, teacherId, attendanceDate, alreadyMarkedIds
+            );
+
+            return Error.Conflict(
+                "Attendance.AlreadyMarked",
+                "Attendance is already marked today for some students."
+            );
+        }
 
         foreach (var student in command.Students)
         {
@@ -103,4 +125,5 @@ public class MarkAttendanceCommandHandler(
 
         return Result.Success;
     }
+
 }

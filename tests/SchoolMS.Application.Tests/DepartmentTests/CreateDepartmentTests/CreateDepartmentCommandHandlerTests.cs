@@ -1,4 +1,8 @@
-﻿using SchoolMS.Application.Common.Errors;
+﻿using Microsoft.Extensions.Caching.Hybrid;
+using Microsoft.Extensions.Logging;
+using Moq;
+using SchoolMS.Application.Common.Errors;
+using SchoolMS.Application.Features.Courses.Commands.CreateCourse;
 using SchoolMS.Application.Features.Departments.Commands.CreateDepartment;
 using SchoolMS.Application.Tests.Shared;
 using SchoolMS.Domain.Users;
@@ -8,6 +12,8 @@ namespace SchoolMS.Application.Tests.DepartmentTests.CreateDepartmentTests;
 
 public class CreateDepartmentCommandHandlerTests
 {
+    public Mock<ILogger<CreateDepartmentCommandHandler>> Logger { get; set; } = new();
+    public Mock<HybridCache> Cache { get; set; } = new();
 
     [Fact]
     public async Task Handle_GivenValidRequest_ShouldCreateDepartment()
@@ -21,7 +27,7 @@ public class CreateDepartmentCommandHandlerTests
         await context.SaveChangesAsync();
 
 
-        var handler = new CreateDepartmentCommandHandler(context);
+        var handler = new CreateDepartmentCommandHandler(context, Logger.Object, Cache.Object);
         var command = new CreateDepartmentCommand
         {
             Name = "Computer Science",
@@ -50,7 +56,7 @@ public class CreateDepartmentCommandHandlerTests
         // Arrange
         var dbName = Guid.NewGuid().ToString();
         using var context = TestDbHelper.CreateContext();
-        var handler = new CreateDepartmentCommandHandler(context);
+        var handler = new CreateDepartmentCommandHandler(context,Logger.Object,Cache.Object);
         var command = new CreateDepartmentCommand
         {
             Name = "Mathematics",
@@ -81,7 +87,7 @@ public class CreateDepartmentCommandHandlerTests
         ).Value;
         context.Departments.Add(existingDepartment);
         await context.SaveChangesAsync();
-        var handler = new CreateDepartmentCommandHandler(context);
+        var handler = new CreateDepartmentCommandHandler(context, Logger.Object, Cache.Object);
         var command = new CreateDepartmentCommand
         {
             Name = "Physics",
@@ -106,7 +112,7 @@ public class CreateDepartmentCommandHandlerTests
         var student = TestDbHelper.CreateStudent();
         context.Users.Add(student);
         await context.SaveChangesAsync();
-        var handler = new CreateDepartmentCommandHandler(context);
+        var handler = new CreateDepartmentCommandHandler(context, Logger.Object, Cache.Object);
         var command = new CreateDepartmentCommand
         {
             Name = "Biology",

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using SchoolMS.Application.Common.Errors;
 using SchoolMS.Application.Features.Assignments.Dtos;
 
 namespace SchoolMS.Application.Features.Assignments.Qureies.GetGrades;
@@ -15,7 +16,7 @@ public class GetGradesQueryHandler(
         if (string.IsNullOrWhiteSpace(user.Id))
         {
             logger.LogWarning("Get grades failed: user id missing.");
-            return new List<GradeDto>(); // or ApplicationErrors.UserNotFound if you prefer consistency
+            return ApplicationErrors.UserNotFound;
         }
 
         var studentId = Guid.Parse(user.Id);

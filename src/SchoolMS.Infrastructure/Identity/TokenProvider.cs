@@ -109,8 +109,10 @@ public class TokenProvider(IConfiguration configuration, IAppDbContext context) 
 
         return new TokenResponse
         {
+            UserId = user.UserId,
             AccessToken = tokenHandler.WriteToken(securityToken),
             RefreshToken = refreshToken.Token,
+            Role = user.Role.ToString(),
             ExpiresOnUtc = expires
         };
     }

@@ -21,7 +21,7 @@ public class GetCoursesQueryHandler(
             query.DepartmentId, query.SearchTerm, query.Cursor, query.Limit, cacheKey
         );
 
-        return await cache.GetOrCreateAsync(
+        return await cache.GetOrCreateAsync<Result<CursorResult<CourseDto>>>(
             cacheKey,
             async ct =>
             {
@@ -42,7 +42,6 @@ public class GetCoursesQueryHandler(
                             query.Cursor
                         );
 
-                        // DON'T cache invalid cursor responses
                         return Error.Failure("InvalidCursor", "The provided cursor is invalid.");
                     }
 
@@ -98,7 +97,10 @@ public class GetCoursesQueryHandler(
 
                 return result;
             },
-            tags: new[] { "courses" },
+           tags:
+            [
+                "courses",
+            ],
             cancellationToken: cancellationToken
         );
     }

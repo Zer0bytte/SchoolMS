@@ -11,8 +11,8 @@ namespace SchoolMS.Application.Features.Departments.Queries.GetDepartments;
 public class GetDepartmentsQueryHandler(
     IAppDbContext context,
     IUser user,
-    HybridCache cache,
-    ILogger<GetDepartmentsQueryHandler> logger
+    ILogger<GetDepartmentsQueryHandler> logger,
+    HybridCache cache
 ) : IRequestHandler<GetDepartmentsQuery, Result<CursorResult<DepartmentDto>>>
 {
     public async Task<Result<CursorResult<DepartmentDto>>> Handle(GetDepartmentsQuery query, CancellationToken cancellationToken)
@@ -28,7 +28,6 @@ public class GetDepartmentsQueryHandler(
 
         var userId = Guid.Parse(user.Id);
 
-        // Build a stable cache key based on all inputs that affect the result
         var cacheKey = BuildCacheKey(query);
 
         logger.LogInformation(

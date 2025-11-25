@@ -1,7 +1,9 @@
-﻿using Moq;
+﻿using Microsoft.Extensions.Logging;
+using Moq;
 using SchoolMS.Application.Common.Interfaces;
 using SchoolMS.Application.Features.Classes.Commands.MarkAttendance;
 using SchoolMS.Application.Features.Classes.Dtos;
+using SchoolMS.Application.Features.Classes.Queries.Student.GetStudentAttendance;
 using SchoolMS.Application.Features.Classes.Queries.Teacher.GetClassAttendance;
 using SchoolMS.Application.Tests.Shared;
 using SchoolMS.Domain.Attendances.Enums;
@@ -10,6 +12,9 @@ namespace SchoolMS.Application.Tests.ClassTests.Teacher.GetClassAttendanceTests;
 
 public class GetClassAttendanceQueryHandlerTests
 {
+    public Mock<ILogger<MarkAttendanceCommandHandler>> Logger { get; set; } = new();
+    public Mock<ILogger<GetClassAttendanceQueryHandler>> Logger2 { get; set; } = new();
+
     [Fact]
     public async Task Handle_GetClassAttendance_ShouldReturnAttendance()
     {
@@ -49,7 +54,7 @@ public class GetClassAttendanceQueryHandlerTests
             }
         };
 
-        var markHandler = new MarkAttendanceCommandHandler(context, user.Object);
+        var markHandler = new MarkAttendanceCommandHandler(context, user.Object, Logger.Object);
         await markHandler.Handle(cmdMarkAttendance, CancellationToken.None);
 
         var query = new GetClassAttendanceQuery
@@ -57,7 +62,7 @@ public class GetClassAttendanceQueryHandlerTests
             ClassId = cls.Id
         };
 
-        var handler = new GetClassAttendanceQueryHandler(context, user.Object);
+        var handler = new GetClassAttendanceQueryHandler(context, user.Object, Logger2.Object);
 
         //Act
 

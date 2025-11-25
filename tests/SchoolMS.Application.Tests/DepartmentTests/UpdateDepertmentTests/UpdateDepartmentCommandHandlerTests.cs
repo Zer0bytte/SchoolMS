@@ -1,4 +1,8 @@
-﻿using SchoolMS.Application.Common.Errors;
+﻿using Castle.Core.Logging;
+using Microsoft.Extensions.Caching.Hybrid;
+using Microsoft.Extensions.Logging;
+using Moq;
+using SchoolMS.Application.Common.Errors;
 using SchoolMS.Application.Features.Departments.Commands.UpdateDepartment;
 using SchoolMS.Application.Tests.Shared;
 using SchoolMS.Domain.Departments;
@@ -7,7 +11,8 @@ namespace SchoolMS.Application.Tests.DepartmentTests.UpdateDepertmentTests;
 
 public class UpdateDepartmentCommandHandlerTests
 {
-
+    public Mock<ILogger<UpdateDepartmentCommandHandler>> Logger { get; set; } = new();
+    public Mock<HybridCache> Cache { get; set; } = new();
     [Fact]
     public async Task Handle_GivenValidRequest_ShouldUpdateDepartment()
     {
@@ -19,7 +24,7 @@ public class UpdateDepartmentCommandHandlerTests
         context.Departments.Add(department);
         context.Users.Add(teacher);
         await context.SaveChangesAsync();
-        var handler = new UpdateDepartmentCommandHandler(context);
+        var handler = new UpdateDepartmentCommandHandler(context, Logger.Object, Cache.Object);
         var command = new UpdateDepartmentCommand
         {
             Id = department.Id,
@@ -43,7 +48,7 @@ public class UpdateDepartmentCommandHandlerTests
     {
         // Arrange
         await using var context = TestDbHelper.CreateContext();
-        var handler = new UpdateDepartmentCommandHandler(context);
+        var handler = new UpdateDepartmentCommandHandler(context, Logger.Object, Cache.Object);
         var command = new UpdateDepartmentCommand
         {
             Id = Guid.NewGuid(), // Non-existent department ID
@@ -71,7 +76,7 @@ public class UpdateDepartmentCommandHandlerTests
         context.Departments.Add(department2);
         context.Users.Add(teacher);
         await context.SaveChangesAsync();
-        var handler = new UpdateDepartmentCommandHandler(context);
+        var handler = new UpdateDepartmentCommandHandler(context, Logger.Object, Cache.Object);
         var command = new UpdateDepartmentCommand
         {
             Id = department2.Id,
@@ -95,7 +100,7 @@ public class UpdateDepartmentCommandHandlerTests
         context.Departments.Add(department);
         context.Users.Add(teacher);
         await context.SaveChangesAsync();
-        var handler = new UpdateDepartmentCommandHandler(context);
+        var handler = new UpdateDepartmentCommandHandler(context, Logger.Object, Cache.Object);
         var command = new UpdateDepartmentCommand
         {
             Id = department.Id,
@@ -123,7 +128,7 @@ public class UpdateDepartmentCommandHandlerTests
         var department = Department.Create(Guid.NewGuid(), "Geography", "Department of Geography", Guid.NewGuid()).Value;
         context.Departments.Add(department);
         await context.SaveChangesAsync();
-        var handler = new UpdateDepartmentCommandHandler(context);
+        var handler = new UpdateDepartmentCommandHandler(context, Logger.Object, Cache.Object);
         var command = new UpdateDepartmentCommand
         {
             Id = department.Id,
@@ -152,7 +157,7 @@ public class UpdateDepartmentCommandHandlerTests
         var department = Department.Create(Guid.NewGuid(), "English", "Department of English", teacher1.Id).Value;
         context.Departments.Add(department);
         await context.SaveChangesAsync();
-        var handler = new UpdateDepartmentCommandHandler(context);
+        var handler = new UpdateDepartmentCommandHandler(context, Logger.Object, Cache.Object);
         var command = new UpdateDepartmentCommand
         {
             Id = department.Id,
@@ -182,7 +187,7 @@ public class UpdateDepartmentCommandHandlerTests
         var department = Department.Create(Guid.NewGuid(), "Art", "Department of Art", Guid.NewGuid()).Value;
         context.Departments.Add(department);
         await context.SaveChangesAsync();
-        var handler = new UpdateDepartmentCommandHandler(context);
+        var handler = new UpdateDepartmentCommandHandler(context, Logger.Object, Cache.Object);
         var command = new UpdateDepartmentCommand
         {
             Id = department.Id,

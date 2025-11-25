@@ -1,4 +1,6 @@
-﻿using Moq;
+﻿using Castle.Core.Logging;
+using Microsoft.Extensions.Logging;
+using Moq;
 using SchoolMS.Application.Common.Interfaces;
 using SchoolMS.Application.Features.Classes.Queries.Student.GetStudentAttendance;
 using SchoolMS.Application.Tests.Shared;
@@ -9,6 +11,7 @@ namespace SchoolMS.Application.Tests.ClassTests.Student.GetAttendance;
 
 public class GetStudentAttendanceQueryHandlerTests
 {
+    public Mock<ILogger<GetStudentAttendanceQueryHandler>> Logger { get; set; } = new();
     [Fact]
     public async Task Handle_WhenStudentHasAttendance_ShouldReturnStudentAttendance()
     {
@@ -42,7 +45,7 @@ public class GetStudentAttendanceQueryHandlerTests
 
         user.Setup(u => u.Id).Returns(student.Id.ToString());
 
-        var handler = new GetStudentAttendanceQueryHandler(context, user.Object);
+        var handler = new GetStudentAttendanceQueryHandler(context, user.Object, Logger.Object);
 
         var query = new GetStudentAttendanceQuery();
 
@@ -72,7 +75,7 @@ public class GetStudentAttendanceQueryHandlerTests
 
         user.Setup(u => u.Id).Returns(student.Id.ToString());
 
-        var handler = new GetStudentAttendanceQueryHandler(context, user.Object);
+        var handler = new GetStudentAttendanceQueryHandler(context, user.Object, Logger.Object);
 
         // Act
         var result = await handler.Handle(new GetStudentAttendanceQuery(), CancellationToken.None);
@@ -110,7 +113,7 @@ public class GetStudentAttendanceQueryHandlerTests
 
         user.Setup(u => u.Id).Returns(student.Id.ToString());
 
-        var handler = new GetStudentAttendanceQueryHandler(context, user.Object);
+        var handler = new GetStudentAttendanceQueryHandler(context, user.Object, Logger.Object);
 
         // Act
         var result = await handler.Handle(new GetStudentAttendanceQuery(), CancellationToken.None);

@@ -47,6 +47,7 @@ public class GetClassAttendanceQueryHandler(
             .Select(a => new StudentAttendanceEntry
             {
                 StudentId = a.StudentId,
+                StudentName = a.Student.Name,
                 Status = a.Status
             })
             .ToListAsync(cancellationToken);

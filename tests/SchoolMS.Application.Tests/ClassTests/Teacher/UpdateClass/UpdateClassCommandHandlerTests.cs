@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Moq;
 using SchoolMS.Application.Common.Interfaces;
 using SchoolMS.Application.Features.Classes.Commands.UpdateClass;
@@ -9,6 +10,8 @@ namespace SchoolMS.Application.Tests.ClassTests.Teacher.UpdateClass;
 
 public class UpdateClassCommandHandlerTests
 {
+    public Mock<ILogger<UpdateClassCommandHandler>> Logger { get; set; } = new();
+
     [Fact]
     public async Task Handle_ValidParams_ShouldUpdateClass()
     {
@@ -37,7 +40,7 @@ public class UpdateClassCommandHandlerTests
             Semester = cls.Semester,
         };
 
-        var handler = new UpdateClassCommandHandler(context, user.Object);
+        var handler = new UpdateClassCommandHandler(context, user.Object, Logger.Object);
 
         //Act
         var result = await handler.Handle(command, CancellationToken.None);
@@ -71,7 +74,7 @@ public class UpdateClassCommandHandlerTests
             Semester = Guid.NewGuid().ToString(),
         };
 
-        var handler = new UpdateClassCommandHandler(context, user.Object);
+        var handler = new UpdateClassCommandHandler(context, user.Object, Logger.Object);
 
         //Act
         var result = await handler.Handle(command, CancellationToken.None);
@@ -106,7 +109,7 @@ public class UpdateClassCommandHandlerTests
             Id = cls.Id,
             Name = cls2.Name,
         };
-        var handler = new UpdateClassCommandHandler(context, user.Object);
+        var handler = new UpdateClassCommandHandler(context, user.Object, Logger.Object);
         // Act
 
         var result = await handler.Handle(command, CancellationToken.None);

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using SchoolMS.Application.Common.Errors;
 using SchoolMS.Application.Features.Assignments.Dtos;
 using SchoolMS.Domain.Assignments;
 
@@ -19,7 +20,7 @@ public class GetAssignmentSubmissionsQueryHandler(
                 "Get assignment submissions failed: user id missing. AssignmentId={AssignmentId}",
                 request.AssignmentId
             );
-            return AssignmentErrors.NotFound; // or ApplicationErrors.UserNotFound if you use that here
+            return ApplicationErrors.UserNotFound;
         }
 
         var teacherId = Guid.Parse(user.Id);

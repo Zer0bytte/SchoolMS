@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Moq;
 using SchoolMS.Application.Common.Interfaces;
 using SchoolMS.Application.Features.Classes.Commands.MarkAttendance;
 using SchoolMS.Application.Features.Classes.Dtos;
+using SchoolMS.Application.Features.Classes.Queries.Teacher.GetClassAttendance;
 using SchoolMS.Application.Tests.Shared;
 using SchoolMS.Domain.Attendances.Enums;
 using SchoolMS.Domain.Classes;
@@ -13,6 +15,8 @@ namespace SchoolMS.Application.Tests.ClassTests.Teacher.MarkAttendanceTests;
 
 public class MarkAttendanceCommandHandlerTests
 {
+    public Mock<ILogger<MarkAttendanceCommandHandler>> Logger { get; set; } = new();
+
     [Fact]
     public async Task Handle_WithOneAttendanceRecord_ShouldMarkAttendance()
     {
@@ -51,7 +55,7 @@ public class MarkAttendanceCommandHandlerTests
             }
         };
 
-        var handler = new MarkAttendanceCommandHandler(context, user.Object);
+        var handler = new MarkAttendanceCommandHandler(context, user.Object, Logger.Object);
 
         //Act
         var result = await handler.Handle(command, CancellationToken.None);
@@ -103,7 +107,7 @@ public class MarkAttendanceCommandHandlerTests
             }
         };
 
-        var handler = new MarkAttendanceCommandHandler(context, user.Object);
+        var handler = new MarkAttendanceCommandHandler(context, user.Object, Logger.Object);
 
         //Act
         var result = await handler.Handle(command, CancellationToken.None);
@@ -146,7 +150,7 @@ public class MarkAttendanceCommandHandlerTests
             }
         };
 
-        var handler = new MarkAttendanceCommandHandler(context, user.Object);
+        var handler = new MarkAttendanceCommandHandler(context, user.Object, Logger.Object);
 
         //Act
         var result = await handler.Handle(command, CancellationToken.None);

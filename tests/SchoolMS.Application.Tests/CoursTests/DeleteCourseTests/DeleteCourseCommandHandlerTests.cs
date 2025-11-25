@@ -1,4 +1,8 @@
-﻿using SchoolMS.Application.Features.Courses.Commands.DeleteCourse;
+﻿using Microsoft.Extensions.Caching.Hybrid;
+using Microsoft.Extensions.Logging;
+using Moq;
+using SchoolMS.Application.Features.Courses.Commands.CreateCourse;
+using SchoolMS.Application.Features.Courses.Commands.DeleteCourse;
 using SchoolMS.Application.Tests.Shared;
 using SchoolMS.Domain.Courses;
 
@@ -6,6 +10,9 @@ namespace SchoolMS.Application.Tests.CoursTests.DeleteCourseTests;
 
 public class DeleteCourseCommandHandlerTests
 {
+    public Mock<ILogger<DeleteCourseCommandHandler>> Logger { get; set; } = new();
+    public Mock<HybridCache> Cache { get; set; } = new();
+
     [Fact]
     public async Task HandleGivenValidCourseId_ShouldDeleteCourse()
     {
@@ -21,7 +28,7 @@ public class DeleteCourseCommandHandlerTests
 
         await context.SaveChangesAsync();
 
-        var handler = new DeleteCourseCommandHandler(context);
+        var handler = new DeleteCourseCommandHandler(context, Logger.Object, Cache.Object);
         var command = new DeleteCourseCommand() { Id = course.Id };
         // Act
         var result = await handler.Handle(command, CancellationToken.None);
@@ -36,7 +43,7 @@ public class DeleteCourseCommandHandlerTests
     {
         // Arrange
         using var context = TestDbHelper.CreateContext();
-        var handler = new DeleteCourseCommandHandler(context);
+        var handler = new DeleteCourseCommandHandler(context, Logger.Object, Cache.Object);
         var command = new DeleteCourseCommand() { Id = Guid.NewGuid() };
         // Act
         var result = await handler.Handle(command, CancellationToken.None);

@@ -1,4 +1,6 @@
-﻿using SchoolMS.Application.Features.Departments.Queries.GetDepartment;
+﻿using Microsoft.Extensions.Logging;
+using Moq;
+using SchoolMS.Application.Features.Departments.Queries.GetDepartment;
 using SchoolMS.Application.Tests.Shared;
 using SchoolMS.Domain.Departments;
 
@@ -6,6 +8,8 @@ namespace SchoolMS.Application.Tests.DepartmentTests.GetDepartmentByIdTests;
 
 public class GetDepartmentByIdQueryHandlerTests
 {
+    public Mock<ILogger<GetDepartmentByIdQueryHandler>> Logger { get; set; } = new();
+
     [Fact]
     public async Task Handle_ShouldReturnDepartment_WhenDepartmentExists()
     {
@@ -17,7 +21,7 @@ public class GetDepartmentByIdQueryHandlerTests
         dbContext.Departments.Add(department);
         await dbContext.SaveChangesAsync();
         //Act
-        var handler = new GetDepartmentByIdQueryHandler(dbContext);
+        var handler = new GetDepartmentByIdQueryHandler(dbContext, Logger.Object);
         var query = new GetDepartmentByIdQuery
         {
             Id = department.Id
@@ -39,7 +43,7 @@ public class GetDepartmentByIdQueryHandlerTests
         //Arrage
         using var dbContext = TestDbHelper.CreateContext();
         //Act
-        var handler = new GetDepartmentByIdQueryHandler(dbContext);
+        var handler = new GetDepartmentByIdQueryHandler(dbContext, Logger.Object);
         var query = new GetDepartmentByIdQuery
         {
             Id = Guid.NewGuid()

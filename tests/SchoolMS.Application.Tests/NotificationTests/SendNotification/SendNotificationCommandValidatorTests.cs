@@ -1,4 +1,5 @@
 ﻿using SchoolMS.Application.Features.Notifications.Commands;
+using SchoolMS.Application.Features.Notifications.Commands.SendNotification;
 
 namespace SchoolMS.Application.Tests.NotificationTests.SendNotification;
 

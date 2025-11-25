@@ -1,5 +1,9 @@
-﻿using Moq;
+﻿using Microsoft.Extensions.Caching.Hybrid;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Moq;
 using SchoolMS.Application.Common.Interfaces;
+using SchoolMS.Application.Features.Departments.Commands.CreateDepartment;
 using SchoolMS.Application.Features.Departments.Queries.GetDepartments;
 using SchoolMS.Application.Tests.Shared;
 
@@ -7,6 +11,9 @@ namespace SchoolMS.Application.Tests.DepartmentTests.GetDepartmentsTests;
 
 public class GetDepartmentsQueryHandlerTests
 {
+    public Mock<ILogger<GetDepartmentsQueryHandler>> Logger { get; set; } = new();
+    public Mock<HybridCache> Cache { get; set; } = new();
+
     [Fact]
     public async Task Handle_WhenUserIsAdmin_ShouldReturnAllDepartments()
     {
@@ -28,7 +35,7 @@ public class GetDepartmentsQueryHandlerTests
 
         user.Setup(u => u.Id).Returns(admin.Id.ToString());
 
-        var handler = new GetDepartmentsQueryHandler(context, user.Object);
+        var handler = new GetDepartmentsQueryHandler(context, user.Object, Logger.Object, Cache.Object);
         var query = new GetDepartmentsQuery { Limit = 10 };
 
         // Act
@@ -62,7 +69,7 @@ public class GetDepartmentsQueryHandlerTests
 
         user.Setup(u => u.Id).Returns(teacher.Id.ToString());
 
-        var handler = new GetDepartmentsQueryHandler(context, user.Object);
+        var handler = new GetDepartmentsQueryHandler(context, user.Object, Logger.Object, Cache.Object);
         var query = new GetDepartmentsQuery { Limit = 10 };
 
         // Act
@@ -97,7 +104,7 @@ public class GetDepartmentsQueryHandlerTests
 
         user.Setup(u => u.Id).Returns(teacher.Id.ToString());
 
-        var handler = new GetDepartmentsQueryHandler(context, user.Object);
+        var handler = new GetDepartmentsQueryHandler(context, user.Object, Logger.Object, Cache.Object);
         var query = new GetDepartmentsQuery
         {
             DepartmentName = "Comp",
@@ -124,7 +131,7 @@ public class GetDepartmentsQueryHandlerTests
 
         user.Setup(u => u.Id).Returns(Guid.NewGuid().ToString());
 
-        var handler = new GetDepartmentsQueryHandler(context, user.Object);
+        var handler = new GetDepartmentsQueryHandler(context, user.Object, Logger.Object, Cache.Object);
         var query = new GetDepartmentsQuery
         {
             Cursor = "invalid_cursor_$$$",
@@ -162,7 +169,7 @@ public class GetDepartmentsQueryHandlerTests
 
         user.Setup(u => u.Id).Returns(teacher.Id.ToString());
 
-        var handler = new GetDepartmentsQueryHandler(context, user.Object);
+        var handler = new GetDepartmentsQueryHandler(context, user.Object, Logger.Object, Cache.Object);
         var query = new GetDepartmentsQuery
         {
             Limit = 2 // expect only first 2, with a next cursor for the 3rd

@@ -1,5 +1,7 @@
-﻿using Moq;
+﻿using Microsoft.Extensions.Logging;
+using Moq;
 using SchoolMS.Application.Common.Interfaces;
+using SchoolMS.Application.Features.Classes.Queries.Student.GetStudentAttendance;
 using SchoolMS.Application.Features.Classes.Queries.Student.GetStudentClasses;
 using SchoolMS.Application.Tests.Shared;
 using SchoolMS.Domain.StudentClasses;
@@ -8,6 +10,8 @@ namespace SchoolMS.Application.Tests.ClassTests.Student.GetStudentClasses;
 
 public class GetStudentClassesQueryHandlerTests
 {
+    public Mock<ILogger<GetStudentClassesQueryHandler>> Logger { get; set; } = new();
+
     [Fact]
     public async Task Hanlde_WhenStudentEnrolledToOneClass_ShouldReturnStudentEnrolledClassesOnly()
     {
@@ -41,7 +45,7 @@ public class GetStudentClassesQueryHandlerTests
             Limit = 10,
         };
 
-        var handler = new GetStudentClassesQueryHandler(context, user.Object);
+        var handler = new GetStudentClassesQueryHandler(context, user.Object,Logger.Object);
 
         //Act
         var result = await handler.Handle(query, CancellationToken.None);
@@ -82,7 +86,7 @@ public class GetStudentClassesQueryHandlerTests
 
         user.Setup(u => u.Id).Returns(student.Id.ToString());
 
-        var handler = new GetStudentClassesQueryHandler(context, user.Object);
+        var handler = new GetStudentClassesQueryHandler(context, user.Object, Logger.Object);
 
         // Act
         var result = await handler.Handle(new GetStudentClassesQuery { Limit = 10 }, CancellationToken.None);
@@ -105,7 +109,7 @@ public class GetStudentClassesQueryHandlerTests
 
         user.Setup(u => u.Id).Returns(student.Id.ToString());
 
-        var handler = new GetStudentClassesQueryHandler(context, user.Object);
+        var handler = new GetStudentClassesQueryHandler(context, user.Object, Logger.Object);
 
         var query = new GetStudentClassesQuery
         {
@@ -154,7 +158,7 @@ public class GetStudentClassesQueryHandlerTests
 
         user.Setup(u => u.Id).Returns(student.Id.ToString());
 
-        var handler = new GetStudentClassesQueryHandler(context, user.Object);
+        var handler = new GetStudentClassesQueryHandler(context, user.Object, Logger.Object);
 
         // Step 1 — first page
         var firstPage = await handler.Handle(new GetStudentClassesQuery { Limit = 2 }, CancellationToken.None);
@@ -188,7 +192,7 @@ public class GetStudentClassesQueryHandlerTests
 
         user.Setup(u => u.Id).Returns(student.Id.ToString());
 
-        var handler = new GetStudentClassesQueryHandler(context, user.Object);
+        var handler = new GetStudentClassesQueryHandler(context, user.Object, Logger.Object);
 
         // Act
         var result = await handler.Handle(new GetStudentClassesQuery { Limit = 10 }, CancellationToken.None);
@@ -231,7 +235,7 @@ public class GetStudentClassesQueryHandlerTests
 
         user.Setup(u => u.Id).Returns(student.Id.ToString());
 
-        var handler = new GetStudentClassesQueryHandler(context, user.Object);
+        var handler = new GetStudentClassesQueryHandler(context, user.Object, Logger.Object);
 
         // Act
         var result = await handler.Handle(new GetStudentClassesQuery { Limit = 1 }, CancellationToken.None);

@@ -1,10 +1,17 @@
-﻿using SchoolMS.Application.Features.Courses.Queries.GetCourses;
+﻿using Microsoft.Extensions.Caching.Hybrid;
+using Microsoft.Extensions.Logging;
+using Moq;
+using SchoolMS.Application.Features.Courses.Queries.GetCourses;
+using SchoolMS.Application.Features.Departments.Commands.CreateDepartment;
 using SchoolMS.Application.Tests.Shared;
 
 namespace SchoolMS.Application.Tests.CoursTests.GetCoursesTests;
 
 public class GetCoursesQueryHandlerTests
 {
+    public Mock<ILogger<GetCoursesQueryHandler>> Logger { get; set; } = new();
+    public Mock<HybridCache> Cache { get; set; } = new();
+
     [Fact]
     public async Task Handle_ShouldReturnCourses()
     {
@@ -18,7 +25,7 @@ public class GetCoursesQueryHandlerTests
         var course2 = TestDbHelper.CreateCourse(department);
         context.Courses.AddRange(course1, course2);
         await context.SaveChangesAsync();
-        var handler = new GetCoursesQueryHandler(context);
+        var handler = new GetCoursesQueryHandler(context, Cache.Object, Logger.Object);
         var query = new GetCoursesQuery { Limit = 10 };
         // Act
         var result = await handler.Handle(query, CancellationToken.None);
@@ -43,7 +50,7 @@ public class GetCoursesQueryHandlerTests
         var course2 = TestDbHelper.CreateCourse(department);
         context.Courses.AddRange(course1, course2);
         await context.SaveChangesAsync();
-        var handler = new GetCoursesQueryHandler(context);
+        var handler = new GetCoursesQueryHandler(context, Cache.Object, Logger.Object);
         var query = new GetCoursesQuery
         {
             Limit = 10,
@@ -72,7 +79,7 @@ public class GetCoursesQueryHandlerTests
         var course2 = TestDbHelper.CreateCourse(department2);
         context.Courses.AddRange(course1, course2);
         await context.SaveChangesAsync();
-        var handler = new GetCoursesQueryHandler(context);
+        var handler = new GetCoursesQueryHandler(context, Cache.Object, Logger.Object);
         var query = new GetCoursesQuery
         {
             Limit = 10,
@@ -104,7 +111,7 @@ public class GetCoursesQueryHandlerTests
             context.Courses.Add(course);
         }
         await context.SaveChangesAsync();
-        var handler = new GetCoursesQueryHandler(context);
+        var handler = new GetCoursesQueryHandler(context, Cache.Object, Logger.Object);
         var firstPageQuery = new GetCoursesQuery { Limit = 10 };
         // Act - First Page
         var firstPageResult = await handler.Handle(firstPageQuery, CancellationToken.None);
@@ -133,7 +140,7 @@ public class GetCoursesQueryHandlerTests
     {
         // Arrange
         await using var context = TestDbHelper.CreateContext();
-        var handler = new GetCoursesQueryHandler(context);
+        var handler = new GetCoursesQueryHandler(context, Cache.Object, Logger.Object);
         var query = new GetCoursesQuery
         {
             Cursor = "invalid_cursor_$$$",
@@ -150,7 +157,7 @@ public class GetCoursesQueryHandlerTests
     {
         // Arrange
         await using var context = TestDbHelper.CreateContext();
-        var handler = new GetCoursesQueryHandler(context);
+        var handler = new GetCoursesQueryHandler(context, Cache.Object, Logger.Object);
         var query = new GetCoursesQuery { Limit = 10 };
         // Act
         var result = await handler.Handle(query, CancellationToken.None);
@@ -175,7 +182,7 @@ public class GetCoursesQueryHandlerTests
         var course = TestDbHelper.CreateCourse(department);
         context.Courses.Add(course);
         await context.SaveChangesAsync();
-        var handler = new GetCoursesQueryHandler(context);
+        var handler = new GetCoursesQueryHandler(context, Cache.Object, Logger.Object);
         var query = new GetCoursesQuery
         {
             Limit = 10,
@@ -196,7 +203,7 @@ public class GetCoursesQueryHandlerTests
     {
         // Arrange
         await using var context = TestDbHelper.CreateContext();
-        var handler = new GetCoursesQueryHandler(context);
+        var handler = new GetCoursesQueryHandler(context, Cache.Object, Logger.Object);
         var query = new GetCoursesQuery
         {
             Limit = 10,

@@ -1,12 +1,19 @@
-﻿using SchoolMS.Application.Features.Courses.Commands.UpdateCourse;
+﻿using Microsoft.Extensions.Caching.Hybrid;
+using Microsoft.Extensions.Logging;
+using Moq;
+using SchoolMS.Application.Features.Courses.Commands.CreateCourse;
+using SchoolMS.Application.Features.Courses.Commands.UpdateCourse;
 using SchoolMS.Application.Tests.Shared;
 
 namespace SchoolMS.Application.Tests.CoursTests.UpdateCourseTests;
 
 public class UpdateCourseCommandHandlerTests
 {
+    public Mock<ILogger<UpdateCourseCommandHandler>> Logger { get; set; } = new();
+    public Mock<HybridCache> Cache { get; set; } = new();
+
     [Fact]
-    public static async Task Handle_GivenValidRequest_ShouldUpdateCourse()
+    public  async Task Handle_GivenValidRequest_ShouldUpdateCourse()
     {
         //Arrange
         using var context = TestDbHelper.CreateContext();
@@ -24,7 +31,7 @@ public class UpdateCourseCommandHandlerTests
         await context.SaveChangesAsync();
 
 
-        var handler = new UpdateCourseCommandHandler(context);
+        var handler = new UpdateCourseCommandHandler(context, Logger.Object, Cache.Object);
         var command = new UpdateCourseCommand
         {
             Id = course1.Id,

@@ -10,10 +10,11 @@ namespace SchoolMS.Api.Endpoints;
 
 public static class NotificationEndpoints
 {
-    public static void MapNotificationEndpoints(this IEndpointRouteBuilder app)
+    public static void MapNotificationEndpoints(this IEndpointRouteBuilder app, Asp.Versioning.Builder.ApiVersionSet vset)
     {
 
-        app.MapPost("/api/teacher/notifications", SendNotification)
+        app.MapPost("/api/v{version:apiVersion}/teacher/notifications", SendNotification)
+            .WithApiVersionSet(vset)
             .RequireAuthorization("Teacher")
             .WithName("SendNotification")
             .WithTags("Notifications")
@@ -35,7 +36,8 @@ public static class NotificationEndpoints
             .Produces(StatusCodes.Status500InternalServerError);
 
 
-        app.MapGet("/api/student/notifications", GetNotifications)
+        app.MapGet("/api/v{version:apiVersion}/student/notifications", GetNotifications)
+              .WithApiVersionSet(vset)
               .RequireAuthorization("Student")
               .WithName("GetNotifications")
               .WithSummary("Retrieve student notifications")

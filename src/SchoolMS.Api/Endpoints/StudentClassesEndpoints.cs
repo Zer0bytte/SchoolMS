@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Asp.Versioning.Builder;
+using MediatR;
 using SchoolMS.Api.Extensions;
 using SchoolMS.Application.Common.Models;
 using SchoolMS.Application.Features.Classes.Dtos;
@@ -10,13 +11,14 @@ namespace SchoolMS.Api.Endpoints;
 
 public static class StudentClassesEndpoints
 {
-    public static void MapStudentClassesEndpoints(this IEndpointRouteBuilder app)
+    public static void MapStudentClassesEndpoints(this IEndpointRouteBuilder app, ApiVersionSet vset)
     {
-        RouteGroupBuilder group = app.MapGroup("/api/student")
+        RouteGroupBuilder v1 = app.MapGroup("/api/v{version:apiVersion}/student")
+            .WithApiVersionSet(vset)
             .RequireAuthorization("Student")
             .WithTags("Student Classes");
 
-        group.MapGet("/classes", GetClasses)
+        v1.MapGet("/classes", GetClasses)
              .WithName("GetStudentClasses")
              .WithSummary("Retrieve classes for the authenticated student")
              .WithDescription("""
@@ -33,7 +35,7 @@ public static class StudentClassesEndpoints
              .Produces(StatusCodes.Status500InternalServerError);
 
 
-        group.MapGet("/attendance", GetAttendance)
+        v1.MapGet("/attendance", GetAttendance)
             .WithName("GetStudentAttendance")
             .WithSummary("Retrieve attendance records for the authenticated student")
             .WithDescription("Returns all attendance records for the authenticated student across all enrolled classes.")

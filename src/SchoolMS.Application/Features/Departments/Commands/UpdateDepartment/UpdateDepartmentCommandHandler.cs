@@ -32,6 +32,7 @@ public class UpdateDepartmentCommandHandler(
         }
 
         var department = await departmentQuery
+            .Include(d=>d.HeadOfDepartment)
             .FirstOrDefaultAsync(dep => dep.Id == command.Id, cancellationToken);
 
         if (department is null)

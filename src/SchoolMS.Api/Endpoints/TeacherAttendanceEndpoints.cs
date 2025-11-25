@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Asp.Versioning.Builder;
+using MediatR;
 using SchoolMS.Api.Extensions;
 using SchoolMS.Application.Features.Classes.Commands.MarkAttendance;
 using SchoolMS.Application.Features.Classes.Dtos;
@@ -9,14 +10,15 @@ namespace SchoolMS.Api.Endpoints;
 
 public static class TeacherAttendanceEndpoints
 {
-    public static void MapTeacherAttendanceEndpoints(this IEndpointRouteBuilder app)
+    public static void MapTeacherAttendanceEndpoints(this IEndpointRouteBuilder app, ApiVersionSet vset)
     {
-        RouteGroupBuilder group = app.MapGroup("/api/teacher/attendance")
+        RouteGroupBuilder v1 = app.MapGroup("/api/v{version:apiVersion}/teacher/attendance")
+            .WithApiVersionSet(vset)
             .RequireAuthorization("Teacher")
             .WithTags("Teacher Attendance");
 
 
-        group.MapPost("", MarkAttendance)
+        v1.MapPost("", MarkAttendance)
             .WithName("MarkAttendance")
             .WithSummary("Mark attendance for students in a class")
             .WithDescription("""
@@ -31,7 +33,7 @@ public static class TeacherAttendanceEndpoints
             .Produces(StatusCodes.Status403Forbidden)
             .Produces(StatusCodes.Status500InternalServerError);
 
-        group.MapGet("/{classId:guid}", GetAttendanceHistory)
+        v1.MapGet("/{classId:guid}", GetAttendanceHistory)
             .WithName("GetClassAttendance")
             .WithSummary("Retrieve attendance history for a class")
             .WithDescription("Returns the attendance records for all students in the specified class.")

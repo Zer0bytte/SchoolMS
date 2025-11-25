@@ -8,14 +8,15 @@ namespace SchoolMS.Api.Endpoints;
 
 public static class StudentEndpoints
 {
-    public static void MapStudentEndpoints(this IEndpointRouteBuilder app)
+    public static void MapStudentEndpoints(this IEndpointRouteBuilder app, Asp.Versioning.Builder.ApiVersionSet vset)
     {
-        var group = app
-            .MapGroup("/api/teacher/students")
+        var v1 = app
+            .MapGroup("/api/v{version:apiVersion}/teacher/students")
+            .WithApiVersionSet(vset)
             .RequireAuthorization("Teacher")
             .WithTags("Students");
 
-        group.MapGet("", GetStudents)
+        v1.MapGet("", GetStudents)
             .WithName("GetStudents")
             .WithSummary("Get students")
             .WithDescription(

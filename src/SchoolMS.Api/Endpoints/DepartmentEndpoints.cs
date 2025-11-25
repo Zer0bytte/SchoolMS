@@ -1,4 +1,5 @@
 ﻿
+using Asp.Versioning.Builder;
 using MediatR;
 using SchoolMS.Api.Extensions;
 using SchoolMS.Application.Common.Models;
@@ -9,35 +10,41 @@ using SchoolMS.Application.Features.Departments.Dtos;
 using SchoolMS.Application.Features.Departments.Queries.GetDepartment;
 using SchoolMS.Application.Features.Departments.Queries.GetDepartments;
 using SchoolMS.Contracts.Departments;
+using System;
 
 namespace SchoolMS.Api.Endpoints;
 
 public static class DepartmentEndpoints
 {
-    public static void MapDepartmentEndpoints(this IEndpointRouteBuilder app)
+    public static void MapDepartmentEndpoints(this IEndpointRouteBuilder app, ApiVersionSet versions)
     {
-        var group = app.MapGroup("/api/admin/departments").RequireAuthorization("Admin").WithTags("Departments");
+        var v1 = app.MapGroup("/api/v{version:apiVersion}/admin/departments")
+            .WithApiVersionSet(versions)
+            .RequireAuthorization("Admin")
+            .WithTags("Departments");
 
-        group.MapGet("", GetDepartments)
+
+
+        v1.MapGet("", GetDepartments)
               .WithSummary("Get all departments")
               .WithDescription("Returns a paginated/filterable list of departments. Only accessible by Admin users.")
               .Produces<CursorResult<DepartmentDto>>(StatusCodes.Status200OK)
               .ProducesProblem(StatusCodes.Status400BadRequest);
 
-        group.MapGet("/{id:guid}", GetDepartment)
+        v1.MapGet("/{id:guid}", GetDepartment)
             .WithSummary("Get department by ID")
             .WithDescription("Returns a specific department using its unique identifier. Only accessible by Admin users.")
             .Produces<DepartmentDto>(StatusCodes.Status200OK)
             .ProducesProblem(StatusCodes.Status404NotFound);
 
-        group.MapPost("", CreateDepartment)
+        v1.MapPost("", CreateDepartment)
             .WithSummary("Create a new department")
             .WithDescription("Creates a new department record. Only accessible by Admin users.")
             .Accepts<CreateDepartmentRequest>("application/json")
             .Produces<DepartmentDto>(StatusCodes.Status201Created)
             .ProducesProblem(StatusCodes.Status400BadRequest);
 
-        group.MapPatch("/{id:guid}", UpdateDepartment)
+        v1.MapPatch("/{id:guid}", UpdateDepartment)
             .WithSummary("Update a department")
             .WithDescription("Updates an existing department using its ID. Only accessible by Admin users.")
             .Accepts<UpdateDepartmentRequest>("application/json")
@@ -45,7 +52,7 @@ public static class DepartmentEndpoints
             .ProducesProblem(StatusCodes.Status404NotFound)
             .ProducesProblem(StatusCodes.Status400BadRequest);
 
-        group.MapDelete("/{id:guid}", DeleteDepartment)
+        v1.MapDelete("/{id:guid}", DeleteDepartment)
             .WithSummary("Delete a department")
             .WithDescription("Deletes an existing department using its ID. Only accessible by Admin users.")
             .Produces(StatusCodes.Status204NoContent)

@@ -11,13 +11,14 @@ namespace SchoolMS.Api.Endpoints;
 
 public static class StudentAssignmentEndpoints
 {
-    public static void MapStudentAssignmentEndpoints(this IEndpointRouteBuilder app)
+    public static void MapStudentAssignmentEndpoints(this IEndpointRouteBuilder app, Asp.Versioning.Builder.ApiVersionSet vset)
     {
-        RouteGroupBuilder group = app.MapGroup("/api/student")
+        RouteGroupBuilder v1 = app.MapGroup("/api/v{version:apiVersion}/student")
+                   .WithApiVersionSet(vset)
                    .RequireAuthorization("Student")
                    .WithTags("Student Assignments");
 
-        group.MapPost("/assignments/{id:guid}/submit", SubmitAssignment)
+        v1.MapPost("/assignments/{id:guid}/submit", SubmitAssignment)
                .DisableAntiforgery()
                .WithName("SubmitAssignment")
                .WithSummary("Submit an assignment")
@@ -33,7 +34,7 @@ public static class StudentAssignmentEndpoints
                .Produces(StatusCodes.Status404NotFound)
                .Produces(StatusCodes.Status500InternalServerError);
 
-        group.MapGet("/assignments", GetAssignments)
+        v1.MapGet("/assignments", GetAssignments)
             .WithName("GetStudentAssignments")
             .WithSummary("Get assignments for the authenticated student")
             .WithDescription("""
@@ -45,7 +46,7 @@ public static class StudentAssignmentEndpoints
             .Produces(StatusCodes.Status403Forbidden)
             .Produces(StatusCodes.Status500InternalServerError);
 
-        group.MapGet("/grades", GetGrades)
+        v1.MapGet("/grades", GetGrades)
             .WithName("GetStudentGrades")
             .WithSummary("Get assignment grades for the authenticated student")
             .WithDescription("""

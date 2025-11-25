@@ -39,13 +39,13 @@ var vset = app.NewApiVersionSet()
     .Build();
 
 app.MapIdentityEndpoints(vset);
-app.MapDepartmentEndpoints();
-app.MapCourseEndpoints();
-app.MapTeacherClassEndpoints();
-app.MapTeacherAttendanceEndpoints();
-app.MapTeacherassignmentEndpoints();
-app.MapStudentClassesEndpoints();
-app.MapStudentEndpoints();
-app.MapStudentAssignmentEndpoints();
-app.MapNotificationEndpoints();
+app.MapDepartmentEndpoints(vset);
+app.MapCourseEndpoints(vset);
+app.MapTeacherClassEndpoints(vset);
+app.MapTeacherAttendanceEndpoints(vset);
+app.MapTeacherassignmentEndpoints(vset);
+app.MapStudentClassesEndpoints(vset);
+app.MapStudentEndpoints(vset);
+app.MapStudentAssignmentEndpoints(vset);
+app.MapNotificationEndpoints(vset);
 app.Run();

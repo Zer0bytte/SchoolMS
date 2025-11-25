@@ -15,30 +15,32 @@ namespace SchoolMS.Api.Endpoints;
 
 public static class CourseEndpoints
 {
-    public static void MapCourseEndpoints(this IEndpointRouteBuilder app)
+    public static void MapCourseEndpoints(this IEndpointRouteBuilder app, Asp.Versioning.Builder.ApiVersionSet vset)
     {
-        RouteGroupBuilder group = app.MapGroup("/api/admin/courses").WithTags("Courses").RequireAuthorization("Admin");
+        RouteGroupBuilder v1 = app.MapGroup("/api/v{version:apiVersion}/admin/courses")
+            .WithApiVersionSet(vset)
+            .WithTags("Courses").RequireAuthorization("Admin");
 
-        group.MapGet("", GetCourses)
+        v1.MapGet("", GetCourses)
             .WithSummary("Get list of courses")
             .WithDescription("Returns a paginated list of courses optionally filtered by department or search term.")
             .Produces<CursorResult<CourseDto>>(StatusCodes.Status200OK)
             .ProducesProblem(StatusCodes.Status400BadRequest);
 
-        group.MapGet("/{id:guid}", GetCourseById)
+        v1.MapGet("/{id:guid}", GetCourseById)
             .WithSummary("Get course by ID")
             .WithDescription("Returns a specific course using its unique identifier.")
             .Produces<CourseDto>(StatusCodes.Status200OK)
             .ProducesProblem(StatusCodes.Status404NotFound);
 
-        group.MapPost("", CreateCourse)
+        v1.MapPost("", CreateCourse)
             .WithSummary("Create a new course")
             .WithDescription("Creates a new course record in the system.")
             .Accepts<CreateCourseRequest>("application/json")
             .Produces<CourseDto>(StatusCodes.Status201Created)
             .ProducesProblem(StatusCodes.Status400BadRequest);
 
-        group.MapPatch("/{id:guid}", UpdateCourse)
+        v1.MapPatch("/{id:guid}", UpdateCourse)
             .WithSummary("Update an existing course")
             .WithDescription("Updates an existing course using its ID.")
             .Accepts<UpdateCourseRequest>("application/json")
@@ -46,7 +48,7 @@ public static class CourseEndpoints
             .ProducesProblem(StatusCodes.Status404NotFound)
             .ProducesProblem(StatusCodes.Status400BadRequest);
 
-        group.MapDelete("/{id:guid}", DeleteCourse)
+        v1.MapDelete("/{id:guid}", DeleteCourse)
             .WithSummary("Delete an existing course")
             .WithDescription("Deletes an existing course using its ID.")
             .Produces(StatusCodes.Status204NoContent)
@@ -54,7 +56,8 @@ public static class CourseEndpoints
             .ProducesProblem(StatusCodes.Status400BadRequest);
 
 
-        app.MapGet("/api/teacher/courses", GetTeacherCourses)
+        app.MapGet("/api/v{version:apiVersion}/teacher/courses", GetTeacherCourses)
+            .WithApiVersionSet(vset)
             .RequireAuthorization("Teacher")
             .WithName("GetTeacherCourses")
             .WithTags("Courses")

@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Asp.Versioning.Builder;
+using MediatR;
 using SchoolMS.Api.Extensions;
 using SchoolMS.Application.Common.Models;
 using SchoolMS.Application.Features.Assignments.Commands.CreateAssignment;
@@ -12,14 +13,15 @@ namespace SchoolMS.Api.Endpoints;
 
 public static class TeacherAssigmnentEndpoints
 {
-    public static void MapTeacherassignmentEndpoints(this IEndpointRouteBuilder app)
+    public static void MapTeacherassignmentEndpoints(this IEndpointRouteBuilder app, ApiVersionSet vset)
     {
-        RouteGroupBuilder group = app.MapGroup("/api/teacher/assignments")
+        RouteGroupBuilder v1 = app.MapGroup("/api/v{version:apiVersion}/teacher/assignments")
+            .WithApiVersionSet(vset)
                    .RequireAuthorization("Teacher")
                    .WithTags("Teacher Assignments");
 
 
-        group.MapPost("", CreateAssignment)
+        v1.MapPost("", CreateAssignment)
             .WithName("CreateAssignment")
             .WithSummary("Create a new assignment for a class")
             .WithDescription("""
@@ -34,7 +36,7 @@ public static class TeacherAssigmnentEndpoints
             .Produces(StatusCodes.Status403Forbidden)
             .Produces(StatusCodes.Status500InternalServerError);
 
-        group.MapGet("/{classId:guid}", GetAssignments)
+        v1.MapGet("/{classId:guid}", GetAssignments)
             .WithName("GetAssignments")
             .WithSummary("Retrieve assignments for a class")
             .WithDescription("""
@@ -49,7 +51,7 @@ public static class TeacherAssigmnentEndpoints
             .Produces(StatusCodes.Status500InternalServerError);
 
 
-        group.MapPost("/{id:guid}/grade", GradeAssignment)
+        v1.MapPost("/{id:guid}/grade", GradeAssignment)
             .WithName("GradeAssignment")
             .WithSummary("Grade a student submission")
             .WithDescription("Allows the teacher to grade a specific student submission with a grade and optional remarks.")
@@ -63,7 +65,7 @@ public static class TeacherAssigmnentEndpoints
             .Produces(StatusCodes.Status500InternalServerError);
 
 
-        group.MapGet("/{id:guid}/submissions", GetSubmissions)
+        v1.MapGet("/{id:guid}/submissions", GetSubmissions)
             .WithName("GetAssignmentSubmissions")
             .WithSummary("Retrieve all submissions for a specific assignment")
             .WithDescription("Returns a list of submissions for the given assignment ID.")

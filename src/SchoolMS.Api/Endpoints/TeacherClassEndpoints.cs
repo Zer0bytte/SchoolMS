@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Asp.Versioning.Builder;
+using MediatR;
 using SchoolMS.Api.Extensions;
 using SchoolMS.Application.Features.Classes.Commands.AssignStudents;
 using SchoolMS.Application.Features.Classes.Commands.CreateClass;
@@ -12,21 +13,22 @@ namespace SchoolMS.Api.Endpoints;
 
 public static class TeacherClassEndpoints
 {
-    public static void MapTeacherClassEndpoints(this IEndpointRouteBuilder app)
+    public static void MapTeacherClassEndpoints(this IEndpointRouteBuilder app, ApiVersionSet vset)
     {
-        var group = app.MapGroup("/api/teacher/classes")
+        var v1 = app.MapGroup("/api/v{version:apiVersion}/teacher/classes")
+               .WithApiVersionSet(vset)
                .WithTags("Teacher - Classes").RequireAuthorization("Teacher");
 
-        group.MapGet("", GetClasses);
+        v1.MapGet("", GetClasses);
 
-        group.MapPost("", CreateClass)
+        v1.MapPost("", CreateClass)
             .WithSummary("Create a class")
             .WithDescription("Creates a new class under the teacher, assigning course, semester, and schedule details.")
             .Accepts<CreateClassRequest>("application/json")
             .Produces<ClassDto>(StatusCodes.Status201Created)
             .ProducesProblem(StatusCodes.Status400BadRequest);
 
-        group.MapPatch("/{classId:guid}", UpdateClass)
+        v1.MapPatch("/{classId:guid}", UpdateClass)
             .WithSummary("Update class details")
             .WithDescription("Updates class name, semester, or schedule information.")
             .Accepts<UpdateClassRequest>("application/json")
@@ -34,7 +36,7 @@ public static class TeacherClassEndpoints
             .ProducesProblem(StatusCodes.Status404NotFound)
             .ProducesProblem(StatusCodes.Status400BadRequest);
 
-        group.MapPost("/{classId:guid}/assign-students", AssignStudents)
+        v1.MapPost("/{classId:guid}/assign-students", AssignStudents)
             .WithSummary("Assign students to a class")
             .WithDescription("Assigns one or more students to a specific class.")
             .Accepts<AssignStudentsRequest>("application/json")
@@ -42,7 +44,7 @@ public static class TeacherClassEndpoints
             .ProducesProblem(StatusCodes.Status404NotFound)
             .ProducesProblem(StatusCodes.Status400BadRequest);
 
-        group.MapDelete("/{classId:guid}/decativate", DeactivateClass)
+        v1.MapDelete("/{classId:guid}/decativate", DeactivateClass)
             .WithSummary("Deactivate a class")
             .WithDescription("Marks the class as inactive so it can no longer be used.")
             .Produces(StatusCodes.Status204NoContent)

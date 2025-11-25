@@ -218,7 +218,7 @@ Content-Type: application/json
 
 {
   "name": "CS201-Fall2024-A",
-  "courseId": 'courseId',
+  "courseId": '{courseId}',
   "semester": "Fall 2024",
   "startDate": "2024-09-01",
   "endDate": "2024-12-15",
@@ -236,11 +236,11 @@ Content-Type: application/json
   "classId": "classId",
   "students": [
     {
-      "studentId": "studentId",
+      "studentId": "{studentId}",
       "status": "Present"
     },
     {
-      "studentId": "student2Id",
+      "studentId": "{student2Id}",
       "status": "Absent"
     }
   ]
@@ -255,7 +255,7 @@ Authorization: Bearer {teacher_token}
 Content-Type: application/json
 
 {
-  "ClassId": "classId",
+  "ClassId": "{classId}",
   "title": "First Assignment",
   "description": "Read chapter 1 and answer the questions at the end. Submit as a PDF.",
   "dueDate": "2025-12-12"

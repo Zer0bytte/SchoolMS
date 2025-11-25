@@ -205,7 +205,7 @@ Content-Type: application/json
   "name": "Data Structures and Algorithms",
   "code": "CS201",
   "description": "Fundamental data structures and algorithms",
-  "departmentId": "departmentId",
+  "departmentId": "{departmentId}",
   "credits": 4
 }
 ```
@@ -219,7 +219,7 @@ Content-Type: application/json
 
 {
   "name": "CS201-Fall2024-A",
-  "courseId": '{courseId}',
+  "courseId": "{courseId}",
   "semester": "Fall 2024",
   "startDate": "2024-09-01",
   "endDate": "2024-12-15",

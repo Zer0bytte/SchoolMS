@@ -26,7 +26,6 @@ public static class DependencyInjection
 
 
         services.AddCustomProblemDetails()
-                .AddCustomApiVersioning()
                 .AddApiDocumentation()
                 .AddExceptionHandling()
                 .AddControllerWithJsonConfiguration()
@@ -34,7 +33,7 @@ public static class DependencyInjection
                 .AddConfiguredCors(configuration)
                 .AddIdentityInfrastructure()
                 .AddAppRateLimiting()
-                //.AddAppOutputCaching()
+                .AddAppOutputCaching()
                 .AddSignalR();
 
         return services;
@@ -84,40 +83,21 @@ public static class DependencyInjection
         return services;
     }
 
-    public static IServiceCollection AddCustomApiVersioning(this IServiceCollection services)
-    {
-        services.AddApiVersioning(options =>
-        {
-            options.DefaultApiVersion = new ApiVersion(1);
-            options.AssumeDefaultVersionWhenUnspecified = true;
-            options.ReportApiVersions = true;
-            options.ApiVersionReader = new UrlSegmentApiVersionReader();
-        }).AddMvc()
-        .AddApiExplorer(options =>
-        {
-            options.GroupNameFormat = "'v'VVV";
-            options.SubstituteApiVersionInUrl = true;
-        });
 
-        return services;
-    }
 
     public static IServiceCollection AddApiDocumentation(this IServiceCollection services)
     {
-        string[] versions = ["v1"];
 
-        foreach (var version in versions)
+        services.AddOpenApi("v1", options =>
         {
-            services.AddOpenApi(version, options =>
-            {
-                // Versioning config
-                options.AddDocumentTransformer<VersionInfoTransformer>();
+            // Versioning config
+            options.AddDocumentTransformer<VersionInfoTransformer>();
 
-                // Security Scheme config
-                options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
-                options.AddOperationTransformer<BearerSecuritySchemeTransformer>();
-            });
-        }
+            // Security Scheme config
+            options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
+            options.AddOperationTransformer<BearerSecuritySchemeTransformer>();
+        });
+
 
         return services;
     }

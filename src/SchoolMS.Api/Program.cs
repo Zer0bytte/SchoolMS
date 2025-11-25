@@ -26,8 +26,8 @@ await app.InitialiseDatabaseAsync();
 //}
 
 // I Will Leave it for testing the submission purpose
-app.MapOpenApi();
 
+app.MapOpenApi();
 app.MapScalarApiReference();
 
 app.UseCoreMiddlewares(builder.Configuration);

@@ -1,0 +1,3640 @@
+{
+	"info": {
+		"_postman_id": "0711802c-17f4-445a-b753-654dbfb875e2",
+		"name": "School Managment System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19585576",
+		"_collection_link": "https://solar-flare-532806.postman.co/workspace/My-Workspace~b63fdfdc-873b-49ae-8b57-f1013e4b93e1/collection/19585576-0711802c-17f4-445a-b753-654dbfb875e2?action=share&source=collection_link&creator=19585576"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register a new user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"teacher2\",\n  \"email\": \"teacher2@email.com\",\n  \"password\": \"Password@123\",\n  \"role\": \"Teacher\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						},
+						"description": "Registers a new Student or Teacher account and returns JWT tokens."
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"string\",\n  \"email\": \"string\",\n  \"password\": \"string\",\n  \"role\": \"Teacher\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/auth/register",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"register"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"accessToken\": \"string\",\n  \"refreshToken\": \"string\",\n  \"expiresOnUtc\": \"2018-03-23T18:09:01.210Z\"\n}"
+						},
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"string\",\n  \"email\": \"string\",\n  \"password\": \"string\",\n  \"role\": \"Teacher\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/auth/register",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"register"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"type\": \"string\",\n  \"title\": \"string\",\n  \"status\": 1804,\n  \"detail\": \"string\",\n  \"instance\": \"string\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Register a new administrator",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"string\",\n  \"email\": \"string\",\n  \"password\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/register-admin",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"register-admin"
+							]
+						},
+						"description": "Creates an admin account. Requires Admin privileges."
+					},
+					"response": [
+						{
+							"name": "Created",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer <token>",
+										"description": "Added as a part of security scheme: bearer"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"string\",\n  \"email\": \"string\",\n  \"password\": \"string\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/auth/register-admin",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"register-admin"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer <token>",
+										"description": "Added as a part of security scheme: bearer"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"string\",\n  \"email\": \"string\",\n  \"password\": \"string\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/auth/register-admin",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"register-admin"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"type\": \"string\",\n  \"title\": \"string\",\n  \"status\": 1804,\n  \"detail\": \"string\",\n  \"instance\": \"string\"\n}"
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer <token>",
+										"description": "Added as a part of security scheme: bearer"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"string\",\n  \"email\": \"string\",\n  \"password\": \"string\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/auth/register-admin",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"register-admin"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Forbidden",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer <token>",
+										"description": "Added as a part of security scheme: bearer"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"string\",\n  \"email\": \"string\",\n  \"password\": \"string\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/auth/register-admin",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"register-admin"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Refresh access token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"refreshToken\": \"string\",\n  \"expiredAccessToken\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/refresh-token",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"refresh-token"
+							]
+						},
+						"description": "Generates a new access token using a valid refresh token."
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"refreshToken\": \"string\",\n  \"expiredAccessToken\": \"string\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/auth/refresh-token",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"refresh-token"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"accessToken\": \"string\",\n  \"refreshToken\": \"string\",\n  \"expiresOnUtc\": \"2018-03-23T18:09:01.210Z\"\n}"
+						},
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"refreshToken\": \"string\",\n  \"expiredAccessToken\": \"string\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/auth/refresh-token",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"refresh-token"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"type\": \"string\",\n  \"title\": \"string\",\n  \"status\": 1804,\n  \"detail\": \"string\",\n  \"instance\": \"string\"\n}"
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"refreshToken\": \"string\",\n  \"expiredAccessToken\": \"string\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/auth/refresh-token",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"refresh-token"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"type\": \"string\",\n  \"title\": \"string\",\n  \"status\": 1804,\n  \"detail\": \"string\",\n  \"instance\": \"string\"\n}"
+						}
+					]
+				},
+				{
+					"name": "User login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse response\r",
+									"const json = pm.response.json();\r",
+									"\r",
+									"const token = json.accessToken;\r",
+									"const userId = json.userId;\r",
+									"const role = (json.role || \"\").toLowerCase();\r",
+									"\r",
+									"// Basic checks\r",
+									"pm.test(\"Access token exists\", () => {\r",
+									"  pm.expect(token, \"accessToken missing\").to.be.ok;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Role exists\", () => {\r",
+									"  pm.expect(role, \"role missing\").to.be.ok;\r",
+									"});\r",
+									"\r",
+									"// Store by role\r",
+									"if (role === \"admin\") {\r",
+									"  pm.environment.set(\"adminAccessToken\", token);\r",
+									"} else if (role === \"student\") {\r",
+									"  pm.environment.set(\"studentAccessToken\", token);\r",
+									"  pm.environment.set(\"studentId\", userId);\r",
+									"} else if (role === \"teacher\") {\r",
+									"  pm.environment.set(\"teacherAccessToken\", token);\r",
+									"  pm.environment.set(\"teacherId\", userId);\r",
+									"\r",
+									"} \r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"student@email.com\",\n  \"password\": \"Password@123\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Authenticates a user and returns access/refresh tokens."
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"string\",\n  \"password\": \"string\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/auth/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"accessToken\": \"string\",\n  \"refreshToken\": \"string\",\n  \"expiresOnUtc\": \"2018-03-23T18:09:01.210Z\"\n}"
+						},
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"string\",\n  \"password\": \"string\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/auth/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"type\": \"string\",\n  \"title\": \"string\",\n  \"status\": 1804,\n  \"detail\": \"string\",\n  \"instance\": \"string\"\n}"
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"string\",\n  \"password\": \"string\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/auth/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"type\": \"string\",\n  \"title\": \"string\",\n  \"status\": 1804,\n  \"detail\": \"string\",\n  \"instance\": \"string\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Departments",
+			"item": [
+				{
+					"name": "Get all departments",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/departments?Limit=93",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"departments"
+							],
+							"query": [
+								{
+									"key": "DepartmentName",
+									"value": "string",
+									"disabled": true
+								},
+								{
+									"key": "Cursor",
+									"value": "string",
+									"disabled": true
+								},
+								{
+									"key": "Limit",
+									"value": "93"
+								}
+							]
+						},
+						"description": "Returns a paginated/filterable list of departments. Only accessible by Admin users."
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer <token>",
+										"description": "Added as a part of security scheme: bearer"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/admin/departments?DepartmentName=string&Cursor=string&Limit=93",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"departments"
+									],
+									"query": [
+										{
+											"key": "DepartmentName",
+											"value": "string"
+										},
+										{
+											"key": "Cursor",
+											"value": "string"
+										},
+										{
+											"key": "Limit",
+											"value": "93"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"items\": [\n    {\n      \"id\": \"68f5067f-0e62-dd0b-0ac5-48562b9cb22a\",\n      \"name\": \"string\",\n      \"description\": \"string\",\n      \"headOfDepartmentName\": \"string\",\n      \"headOfDepartmentId\": \"e4024ad7-ac61-8c21-78f3-5573bab8007e\",\n      \"createdDateUtc\": \"1955-05-25T21:22:49.300Z\"\n    },\n    {\n      \"id\": \"752a813e-3511-47aa-99e2-144b71fa9d1e\",\n      \"name\": \"string\",\n      \"description\": \"string\",\n      \"headOfDepartmentName\": \"string\",\n      \"headOfDepartmentId\": \"74d3f745-e51a-efee-8454-1b50014bf8f0\",\n      \"createdDateUtc\": \"1973-05-17T15:55:46.781Z\"\n    }\n  ],\n  \"cursor\": \"string\",\n  \"hasMore\": true\n}"
+						},
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/problem+json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer <token>",
+										"description": "Added as a part of security scheme: bearer"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/admin/departments?DepartmentName=string&Cursor=string&Limit=93",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"departments"
+									],
+									"query": [
+										{
+											"key": "DepartmentName",
+											"value": "string"
+										},
+										{
+											"key": "Cursor",
+											"value": "string"
+										},
+										{
+											"key": "Limit",
+											"value": "93"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/problem+json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"type\": \"string\",\n  \"title\": \"string\",\n  \"status\": 1804,\n  \"detail\": \"string\",\n  \"instance\": \"string\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Create a new department",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const json = pm.response.json();\r",
+									"\r",
+									"// extract id\r",
+									"const deptId = json.id;\r",
+									"\r",
+									"pm.test(\"Department id exists\", () => {\r",
+									"  pm.expect(deptId, \"department id missing\").to.be.ok;\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"departmentId\", deptId);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Computer Science\",\n  \"description\": \"Computer Science Department focuses on software engineering, AI, data science, and computing fundamentals. It supports undergraduate and postgraduate programs, research labs, and industry collaboration.\",\n  \"headOfDepartmentId\": \"{{teacherId}}\"\n}\n",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/departments",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"departments"
+							]
+						},
+						"description": "Creates a new department record. Only accessible by Admin users."
+					},
+					"response": [
+						{
+							"name": "Created",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer <token>",
+										"description": "Added as a part of security scheme: bearer"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"headOfDepartmentId\": \"110de299-9034-af40-6de5-8e6a6a8f617c\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/admin/departments",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"departments"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"ce5950f9-1456-1e6f-faf4-06ead1e6f860\",\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"headOfDepartmentName\": \"string\",\n  \"headOfDepartmentId\": \"9f028f99-8d60-1b64-8f90-32b7a0243ec1\",\n  \"createdDateUtc\": \"1970-12-11T06:02:25.570Z\"\n}"
+						},
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/problem+json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer <token>",
+										"description": "Added as a part of security scheme: bearer"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"headOfDepartmentId\": \"110de299-9034-af40-6de5-8e6a6a8f617c\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/admin/departments",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"departments"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/problem+json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"type\": \"string\",\n  \"title\": \"string\",\n  \"status\": 1804,\n  \"detail\": \"string\",\n  \"instance\": \"string\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get department by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/admin/departments/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"departments",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "c13373f9-53a7-e725-dcd9-88ece74f7236"
+								}
+							]
+						},
+						"description": "Returns a specific department using its unique identifier. Only accessible by Admin users."
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer <token>",
+										"description": "Added as a part of security scheme: bearer"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/admin/departments/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"departments",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"items\": [\n    {\n      \"id\": \"68f5067f-0e62-dd0b-0ac5-48562b9cb22a\",\n      \"name\": \"string\",\n      \"description\": \"string\",\n      \"headOfDepartmentName\": \"string\",\n      \"headOfDepartmentId\": \"e4024ad7-ac61-8c21-78f3-5573bab8007e\",\n      \"createdDateUtc\": \"1955-05-25T21:22:49.300Z\"\n    },\n    {\n      \"id\": \"752a813e-3511-47aa-99e2-144b71fa9d1e\",\n      \"name\": \"string\",\n      \"description\": \"string\",\n      \"headOfDepartmentName\": \"string\",\n      \"headOfDepartmentId\": \"74d3f745-e51a-efee-8454-1b50014bf8f0\",\n      \"createdDateUtc\": \"1973-05-17T15:55:46.781Z\"\n    }\n  ],\n  \"cursor\": \"string\",\n  \"hasMore\": true\n}"
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/problem+json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer <token>",
+										"description": "Added as a part of security scheme: bearer"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/admin/departments/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"departments",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/problem+json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"type\": \"string\",\n  \"title\": \"string\",\n  \"status\": 1804,\n  \"detail\": \"string\",\n  \"instance\": \"string\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update a department",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/problem+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"headOfDepartmentId\": \"1afb6cdf-7394-2b97-6dd5-6c7cb6e02c53\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/departments/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"departments",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "c13373f9-53a7-e725-dcd9-88ece74f7236"
+								}
+							]
+						},
+						"description": "Updates an existing department using its ID. Only accessible by Admin users."
+					},
+					"response": [
+						{
+							"name": "No Content",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer <token>",
+										"description": "Added as a part of security scheme: bearer"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"headOfDepartmentId\": \"1afb6cdf-7394-2b97-6dd5-6c7cb6e02c53\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/admin/departments/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"departments",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/problem+json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer <token>",
+										"description": "Added as a part of security scheme: bearer"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"headOfDepartmentId\": \"1afb6cdf-7394-2b97-6dd5-6c7cb6e02c53\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/admin/departments/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"departments",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/problem+json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"type\": \"string\",\n  \"title\": \"string\",\n  \"status\": 1804,\n  \"detail\": \"string\",\n  \"instance\": \"string\"\n}"
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/problem+json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer <token>",
+										"description": "Added as a part of security scheme: bearer"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"headOfDepartmentId\": \"1afb6cdf-7394-2b97-6dd5-6c7cb6e02c53\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/admin/departments/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"departments",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/problem+json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"type\": \"string\",\n  \"title\": \"string\",\n  \"status\": 1804,\n  \"detail\": \"string\",\n  \"instance\": \"string\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete a department",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/problem+json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/admin/departments/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"departments",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "c13373f9-53a7-e725-dcd9-88ece74f7236"
+								}
+							]
+						},
+						"description": "Deletes an existing department using its ID. Only accessible by Admin users."
+					},
+					"response": [
+						{
+							"name": "No Content",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer <token>",
+										"description": "Added as a part of security scheme: bearer"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/admin/departments/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"departments",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/problem+json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer <token>",
+										"description": "Added as a part of security scheme: bearer"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/admin/departments/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"departments",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/problem+json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"type\": \"string\",\n  \"title\": \"string\",\n  \"status\": 1804,\n  \"detail\": \"string\",\n  \"instance\": \"string\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Courses",
+			"item": [
+				{
+					"name": "Get list of courses",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/admin/courses?Limit=10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"courses"
+							],
+							"query": [
+								{
+									"key": "SearchTerm",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "Cursor",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "Limit",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Returns a paginated list of courses optionally filtered by department or search term."
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/courses?DepartmentId=c13373f9-53a7-e725-dcd9-88ece74f7236&SearchTerm=string&Cursor=string&Limit=93",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"courses"
+									],
+									"query": [
+										{
+											"key": "DepartmentId",
+											"value": "c13373f9-53a7-e725-dcd9-88ece74f7236"
+										},
+										{
+											"key": "SearchTerm",
+											"value": "string"
+										},
+										{
+											"key": "Cursor",
+											"value": "string"
+										},
+										{
+											"key": "Limit",
+											"value": "93"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"items\": [\n    {\n      \"id\": \"5b19db40-1cb3-a72c-40c6-97e6f7d62d86\",\n      \"name\": \"string\",\n      \"code\": \"string\",\n      \"description\": \"string\",\n      \"departmentId\": \"9f1143d3-5262-0114-e933-eca58e56fdcd\",\n      \"departmentName\": \"string\",\n      \"credits\": 943,\n      \"createdDateUTC\": \"1979-04-17T11:09:58.784Z\"\n    },\n    {\n      \"id\": \"196bd583-2249-7fea-ad60-71bf2dc51073\",\n      \"name\": \"string\",\n      \"code\": \"string\",\n      \"description\": \"string\",\n      \"departmentId\": \"8c594488-7553-755d-c65e-7bf110bfcfed\",\n      \"departmentName\": \"string\",\n      \"credits\": 978,\n      \"createdDateUTC\": \"1984-06-22T17:50:25.712Z\"\n    }\n  ],\n  \"cursor\": \"string\",\n  \"hasMore\": true\n}"
+						},
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/problem+json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/courses?DepartmentId=c13373f9-53a7-e725-dcd9-88ece74f7236&SearchTerm=string&Cursor=string&Limit=93",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"courses"
+									],
+									"query": [
+										{
+											"key": "DepartmentId",
+											"value": "c13373f9-53a7-e725-dcd9-88ece74f7236"
+										},
+										{
+											"key": "SearchTerm",
+											"value": "string"
+										},
+										{
+											"key": "Cursor",
+											"value": "string"
+										},
+										{
+											"key": "Limit",
+											"value": "93"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/problem+json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"type\": \"string\",\n  \"title\": \"string\",\n  \"status\": 1804,\n  \"detail\": \"string\",\n  \"instance\": \"string\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Create a new course",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const json = pm.response.json();\r",
+									"\r",
+									"// extract id\r",
+									"const courseId = json.id;\r",
+									"\r",
+									"pm.test(\"Department id exists\", () => {\r",
+									"  pm.expect(deptId, \"course id missing\").to.be.ok;\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"courseId\", courseId);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Data Structures & Algorithms\",\n  \"code\": \"CS201\",\n  \"description\": \"Covers core data structures (lists, stacks, queues, trees, graphs) and algorithmic techniques with complexity analysis and problem solving.\",\n  \"departmentId\": \"{{departmentId}}\",\n  \"credits\": 3\n}\n",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/courses",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"courses"
+							]
+						},
+						"description": "Creates a new course record in the system."
+					},
+					"response": [
+						{
+							"name": "Created",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"string\",\n  \"code\": \"string\",\n  \"description\": \"string\",\n  \"departmentId\": \"8392918c-f28a-21e7-2cdd-1a0877311d5a\",\n  \"credits\": 5532\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/courses",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"courses"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"a9646aa6-4397-3a3d-1768-d52538a364fd\",\n  \"name\": \"string\",\n  \"code\": \"string\",\n  \"description\": \"string\",\n  \"departmentId\": \"97bfc77d-6dd2-c6fb-c887-736ff2669f6a\",\n  \"departmentName\": \"string\",\n  \"credits\": 7948,\n  \"createdDateUTC\": \"1951-01-23T15:48:01.681Z\"\n}"
+						},
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/problem+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"string\",\n  \"code\": \"string\",\n  \"description\": \"string\",\n  \"departmentId\": \"8392918c-f28a-21e7-2cdd-1a0877311d5a\",\n  \"credits\": 5532\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/courses",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"courses"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/problem+json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"type\": \"string\",\n  \"title\": \"string\",\n  \"status\": 1804,\n  \"detail\": \"string\",\n  \"instance\": \"string\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get course by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/courses/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"courses",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "c13373f9-53a7-e725-dcd9-88ece74f7236"
+								}
+							]
+						},
+						"description": "Returns a specific course using its unique identifier."
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/courses/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"courses",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"a9646aa6-4397-3a3d-1768-d52538a364fd\",\n  \"name\": \"string\",\n  \"code\": \"string\",\n  \"description\": \"string\",\n  \"departmentId\": \"97bfc77d-6dd2-c6fb-c887-736ff2669f6a\",\n  \"departmentName\": \"string\",\n  \"credits\": 7948,\n  \"createdDateUTC\": \"1951-01-23T15:48:01.681Z\"\n}"
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/problem+json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/courses/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"courses",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/problem+json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"type\": \"string\",\n  \"title\": \"string\",\n  \"status\": 1804,\n  \"detail\": \"string\",\n  \"instance\": \"string\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update an existing course",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/problem+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"string\",\n  \"code\": \"string\",\n  \"description\": \"string\",\n  \"departmentId\": \"90d65521-ab44-b9c5-8cd3-bc53bda4c208\",\n  \"credits\": 6437\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/courses/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"courses",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "c13373f9-53a7-e725-dcd9-88ece74f7236"
+								}
+							]
+						},
+						"description": "Updates an existing course using its ID."
+					},
+					"response": [
+						{
+							"name": "No Content",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"string\",\n  \"code\": \"string\",\n  \"description\": \"string\",\n  \"departmentId\": \"90d65521-ab44-b9c5-8cd3-bc53bda4c208\",\n  \"credits\": 6437\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/courses/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"courses",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/problem+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"string\",\n  \"code\": \"string\",\n  \"description\": \"string\",\n  \"departmentId\": \"90d65521-ab44-b9c5-8cd3-bc53bda4c208\",\n  \"credits\": 6437\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/courses/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"courses",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/problem+json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"type\": \"string\",\n  \"title\": \"string\",\n  \"status\": 1804,\n  \"detail\": \"string\",\n  \"instance\": \"string\"\n}"
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/problem+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"string\",\n  \"code\": \"string\",\n  \"description\": \"string\",\n  \"departmentId\": \"90d65521-ab44-b9c5-8cd3-bc53bda4c208\",\n  \"credits\": 6437\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/courses/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"courses",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/problem+json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"type\": \"string\",\n  \"title\": \"string\",\n  \"status\": 1804,\n  \"detail\": \"string\",\n  \"instance\": \"string\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Teacher",
+			"item": [
+				{
+					"name": "Classes",
+					"item": [
+						{
+							"name": "Get Teacher Classes",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{teacherAccessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/teacher/classes?Limit=93",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"teacher",
+										"classes"
+									],
+									"query": [
+										{
+											"key": "Cursor",
+											"value": "string",
+											"disabled": true
+										},
+										{
+											"key": "Limit",
+											"value": "93"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/teacher/classes?Cursor=string&Limit=93",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"teacher",
+												"classes"
+											],
+											"query": [
+												{
+													"key": "Cursor",
+													"value": "string"
+												},
+												{
+													"key": "Limit",
+													"value": "93"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "Create a class",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const json = pm.response.json();\r",
+											"\r",
+											"// extract id\r",
+											"const classId = json.id;\r",
+											"\r",
+											"pm.test(\"Class id exists\", () => {\r",
+											"  pm.expect(deptId, \"Class id missing\").to.be.ok;\r",
+											"});\r",
+											"\r",
+											"// store in environment\r",
+											"pm.environment.set(\"classId\", classId);\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{teacherAccessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Spring 2026\",\n    \"semester\": \"Second Semester\",\n    \"courseId\": \"{{courseId}}\",\n    \"startDate\": \"2026-02-15\",\n    \"endDate\": \"2026-06-15\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/teacher/classes",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"teacher",
+										"classes"
+									]
+								},
+								"description": "Creates a new class under the teacher, assigning course, semester, and schedule details."
+							},
+							"response": [
+								{
+									"name": "Created",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"string\",\n  \"courseId\": \"9fb40482-6491-0fae-6a87-3f04f2d1ce65\",\n  \"semester\": \"string\",\n  \"startDate\": \"1985-02-18\",\n  \"endDate\": \"1978-03-18\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/teacher/classes",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"teacher",
+												"classes"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"id\": \"6b0f118c-6fea-7d4b-f68d-9087ba338ddd\",\n  \"name\": \"string\",\n  \"courseId\": \"1ab71dce-4030-a539-ecd8-bc4057f0c7ed\",\n  \"courseName\": \"string\",\n  \"semester\": \"string\",\n  \"startDate\": \"2004-09-18\",\n  \"endDate\": \"1947-09-19\",\n  \"createdDateUtc\": \"1969-05-14T14:34:38.117Z\"\n}"
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/problem+json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"string\",\n  \"courseId\": \"9fb40482-6491-0fae-6a87-3f04f2d1ce65\",\n  \"semester\": \"string\",\n  \"startDate\": \"1985-02-18\",\n  \"endDate\": \"1978-03-18\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/teacher/classes",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"teacher",
+												"classes"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/problem+json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"type\": \"string\",\n  \"title\": \"string\",\n  \"status\": 1804,\n  \"detail\": \"string\",\n  \"instance\": \"string\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Assign students to a class",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{teacherAccessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"studentIds\": [\n    \"{{studentId}}\",\n    \"{{student2Id}}\"\n  ]\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/teacher/classes/:classId/assign-students",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"teacher",
+										"classes",
+										":classId",
+										"assign-students"
+									],
+									"variable": [
+										{
+											"key": "classId",
+											"value": "{{classId}}"
+										}
+									]
+								},
+								"description": "Assigns one or more students to a specific class."
+							},
+							"response": [
+								{
+									"name": "No Content",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"studentIds\": [\n    \"9dba0d97-59ea-7907-1a40-392b2462f9b7\",\n    \"c34198f2-7051-253d-f3e0-3f51420b7d16\"\n  ]\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/teacher/classes/:classId/assign-students",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"teacher",
+												"classes",
+												":classId",
+												"assign-students"
+											],
+											"variable": [
+												{
+													"key": "classId"
+												}
+											]
+										}
+									},
+									"status": "No Content",
+									"code": 204,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/problem+json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"studentIds\": [\n    \"9dba0d97-59ea-7907-1a40-392b2462f9b7\",\n    \"c34198f2-7051-253d-f3e0-3f51420b7d16\"\n  ]\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/teacher/classes/:classId/assign-students",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"teacher",
+												"classes",
+												":classId",
+												"assign-students"
+											],
+											"variable": [
+												{
+													"key": "classId"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/problem+json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"type\": \"string\",\n  \"title\": \"string\",\n  \"status\": 1804,\n  \"detail\": \"string\",\n  \"instance\": \"string\"\n}"
+								},
+								{
+									"name": "Not Found",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/problem+json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"studentIds\": [\n    \"9dba0d97-59ea-7907-1a40-392b2462f9b7\",\n    \"c34198f2-7051-253d-f3e0-3f51420b7d16\"\n  ]\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/teacher/classes/:classId/assign-students",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"teacher",
+												"classes",
+												":classId",
+												"assign-students"
+											],
+											"variable": [
+												{
+													"key": "classId"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/problem+json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"type\": \"string\",\n  \"title\": \"string\",\n  \"status\": 1804,\n  \"detail\": \"string\",\n  \"instance\": \"string\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Deactivate a class",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{teacherAccessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/problem+json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/teacher/classes/:classId/decativate",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"teacher",
+										"classes",
+										":classId",
+										"decativate"
+									],
+									"variable": [
+										{
+											"key": "classId",
+											"value": "c13373f9-53a7-e725-dcd9-88ece74f7236"
+										}
+									]
+								},
+								"description": "Marks the class as inactive so it can no longer be used."
+							},
+							"response": [
+								{
+									"name": "No Content",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/teacher/classes/:classId/decativate",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"teacher",
+												"classes",
+												":classId",
+												"decativate"
+											],
+											"variable": [
+												{
+													"key": "classId"
+												}
+											]
+										}
+									},
+									"status": "No Content",
+									"code": 204,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "Not Found",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/problem+json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/teacher/classes/:classId/decativate",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"teacher",
+												"classes",
+												":classId",
+												"decativate"
+											],
+											"variable": [
+												{
+													"key": "classId"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/problem+json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"type\": \"string\",\n  \"title\": \"string\",\n  \"status\": 1804,\n  \"detail\": \"string\",\n  \"instance\": \"string\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Update class details",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{teacherAccessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/problem+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"string\",\n  \"semester\": \"string\",\n  \"startDate\": \"1999-11-27\",\n  \"endDate\": \"1976-08-10\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/teacher/classes/:classId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"teacher",
+										"classes",
+										":classId"
+									],
+									"variable": [
+										{
+											"key": "classId",
+											"value": "c13373f9-53a7-e725-dcd9-88ece74f7236"
+										}
+									]
+								},
+								"description": "Updates class name, semester, or schedule information."
+							},
+							"response": [
+								{
+									"name": "No Content",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"string\",\n  \"semester\": \"string\",\n  \"startDate\": \"1999-11-27\",\n  \"endDate\": \"1976-08-10\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/teacher/classes/:classId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"teacher",
+												"classes",
+												":classId"
+											],
+											"variable": [
+												{
+													"key": "classId"
+												}
+											]
+										}
+									},
+									"status": "No Content",
+									"code": 204,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/problem+json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"string\",\n  \"semester\": \"string\",\n  \"startDate\": \"1999-11-27\",\n  \"endDate\": \"1976-08-10\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/teacher/classes/:classId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"teacher",
+												"classes",
+												":classId"
+											],
+											"variable": [
+												{
+													"key": "classId"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/problem+json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"type\": \"string\",\n  \"title\": \"string\",\n  \"status\": 1804,\n  \"detail\": \"string\",\n  \"instance\": \"string\"\n}"
+								},
+								{
+									"name": "Not Found",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/problem+json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"string\",\n  \"semester\": \"string\",\n  \"startDate\": \"1999-11-27\",\n  \"endDate\": \"1976-08-10\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/teacher/classes/:classId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"teacher",
+												"classes",
+												":classId"
+											],
+											"variable": [
+												{
+													"key": "classId"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/problem+json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"type\": \"string\",\n  \"title\": \"string\",\n  \"status\": 1804,\n  \"detail\": \"string\",\n  \"instance\": \"string\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Attendance",
+					"item": [
+						{
+							"name": "Mark Class Attendance",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{teacherAccessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"classId\": \"{{classId}}\",\n  \"students\": [\n    {\n      \"studentId\": \"{{studentId}}\",\n      \"status\": \"Present\"\n    },\n    {\n      \"studentId\": \"{{student2Id}}\",\n      \"status\": \"Absent\"\n    }\n  ]\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/teacher/attendance",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"teacher",
+										"attendance"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"classId\": \"7791e59e-887a-5ad0-35a7-cfe10dca8955\",\n  \"students\": [\n    {\n      \"studentId\": \"807e7526-f18a-6bb1-90c8-9a8c40924c8b\",\n      \"status\": \"Late\"\n    },\n    {\n      \"studentId\": \"5d3a8002-a1e3-36c6-9a39-71b02f741f54\",\n      \"status\": \"Absent\"\n    }\n  ]\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/teacher/attendance",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"teacher",
+												"attendance"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "Get Class Attendance",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{teacherAccessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/teacher/attendance/:classId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"teacher",
+										"attendance",
+										":classId"
+									],
+									"variable": [
+										{
+											"key": "classId",
+											"value": "{{classId}}"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/teacher/attendance/:classId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"teacher",
+												"attendance",
+												":classId"
+											],
+											"variable": [
+												{
+													"key": "classId"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Assignments",
+					"item": [
+						{
+							"name": "Create Assignment",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const json = pm.response.json();\r",
+											"\r",
+											"// extract id\r",
+											"const id = json.id;\r",
+											"\r",
+											"pm.test(\"id exists\", () => {\r",
+											"  pm.expect(deptId, \"id missing\").to.be.ok;\r",
+											"});\r",
+											"\r",
+											"pm.environment.set(\"assignmentId\", id);\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{teacherAccessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"ClassId\": \"{{classId}}\",\r\n  \"title\": \"First Assignment\",\r\n  \"description\": \"Read chapter 1 and answer the questions at the end. Submit as a PDF.\",\r\n  \"dueDate\": \"2025-12-12\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/teacher/assignments",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"teacher",
+										"assignments"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Assignments",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{teacherAccessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/teacher/assignments/{{classId}}?Limit=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"teacher",
+										"assignments",
+										"{{classId}}"
+									],
+									"query": [
+										{
+											"key": "Limit",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Submissions",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{teacherAccessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/teacher/assignments/{{assignmentId}}/submissions",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"teacher",
+										"assignments",
+										"{{assignmentId}}",
+										"submissions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Grade Assignment",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{teacherAccessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"grade\":5.5,\r\n    \"remarks\":\"Very good student\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/teacher/assignments/cd2225ce-739e-4ef0-bf95-53c8c81a8fd7/grade",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"teacher",
+										"assignments",
+										"cd2225ce-739e-4ef0-bf95-53c8c81a8fd7",
+										"grade"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Notifications",
+					"item": [
+						{
+							"name": "Send Notification",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{teacherAccessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"IsClass\": false,\r\n    \"studentId\": \"{{studentId}}\",\r\n    \"Title\": \"Hurry Up\",\r\n    \"Message\": \"Notificaiton Details !\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/teacher/notifications",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"teacher",
+										"notifications"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get Courses",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{teacherAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/teacher/courses",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"teacher",
+								"courses"
+							],
+							"query": [
+								{
+									"key": "SearchTerm",
+									"value": "string",
+									"disabled": true
+								},
+								{
+									"key": "Cursor",
+									"value": "string",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Student",
+			"item": [
+				{
+					"name": "Get Enrolled Classes",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{studentAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/student/classes?Limit=10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"student",
+								"classes"
+							],
+							"query": [
+								{
+									"key": "Limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Attendance",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{studentAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/student/attendance?Limit=1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"student",
+								"attendance"
+							],
+							"query": [
+								{
+									"key": "Limit",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Submit Assignment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{studentAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/Zer0byte/Downloads/MACHINE TEST - L1.pdf"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/student/assignments/{{assignmentId}}/submit",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"student",
+								"assignments",
+								"{{assignmentId}}",
+								"submit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Assignemnts",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{studentAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{baseUrl}}/student/assignments/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"student",
+								"assignments",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Grades",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{studentAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/student/grades/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"student",
+								"grades",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Notifications",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{studentAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/student/notifications",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"student",
+								"notifications"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://localhost:7096/"
+		}
+	]
+}

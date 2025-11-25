@@ -21,12 +21,14 @@ app.UseStaticFiles();
 await app.InitialiseDatabaseAsync();
 
 
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
+//if (app.Environment.IsDevelopment())
+//{
+//}
 
-    app.MapScalarApiReference();
-}
+// I Will Leave it for testing the submission purpose
+app.MapOpenApi();
+
+app.MapScalarApiReference();
 
 app.UseCoreMiddlewares(builder.Configuration);
 

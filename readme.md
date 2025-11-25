@@ -52,6 +52,7 @@ You can skip the setup steps below and test the API directly using this live URL
 - SQL Server
 - Visual Studio
 - Git
+- Seq (Logging Dashboard)
 
 
 

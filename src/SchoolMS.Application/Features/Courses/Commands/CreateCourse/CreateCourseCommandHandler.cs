@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Caching.Hybrid;
+using Microsoft.Extensions.Logging;
 using SchoolMS.Application.Common.Errors;
 using SchoolMS.Application.Features.Courses.Dtos;
 using SchoolMS.Domain.Courses;
@@ -9,7 +10,8 @@ namespace SchoolMS.Application.Features.Courses.Commands.CreateCourse;
 public sealed class CreateCourseCommandHandler(
     IAppDbContext context,
     IUser user,
-    ILogger<CreateCourseCommandHandler> logger
+    ILogger<CreateCourseCommandHandler> logger,
+    HybridCache cache
 ) : IRequestHandler<CreateCourseCommand, Result<CourseDto>>
 {
     public async Task<Result<CourseDto>> Handle(CreateCourseCommand command, CancellationToken ct)
@@ -90,7 +92,7 @@ public sealed class CreateCourseCommandHandler(
 
         context.Courses.Add(courseObj);
         await context.SaveChangesAsync(ct);
-
+        await cache.RemoveByTagAsync("courses");
         var dto = new CourseDto
         {
             Id = courseObj.Id,

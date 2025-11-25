@@ -1,7 +1,7 @@
 ﻿using SchoolMS.Application.Common.Interfaces;
 using System.Security.Cryptography;
 
-namespace SchoolMS.Infrastructure.PasswordHashing;
+namespace SchoolMS.Infrastructure.Services;
 
 internal class PasswordHasher : IPasswordHasher
 {

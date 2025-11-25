@@ -1,11 +1,13 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Caching.Hybrid;
+using Microsoft.Extensions.Logging;
 using SchoolMS.Domain.Courses;
 
 namespace SchoolMS.Application.Features.Courses.Commands.DeleteCourse;
 
 public class DeleteCourseCommandHandler(
     IAppDbContext context,
-    ILogger<DeleteCourseCommandHandler> logger
+    ILogger<DeleteCourseCommandHandler> logger,
+    HybridCache cache
 ) : IRequestHandler<DeleteCourseCommand, Result<Success>>
 {
     public async Task<Result<Success>> Handle(DeleteCourseCommand command, CancellationToken cancellationToken)
@@ -30,7 +32,7 @@ public class DeleteCourseCommandHandler(
         course.MarkAsDeleted();
 
         await context.SaveChangesAsync(cancellationToken);
-
+        await cache.RemoveByTagAsync("courses");
         logger.LogInformation(
             "Delete course succeeded. CourseId={CourseId}",
             command.Id

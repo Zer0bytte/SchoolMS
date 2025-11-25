@@ -8,9 +8,9 @@ using Microsoft.IdentityModel.Tokens;
 using SchoolMS.Application.Common.Interfaces;
 using SchoolMS.Infrastructure.Data;
 using SchoolMS.Infrastructure.Data.Interceptors;
-using SchoolMS.Infrastructure.FileSaving;
 using SchoolMS.Infrastructure.Identity;
-using SchoolMS.Infrastructure.PasswordHashing;
+using SchoolMS.Infrastructure.Services;
+using SchoolMS.Infrastructure.Settings;
 using System.Text;
 
 namespace SchoolMS.Infrastructure;
@@ -72,11 +72,12 @@ public static class DependencyInjection
         services.AddAuthorizationBuilder()
                .AddPolicy("Student", policy => policy.RequireRole("Student"));
 
+        var appSettings = configuration.GetSection("AppSettings").Get<AppSettings>()!;
 
         services.AddHybridCache(options => options.DefaultEntryOptions = new HybridCacheEntryOptions
         {
-            Expiration = TimeSpan.FromMinutes(10),
-            LocalCacheExpiration = TimeSpan.FromSeconds(30),
+            Expiration = TimeSpan.FromMinutes(appSettings.DistributedCacheExpirationMins),
+            LocalCacheExpiration = TimeSpan.FromSeconds(appSettings.LocalCacheExpirationInMins),
         });
 
         services.AddMemoryCache();

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using SchoolMS.Application.Common.Interfaces;
 
-namespace SchoolMS.Infrastructure.FileSaving;
+namespace SchoolMS.Infrastructure.Services;
 
 public sealed class FileStorageService(IWebHostEnvironment env, IHttpContextAccessor httpContext) : IFileStorageService
 {

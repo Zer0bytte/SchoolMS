@@ -13,11 +13,11 @@ public static class StudentEndpoints
         var group = app
             .MapGroup("/api/teacher/students")
             .RequireAuthorization("Teacher")
-            .WithTags("Students"); // groups in Swagger UI
+            .WithTags("Students");
 
         group.MapGet("", GetStudents)
             .WithName("GetStudents")
-            .WithSummary("Get students (paginated)")
+            .WithSummary("Get students")
             .WithDescription(
                 "Returns a paginated list of students using cursor-based pagination. " +
                 "Pass a cursor from a previous response to get the next page."
@@ -28,7 +28,7 @@ public static class StudentEndpoints
             .ProducesProblem(StatusCodes.Status403Forbidden);
     }
 
-    private static async Task<IResult> GetStudents(int limit, string cursor, ISender sender)
+    private static async Task<IResult> GetStudents(int limit, string? cursor, ISender sender)
     {
 
         var query = new GetStudentsQuery

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Caching.Hybrid;
+using Microsoft.Extensions.Logging;
 using SchoolMS.Application.Common.Errors;
 using SchoolMS.Application.Features.Departments.Dtos;
 using SchoolMS.Domain.Departments;
@@ -8,7 +9,8 @@ namespace SchoolMS.Application.Features.Departments.Commands.UpdateDepartment;
 
 public class UpdateDepartmentCommandHandler(
     IAppDbContext context,
-    ILogger<UpdateDepartmentCommandHandler> logger
+    ILogger<UpdateDepartmentCommandHandler> logger,
+    HybridCache cache
 ) : IRequestHandler<UpdateDepartmentCommand, Result<DepartmentDto>>
 {
     public async Task<Result<DepartmentDto>> Handle(UpdateDepartmentCommand command, CancellationToken cancellationToken)
@@ -90,6 +92,7 @@ public class UpdateDepartmentCommandHandler(
         );
 
         await context.SaveChangesAsync(cancellationToken);
+        await cache.RemoveByTagAsync("departments");
 
         var dto = new DepartmentDto
         {

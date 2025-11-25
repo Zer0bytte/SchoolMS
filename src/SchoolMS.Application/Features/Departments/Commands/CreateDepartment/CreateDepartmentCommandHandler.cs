@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Caching.Hybrid;
+using Microsoft.Extensions.Logging;
 using SchoolMS.Application.Common.Errors;
 using SchoolMS.Application.Features.Departments.Dtos;
 using SchoolMS.Domain.Departments;
@@ -8,7 +9,8 @@ namespace SchoolMS.Application.Features.Departments.Commands.CreateDepartment;
 
 public class CreateDepartmentCommandHandler(
     IAppDbContext context,
-    ILogger<CreateDepartmentCommandHandler> logger
+    ILogger<CreateDepartmentCommandHandler> logger,
+    HybridCache cache
 ) : IRequestHandler<CreateDepartmentCommand, Result<DepartmentDto>>
 {
     public async Task<Result<DepartmentDto>> Handle(CreateDepartmentCommand command, CancellationToken cancellationToken)
@@ -81,6 +83,8 @@ public class CreateDepartmentCommandHandler(
             HeadOfDepartmentName = headOfDepartment.Name,
             CreatedDateUtc = department.CreatedDateUtc
         };
+
+        await cache.RemoveByTagAsync("departments");
 
         logger.LogInformation(
             "Create department succeeded. DepartmentId={DepartmentId}, Name={Name}, HeadOfDepartmentId={HeadOfDepartmentId}",

@@ -1,12 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Logging;
 using SchoolMS.Domain.Departments;
+using System.Collections.Specialized;
 
 namespace SchoolMS.Application.Features.Departments.Commands.DeleteDepartment;
 
 public class DeleteDepartmentCommandHandler(
     IAppDbContext context,
-    ILogger<DeleteDepartmentCommandHandler> logger
+    ILogger<DeleteDepartmentCommandHandler> logger,
+    HybridCache cache
 ) : IRequestHandler<DeleteDepartmentCommand, Result<Success>>
 {
     public async Task<Result<Success>> Handle(DeleteDepartmentCommand request, CancellationToken cancellationToken)
@@ -31,6 +34,7 @@ public class DeleteDepartmentCommandHandler(
         context.Departments.Remove(department);
 
         await context.SaveChangesAsync(cancellationToken);
+        await cache.RemoveByTagAsync("departments");
 
         logger.LogInformation(
             "Delete department succeeded. DepartmentId={DepartmentId}",

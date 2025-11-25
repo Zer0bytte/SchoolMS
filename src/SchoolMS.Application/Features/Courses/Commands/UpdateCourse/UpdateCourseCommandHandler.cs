@@ -1,12 +1,15 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Caching.Hybrid;
+using Microsoft.Extensions.Logging;
 using SchoolMS.Application.Features.Courses.Dtos;
 using SchoolMS.Domain.Courses;
+using System.Collections.Specialized;
 
 namespace SchoolMS.Application.Features.Courses.Commands.UpdateCourse;
 
 public class UpdateCourseCommandHandler(
     IAppDbContext context,
-    ILogger<UpdateCourseCommandHandler> logger
+    ILogger<UpdateCourseCommandHandler> logger,
+    HybridCache cache
 ) : IRequestHandler<UpdateCourseCommand, Result<CourseDto>>
 {
     public async Task<Result<CourseDto>> Handle(UpdateCourseCommand command, CancellationToken cancellationToken)
@@ -71,7 +74,7 @@ public class UpdateCourseCommandHandler(
             command.Credits);
 
         await context.SaveChangesAsync(cancellationToken);
-
+        await cache.RemoveByTagAsync("courses");
         var courseDto = new CourseDto
         {
             Id = course.Id,

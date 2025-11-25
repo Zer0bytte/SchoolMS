@@ -135,7 +135,7 @@ https://localhost:port/scalar
 ### Register a New User
 
 ```http
-POST /api/auth/register
+POST /api/v1/auth/register
 Content-Type: application/json
 
 {
@@ -149,7 +149,7 @@ Content-Type: application/json
 ### Login As Student
 
 ```http
-POST /api/auth/login
+POST /api/v1/auth/login
 Content-Type: application/json
 
 {
@@ -183,7 +183,7 @@ The Postman collection included in the repository folder called "Project Submiss
 ### 1. Admin: Create Department
 
 ```http
-POST /api/admin/departments
+POST /api/v1/admin/departments
 Authorization: Bearer {admin_token}
 Content-Type: application/json
 
@@ -197,7 +197,7 @@ Content-Type: application/json
 ### 2. Admin: Create Course
 
 ```http
-POST /api/admin/courses
+POST /api/v1/admin/courses
 Authorization: Bearer {admin_token}
 Content-Type: application/json
 
@@ -213,7 +213,7 @@ Content-Type: application/json
 ### 3. Teacher: Create Class
 
 ```http
-POST /api/teacher/classes
+POST /api/v1/teacher/classes
 Authorization: Bearer {teacher_token}
 Content-Type: application/json
 
@@ -229,7 +229,7 @@ Content-Type: application/json
 ### 4. Teacher: Mark Attendance
 
 ```http
-POST /api/teacher/attendance
+POST /api/v1/teacher/attendance
 Authorization: Bearer {teacher_token}
 Content-Type: application/json
 
@@ -251,7 +251,7 @@ Content-Type: application/json
 ### 5. Teacher: Create Assignment
 
 ```http
-POST /api/teacher/assignments
+POST /api/v1/teacher/assignments
 Authorization: Bearer {teacher_token}
 Content-Type: application/json
 
@@ -267,7 +267,7 @@ Content-Type: application/json
 ### 6. Student: Submit Assignment
 
 ```http
-POST /api/student/assignments/{assignmentId}/submit
+POST /api/v1/student/assignments/{assignmentId}/submit
 Authorization: Bearer {student_token}
 Content-Type: multipart/form-data
 
@@ -277,7 +277,7 @@ file: [assignment_file.pdf]
 ### 7. Teacher: Grade Submission
 
 ```http
-POST /api/teacher/assignments/{submissionId}/grade
+POST /api/v1/teacher/assignments/{submissionId}/grade
 Authorization: Bearer {teacher_token}
 Content-Type: application/json
 
@@ -290,7 +290,7 @@ Content-Type: application/json
 ### 8. Pagination Example
 
 ```http
-GET /api/admin/courses?Limit=10&Cursor=nextCursor
+GET /api/v1/admin/courses?Limit=10&Cursor=nextCursor
 Authorization: Bearer {admin_token}
 ```
 

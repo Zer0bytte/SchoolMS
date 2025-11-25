@@ -619,7 +619,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\": \"student@email.com\",\n  \"password\": \"Password@123\"\n}",
+							"raw": "{\n  \"email\": \"teacher@email.com\",\n  \"password\": \"Password@123\"\n}",
 							"options": {
 								"raw": {
 									"headerFamily": "json",
@@ -1145,7 +1145,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "c13373f9-53a7-e725-dcd9-88ece74f7236"
+									"value": "{{departmentId}}"
 								}
 							]
 						},
@@ -1270,7 +1270,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"headOfDepartmentId\": \"1afb6cdf-7394-2b97-6dd5-6c7cb6e02c53\"\n}",
+							"raw": "{\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"headOfDepartmentId\": \"{{teacherId}}\"\n}",
 							"options": {
 								"raw": {
 									"headerFamily": "json",
@@ -1291,7 +1291,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "c13373f9-53a7-e725-dcd9-88ece74f7236"
+									"value": "{{departmentId}}"
 								}
 							]
 						},
@@ -1501,7 +1501,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "c13373f9-53a7-e725-dcd9-88ece74f7236"
+									"value": "{{departmentId}}"
 								}
 							]
 						},
@@ -1928,18 +1928,19 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/courses/:id",
+							"raw": "{{baseUrl}}/admin/courses/:id",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
+								"admin",
 								"courses",
 								":id"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": "c13373f9-53a7-e725-dcd9-88ece74f7236"
+									"value": "019abb6c-dad9-776a-bf90-ff2d986cb514"
 								}
 							]
 						},

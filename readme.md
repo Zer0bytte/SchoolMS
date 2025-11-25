@@ -112,6 +112,7 @@ The database migrated automatically when application starts.
 Run the application for the first time to seed initial admin user:
 
 ```bash
+cd src/SchoolMS.Api
 dotnet run
 ```
 

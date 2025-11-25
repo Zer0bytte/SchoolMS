@@ -26,6 +26,7 @@ public static class DependencyInjection
 
 
         services.AddCustomProblemDetails()
+                .AddCustomApiVersioning()
                 .AddApiDocumentation()
                 .AddExceptionHandling()
                 .AddControllerWithJsonConfiguration()
@@ -38,7 +39,23 @@ public static class DependencyInjection
 
         return services;
     }
+    public static IServiceCollection AddCustomApiVersioning(this IServiceCollection services)
+    {
+        services.AddApiVersioning(options =>
+        {
+            options.DefaultApiVersion = new ApiVersion(1);
+            options.AssumeDefaultVersionWhenUnspecified = true;
+            options.ReportApiVersions = true;
+            options.ApiVersionReader = new UrlSegmentApiVersionReader();
+        }).AddMvc()
+        .AddApiExplorer(options =>
+        {
+            options.GroupNameFormat = "'v'VVV";
+            options.SubstituteApiVersionInUrl = true;
+        });
 
+        return services;
+    }
     public static IServiceCollection AddAppOutputCaching(this IServiceCollection services)
     {
         services.AddOutputCache(options =>
@@ -87,17 +104,19 @@ public static class DependencyInjection
 
     public static IServiceCollection AddApiDocumentation(this IServiceCollection services)
     {
+        string[] versions = ["v1"];
 
-        services.AddOpenApi("v1", options =>
+        foreach (var version in versions)
         {
-            // Versioning config
-            options.AddDocumentTransformer<VersionInfoTransformer>();
 
-            // Security Scheme config
-            options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
-            options.AddOperationTransformer<BearerSecuritySchemeTransformer>();
-        });
+            services.AddOpenApi(version, options =>
+            {
+                options.AddDocumentTransformer<VersionInfoTransformer>();
+                options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
+                options.AddOperationTransformer<BearerSecuritySchemeTransformer>();
+             });
 
+        }
 
         return services;
     }

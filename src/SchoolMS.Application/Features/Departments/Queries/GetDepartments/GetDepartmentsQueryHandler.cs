@@ -35,6 +35,19 @@ public class GetDepartmentsQueryHandler(
             userId, user.Role, query.Cursor, query.Limit, query.DepartmentName, cacheKey
         );
 
+        if (!string.IsNullOrWhiteSpace(query.Cursor))
+        {
+            var decodedCursor = Cursor.Decode(query.Cursor);
+            if (decodedCursor is null)
+            {
+                logger.LogWarning(
+                    "Get departments failed: invalid cursor. UserId={UserId}, Cursor={Cursor}",
+                    userId, query.Cursor
+                );
+
+                return Error.Failure("InvalidCursor", "The provided cursor is invalid.");
+            }
+        }
         return await cache.GetOrCreateAsync<Result<CursorResult<DepartmentDto>>>(
             cacheKey,
             async ct =>
@@ -70,15 +83,6 @@ public class GetDepartmentsQueryHandler(
                     );
 
                     var decodedCursor = Cursor.Decode(query.Cursor);
-                    if (decodedCursor is null)
-                    {
-                        logger.LogWarning(
-                            "Get departments failed: invalid cursor. UserId={UserId}, Cursor={Cursor}",
-                            userId, query.Cursor
-                        );
-
-                        return Error.Failure("InvalidCursor", "The provided cursor is invalid.");
-                    }
 
                     dbQuery = dbQuery.Where(d => d.CreatedDateUtc < decodedCursor.Date ||
                                                  d.CreatedDateUtc == decodedCursor.Date &&

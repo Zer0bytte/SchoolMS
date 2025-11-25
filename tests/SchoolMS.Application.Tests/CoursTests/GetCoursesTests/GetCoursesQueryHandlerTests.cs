@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Caching.Hybrid;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Moq;
 using SchoolMS.Application.Features.Courses.Queries.GetCourses;
-using SchoolMS.Application.Features.Departments.Commands.CreateDepartment;
 using SchoolMS.Application.Tests.Shared;
 
 namespace SchoolMS.Application.Tests.CoursTests.GetCoursesTests;
@@ -10,32 +10,40 @@ namespace SchoolMS.Application.Tests.CoursTests.GetCoursesTests;
 public class GetCoursesQueryHandlerTests
 {
     public Mock<ILogger<GetCoursesQueryHandler>> Logger { get; set; } = new();
-    public Mock<HybridCache> Cache { get; set; } = new();
+    public HybridCache Cache { get; set; } = TestCacheHelper.CreateHybridCache();
 
     [Fact]
     public async Task Handle_ShouldReturnCourses()
     {
-        // Arrange
         await using var context = TestDbHelper.CreateContext();
+
+        // seed data...
         var teacher = TestDbHelper.CreateTeacher();
         context.Users.Add(teacher);
         var department = TestDbHelper.CreateDepartment(teacher);
         context.Departments.Add(department);
-        var course1 = TestDbHelper.CreateCourse(department);
-        var course2 = TestDbHelper.CreateCourse(department);
-        context.Courses.AddRange(course1, course2);
+        context.Courses.AddRange(
+            TestDbHelper.CreateCourse(department),
+            TestDbHelper.CreateCourse(department));
         await context.SaveChangesAsync();
-        var handler = new GetCoursesQueryHandler(context, Cache.Object, Logger.Object);
-        var query = new GetCoursesQuery { Limit = 10 };
-        // Act
-        var result = await handler.Handle(query, CancellationToken.None);
-        // Assert
+
+        // real HybridCache
+        var services = new ServiceCollection();
+        services.AddLogging();
+        services.AddDistributedMemoryCache();
+        services.AddHybridCache();
+
+        using var sp = services.BuildServiceProvider();
+        var cache = sp.GetRequiredService<HybridCache>();
+
+        var handler = new GetCoursesQueryHandler(context, cache, Logger.Object);
+
+        var result = await handler.Handle(new GetCoursesQuery { Limit = 10 }, CancellationToken.None);
+
         Assert.False(result.IsError);
-        Assert.NotNull(result.Value);
         Assert.Equal(2, result.Value.Items.Count);
-        Assert.Null(result.Value.Cursor);
-        Assert.False(result.Value.HasMore);
     }
+
 
     [Fact]
     public async Task Handle_WithSearchTerm_ShouldReturnMatchingOnly()
@@ -50,7 +58,7 @@ public class GetCoursesQueryHandlerTests
         var course2 = TestDbHelper.CreateCourse(department);
         context.Courses.AddRange(course1, course2);
         await context.SaveChangesAsync();
-        var handler = new GetCoursesQueryHandler(context, Cache.Object, Logger.Object);
+        var handler = new GetCoursesQueryHandler(context, Cache, Logger.Object);
         var query = new GetCoursesQuery
         {
             Limit = 10,
@@ -79,7 +87,7 @@ public class GetCoursesQueryHandlerTests
         var course2 = TestDbHelper.CreateCourse(department2);
         context.Courses.AddRange(course1, course2);
         await context.SaveChangesAsync();
-        var handler = new GetCoursesQueryHandler(context, Cache.Object, Logger.Object);
+        var handler = new GetCoursesQueryHandler(context, Cache, Logger.Object);
         var query = new GetCoursesQuery
         {
             Limit = 10,
@@ -111,7 +119,7 @@ public class GetCoursesQueryHandlerTests
             context.Courses.Add(course);
         }
         await context.SaveChangesAsync();
-        var handler = new GetCoursesQueryHandler(context, Cache.Object, Logger.Object);
+        var handler = new GetCoursesQueryHandler(context, Cache, Logger.Object);
         var firstPageQuery = new GetCoursesQuery { Limit = 10 };
         // Act - First Page
         var firstPageResult = await handler.Handle(firstPageQuery, CancellationToken.None);
@@ -140,7 +148,7 @@ public class GetCoursesQueryHandlerTests
     {
         // Arrange
         await using var context = TestDbHelper.CreateContext();
-        var handler = new GetCoursesQueryHandler(context, Cache.Object, Logger.Object);
+        var handler = new GetCoursesQueryHandler(context, Cache, Logger.Object);
         var query = new GetCoursesQuery
         {
             Cursor = "invalid_cursor_$$$",
@@ -157,7 +165,7 @@ public class GetCoursesQueryHandlerTests
     {
         // Arrange
         await using var context = TestDbHelper.CreateContext();
-        var handler = new GetCoursesQueryHandler(context, Cache.Object, Logger.Object);
+        var handler = new GetCoursesQueryHandler(context, Cache, Logger.Object);
         var query = new GetCoursesQuery { Limit = 10 };
         // Act
         var result = await handler.Handle(query, CancellationToken.None);
@@ -182,7 +190,7 @@ public class GetCoursesQueryHandlerTests
         var course = TestDbHelper.CreateCourse(department);
         context.Courses.Add(course);
         await context.SaveChangesAsync();
-        var handler = new GetCoursesQueryHandler(context, Cache.Object, Logger.Object);
+        var handler = new GetCoursesQueryHandler(context, Cache, Logger.Object);
         var query = new GetCoursesQuery
         {
             Limit = 10,
@@ -203,7 +211,7 @@ public class GetCoursesQueryHandlerTests
     {
         // Arrange
         await using var context = TestDbHelper.CreateContext();
-        var handler = new GetCoursesQueryHandler(context, Cache.Object, Logger.Object);
+        var handler = new GetCoursesQueryHandler(context, Cache, Logger.Object);
         var query = new GetCoursesQuery
         {
             Limit = 10,

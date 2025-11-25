@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Asp.Versioning.Builder;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SchoolMS.Api.Extensions;
 using SchoolMS.Application.Features.Identity;
@@ -12,20 +13,22 @@ namespace SchoolMS.Api.Endpoints;
 
 public static class IdentityEndpoints
 {
-    public static void MapIdentityEndpoints(this IEndpointRouteBuilder app)
+    public static void MapIdentityEndpoints(this IEndpointRouteBuilder app, ApiVersionSet versions)
     {
-        var group = app
-             .MapGroup("/api/auth")
-             .WithTags("Authentication");
+        var v1 = app
+            .MapGroup("/api/v{version:apiVersion}/auth")
+            .WithApiVersionSet(versions)
+            .MapToApiVersion(1.0)
+            .WithTags("Authentication");
 
-        group.MapPost("/register", RegisterUser)
+        v1.MapPost("/register", RegisterUser)
             .WithSummary("Register a new user")
             .WithDescription("Registers a new Student or Teacher account and returns JWT tokens.")
             .Accepts<RegisterUserRequest>("application/json")
             .Produces<TokenResponse>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest);
 
-        group.MapPost("/register-admin", RegisterAdmin)
+        v1.MapPost("/register-admin", RegisterAdmin)
             .RequireAuthorization("Admin")
             .WithSummary("Register a new administrator")
             .WithDescription("Creates an admin account. Requires Admin privileges.")
@@ -35,7 +38,7 @@ public static class IdentityEndpoints
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden);
 
-        group.MapPost("/refresh-token", RefreshToken)
+        v1.MapPost("/refresh-token", RefreshToken)
             .WithSummary("Refresh access token")
             .WithDescription("Generates a new access token using a valid refresh token.")
             .Accepts<RefreshTokenRequest>("application/json")
@@ -43,7 +46,7 @@ public static class IdentityEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized);
 
-        group.MapPost("/login", Login)
+        v1.MapPost("/login", Login)
             .WithSummary("User login")
             .WithDescription("Authenticates a user and returns access/refresh tokens.")
             .Accepts<LoginRequest>("application/json")

@@ -1,3 +1,4 @@
+using Asp.Versioning.Conventions;
 using Scalar.AspNetCore;
 using SchoolMS.Api;
 using SchoolMS.Api.Endpoints;
@@ -32,8 +33,12 @@ app.MapScalarApiReference();
 
 app.UseCoreMiddlewares(builder.Configuration);
 
+var vset = app.NewApiVersionSet()
+    .HasApiVersion(1.0)
+    .ReportApiVersions()
+    .Build();
 
-app.MapIdentityEndpoints();
+app.MapIdentityEndpoints(vset);
 app.MapDepartmentEndpoints();
 app.MapCourseEndpoints();
 app.MapTeacherClassEndpoints();

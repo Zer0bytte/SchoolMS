@@ -28,7 +28,7 @@ public class CreateCourseCommandHandlerTests
         await dbContext.SaveChangesAsync();
         var user = new Mock<IUser>();
         user.Setup(u => u.Id).Returns(teacher.Id.ToString());
-        var handler = new CreateCourseCommandHandler(dbContext, user.Object, Logger.Object, Cache.Object);
+        var handler = new CreateCourseCommandHandler(dbContext,  Logger.Object, Cache.Object);
         var command = new CreateCourseCommand
         {
             Name = "Introduction to Programming",
@@ -75,7 +75,7 @@ public class CreateCourseCommandHandlerTests
         await dbContext.SaveChangesAsync();
         var user = new Mock<IUser>();
         user.Setup(u => u.Id).Returns(teacher.Id.ToString());
-        var handler = new CreateCourseCommandHandler(dbContext, user.Object, Logger.Object, Cache.Object);
+        var handler = new CreateCourseCommandHandler(dbContext, Logger.Object, Cache.Object);
         var command = new CreateCourseCommand
         {
             Name = "Advanced Programming",
@@ -107,7 +107,7 @@ public class CreateCourseCommandHandlerTests
         await dbContext.SaveChangesAsync();
         var user = new Mock<IUser>();
         user.Setup(u => u.Id).Returns(teacher.Id.ToString());
-        var handler = new CreateCourseCommandHandler(dbContext, user.Object, Logger.Object, Cache.Object);
+        var handler = new CreateCourseCommandHandler(dbContext, Logger.Object, Cache.Object);
         var command = new CreateCourseCommand
         {
             Name = existingCourse.Name,
@@ -134,7 +134,7 @@ public class CreateCourseCommandHandlerTests
         await dbContext.SaveChangesAsync();
         var user = new Mock<IUser>();
         user.Setup(u => u.Id).Returns(teacher.Id.ToString());
-        var handler = new CreateCourseCommandHandler(dbContext, user.Object, Logger.Object, Cache.Object);
+        var handler = new CreateCourseCommandHandler(dbContext, Logger.Object, Cache.Object);
         var command = new CreateCourseCommand
         {
             Name = "Data Structures",
@@ -170,7 +170,7 @@ public class CreateCourseCommandHandlerTests
         await dbContext.SaveChangesAsync();
         var user = new Mock<IUser>();
         user.Setup(u => u.Id).Returns(teacher.Id.ToString());
-        var handler = new CreateCourseCommandHandler(dbContext, user.Object, Logger.Object, Cache.Object);
+        var handler = new CreateCourseCommandHandler(dbContext, Logger.Object, Cache.Object);
 
         var command = new CreateCourseCommand
         {
@@ -208,7 +208,7 @@ public class CreateCourseCommandHandlerTests
         await dbContext.SaveChangesAsync();
         var user = new Mock<IUser>();
         user.Setup(u => u.Id).Returns(teacher.Id.ToString());
-        var handler = new CreateCourseCommandHandler(dbContext, user.Object, Logger.Object, Cache.Object);
+        var handler = new CreateCourseCommandHandler(dbContext, Logger.Object, Cache.Object);
         var command = new CreateCourseCommand
         {
             Name = existingCourse.Name,

@@ -1,4 +1,6 @@
-﻿using Moq;
+﻿using Castle.Core.Logging;
+using Microsoft.Extensions.Logging;
+using Moq;
 using SchoolMS.Application.Common.Interfaces;
 using SchoolMS.Application.Features.Assignments.Commands.SubmitAssignment;
 using SchoolMS.Application.Tests.Shared;
@@ -8,8 +10,10 @@ namespace SchoolMS.Application.Tests.AssignmentTests.SubmitAssignemnt;
 
 public class SubmitAssignmentCommandHandlerTests
 {
+
     public TestAppDbContext Context { get; set; } = TestDbHelper.CreateContext();
     public Mock<IUser> User { get; set; } = new Mock<IUser>();
+    public Mock<ILogger<SubmitAssignmentCommandHandler>> Logger { get; set; } = new();
 
     public async Task<Assignment> CreateAssignemnts(int count = 1)
     {
@@ -61,7 +65,7 @@ public class SubmitAssignmentCommandHandlerTests
         var fs = new Mock<IFileStorageService>();
         fs.Setup(f => f.SaveFileAsync(command.File, "submissions")).ReturnsAsync("http://www.url.com/uploads/submissions/test.pdf");
 
-        var handler = new SubmitAssignmentCommandHandler(Context, User.Object, fs.Object);
+        var handler = new SubmitAssignmentCommandHandler(Context, User.Object, fs.Object, Logger.Object);
 
         var result = await handler.Handle(command, CancellationToken.None);
 

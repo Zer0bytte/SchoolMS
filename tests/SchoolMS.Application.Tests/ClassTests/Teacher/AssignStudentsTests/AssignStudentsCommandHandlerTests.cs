@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Moq;
 using SchoolMS.Application.Common.Interfaces;
+using SchoolMS.Application.Features.Assignments.Commands.SubmitAssignment;
 using SchoolMS.Application.Features.Classes.Commands.AssignStudents;
 using SchoolMS.Application.Tests.Shared;
 using SchoolMS.Domain.Classes;
@@ -9,6 +11,8 @@ namespace SchoolMS.Application.Tests.ClassTests.Teacher.AssignStudentsTests;
 
 public class AssignStudentsCommandHandlerTests
 {
+    public Mock<ILogger<AssignStudentsCommandHandler>> Logger { get; set; } = new();
+
     [Fact]
     public async Task Handle_WithValidStudentIds_ShouldAddStudentsToClass()
     {
@@ -36,7 +40,7 @@ public class AssignStudentsCommandHandlerTests
             StudentIds = [student1.Id, student2.Id],
         };
 
-        var handler = new AssignStudentsCommandHandler(context, user.Object);
+        var handler = new AssignStudentsCommandHandler(context, user.Object, Logger.Object);
 
         //Act
         var result = await handler.Handle(command, CancellationToken.None);
@@ -75,7 +79,7 @@ public class AssignStudentsCommandHandlerTests
             StudentIds = [student1.Id, Guid.NewGuid()],
         };
 
-        var handler = new AssignStudentsCommandHandler(context, user.Object);
+        var handler = new AssignStudentsCommandHandler(context, user.Object, Logger.Object);
 
         //Act
         var result = await handler.Handle(command, CancellationToken.None);
@@ -117,7 +121,7 @@ public class AssignStudentsCommandHandlerTests
             StudentIds = [student1.Id, Guid.NewGuid()],
         };
 
-        var handler = new AssignStudentsCommandHandler(context, user.Object);
+        var handler = new AssignStudentsCommandHandler(context, user.Object, Logger.Object);
 
         //Act
         var result = await handler.Handle(command, CancellationToken.None);
@@ -152,7 +156,7 @@ public class AssignStudentsCommandHandlerTests
             StudentIds = [student1.Id, Guid.NewGuid()],
         };
 
-        var handler = new AssignStudentsCommandHandler(context, user.Object);
+        var handler = new AssignStudentsCommandHandler(context, user.Object, Logger.Object);
 
         //Act
         var result = await handler.Handle(command, CancellationToken.None);

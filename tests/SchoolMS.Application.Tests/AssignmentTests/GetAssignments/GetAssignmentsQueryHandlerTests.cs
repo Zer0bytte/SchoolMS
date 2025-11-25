@@ -1,5 +1,7 @@
-﻿using Moq;
+﻿using Microsoft.Extensions.Logging;
+using Moq;
 using SchoolMS.Application.Common.Interfaces;
+using SchoolMS.Application.Features.Assignments.Commands.CreateAssignment;
 using SchoolMS.Application.Features.Assignments.Qureies.GetAssignments;
 using SchoolMS.Application.Tests.Shared;
 using SchoolMS.Domain.Assignments;
@@ -11,6 +13,8 @@ public class GetAssignmentsQueryHandlerTests
 {
     public TestAppDbContext Context { get; set; }
     public Mock<IUser> User { get; set; } = new Mock<IUser>();
+    public Mock<ILogger<GetAssignmentsQueryHandler>> logger = new Mock<ILogger<GetAssignmentsQueryHandler>>();
+
     public GetAssignmentsQueryHandlerTests()
     {
         Context = TestDbHelper.CreateContext();
@@ -49,7 +53,7 @@ public class GetAssignmentsQueryHandlerTests
 
         User.Setup(u => u.Id).Returns(Guid.NewGuid().ToString());
 
-        var handler = new GetAssignmentsQueryHandler(Context, User.Object);
+        var handler = new GetAssignmentsQueryHandler(Context, User.Object, logger.Object);
 
         //Act
         var result = await handler.Handle(query, CancellationToken.None);
@@ -73,7 +77,7 @@ public class GetAssignmentsQueryHandlerTests
 
         User.Setup(u => u.Id).Returns(assignment.Class.TeacherId.ToString());
 
-        var handler = new GetAssignmentsQueryHandler(Context, User.Object);
+        var handler = new GetAssignmentsQueryHandler(Context, User.Object, logger.Object);
 
         //Act
         var result = await handler.Handle(query, CancellationToken.None);
@@ -97,7 +101,7 @@ public class GetAssignmentsQueryHandlerTests
 
         User.Setup(u => u.Id).Returns(assignment.Class.TeacherId.ToString());
 
-        var handler = new GetAssignmentsQueryHandler(Context, User.Object);
+        var handler = new GetAssignmentsQueryHandler(Context, User.Object, logger.Object);
 
         //Act
         var result = await handler.Handle(query, CancellationToken.None);
@@ -123,7 +127,7 @@ public class GetAssignmentsQueryHandlerTests
 
         User.Setup(u => u.Id).Returns(assignment.Class.TeacherId.ToString());
 
-        var handler = new GetAssignmentsQueryHandler(Context, User.Object);
+        var handler = new GetAssignmentsQueryHandler(Context, User.Object, logger.Object);
 
         //Act
         var result = await handler.Handle(query, CancellationToken.None);
@@ -151,7 +155,7 @@ public class GetAssignmentsQueryHandlerTests
 
         User.Setup(u => u.Id).Returns(assignment1.Class.TeacherId.ToString());
 
-        var handler = new GetAssignmentsQueryHandler(Context, User.Object);
+        var handler = new GetAssignmentsQueryHandler(Context, User.Object, logger.Object);
 
         //Act
         var result = await handler.Handle(query, CancellationToken.None);

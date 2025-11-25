@@ -8,16 +8,15 @@ namespace SchoolMS.Application.Features.Identity.Commands.RefreshToken;
 public class RefreshTokenCommandHandler(ILogger<RefreshTokenCommandHandler> logger, IAppDbContext context, ITokenProvider tokenProvider)
     : IRequestHandler<RefreshTokenCommand, Result<TokenResponse>>
 {
-    private readonly ILogger<RefreshTokenCommandHandler> _logger = logger;
-    private readonly ITokenProvider _tokenProvider = tokenProvider;
+
 
     public async Task<Result<TokenResponse>> Handle(RefreshTokenCommand request, CancellationToken ct)
     {
-        var principal = _tokenProvider.GetPrincipalFromExpiredToken(request.ExpiredAccessToken);
+        var principal = tokenProvider.GetPrincipalFromExpiredToken(request.ExpiredAccessToken);
 
         if (principal is null)
         {
-            _logger.LogError("Expired access token is not valid");
+            logger.LogError("Expired access token is not valid");
 
             return ApplicationErrors.ExpiredAccessTokenInvalid;
         }
@@ -26,7 +25,7 @@ public class RefreshTokenCommandHandler(ILogger<RefreshTokenCommandHandler> logg
 
         if (userId is null)
         {
-            _logger.LogError("Invalid userId claim");
+            logger.LogError("Invalid userId claim");
 
             return ApplicationErrors.UserIdClaimInvalid;
         }
@@ -49,16 +48,16 @@ public class RefreshTokenCommandHandler(ILogger<RefreshTokenCommandHandler> logg
 
         if (refreshToken is null || refreshToken.ExpiresOnUtc < DateTime.UtcNow)
         {
-            _logger.LogError("Refresh token has expired");
+            logger.LogError("Refresh token has expired");
 
             return ApplicationErrors.RefreshTokenExpired;
         }
 
-        var generateTokenResult = await _tokenProvider.GenerateJwtTokenAsync(userDto, ct);
+        var generateTokenResult = await tokenProvider.GenerateJwtTokenAsync(userDto, ct);
 
         if (generateTokenResult.IsError)
         {
-            _logger.LogError("Generate token error occurred: {ErrorDescription}", generateTokenResult.TopError.Description);
+            logger.LogError("Generate token error occurred: {ErrorDescription}", generateTokenResult.TopError.Description);
 
             return generateTokenResult.Errors;
         }

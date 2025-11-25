@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using SchoolMS.Api.Extensions;
-using SchoolMS.Application.Features.Notifications.Commands;
+using SchoolMS.Application.Features.Notifications.Commands.SendNotification;
 using SchoolMS.Application.Features.Notifications.Dtos;
 using SchoolMS.Application.Features.Notifications.Qureies.GetNotifications;
 using SchoolMS.Contracts.Notifications;

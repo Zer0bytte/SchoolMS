@@ -1,4 +1,4 @@
-﻿namespace SchoolMS.Application.Features.Notifications.Commands;
+﻿namespace SchoolMS.Application.Features.Notifications.Commands.SendNotification;
 
 public class SendNotificationCommand : IRequest<Result<Success>>
 {

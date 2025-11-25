@@ -1,21 +1,63 @@
-﻿using SchoolMS.Domain.Classes;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using SchoolMS.Application.Common.Errors;
+using SchoolMS.Domain.Classes;
 
 namespace SchoolMS.Application.Features.Classes.Commands.DeactivateClass;
 
-public class DeactivateClassCommandHandler(IAppDbContext context, IUser user) : IRequestHandler<DeactivateClassCommand, Result<Success>>
+public class DeactivateClassCommandHandler(
+    IAppDbContext context,
+    IUser user,
+    ILogger<DeactivateClassCommandHandler> logger
+) : IRequestHandler<DeactivateClassCommand, Result<Success>>
 {
     public async Task<Result<Success>> Handle(DeactivateClassCommand command, CancellationToken cancellationToken)
     {
-        var cls = await context.Classes.FirstOrDefaultAsync(cls => cls.Id == command.Id && cls.IsActive);
+        if (string.IsNullOrWhiteSpace(user.Id))
+        {
+            logger.LogWarning(
+                "Deactivate class failed: user id missing. ClassId={ClassId}",
+                command.Id
+            );
+            return ApplicationErrors.UserNotFound;
+        }
 
-        if (cls is null || cls.TeacherId != Guid.Parse(user.Id))
+        var teacherId = Guid.Parse(user.Id);
+
+        logger.LogInformation(
+            "Deactivate class started. ClassId={ClassId}, TeacherId={TeacherId}",
+            command.Id, teacherId
+        );
+
+        var cls = await context.Classes
+            .FirstOrDefaultAsync(c => c.Id == command.Id && c.IsActive, cancellationToken);
+
+        if (cls is null)
+        {
+            logger.LogWarning(
+                "Deactivate class failed: class not found or already inactive. ClassId={ClassId}, TeacherId={TeacherId}",
+                command.Id, teacherId
+            );
             return ClassErrors.NotFound;
+        }
+
+        if (cls.TeacherId != teacherId)
+        {
+            logger.LogWarning(
+                "Deactivate class failed: teacher does not own class. ClassId={ClassId}, TeacherId={TeacherId}, OwnerTeacherId={OwnerTeacherId}",
+                command.Id, teacherId, cls.TeacherId
+            );
+            return ClassErrors.NotFound;
+        }
 
         cls.Deactivate();
-
         await context.SaveChangesAsync(cancellationToken);
 
-        return Result.Success;
+        logger.LogInformation(
+            "Deactivate class succeeded. ClassId={ClassId}, TeacherId={TeacherId}",
+            command.Id, teacherId
+        );
 
+        return Result.Success;
     }
 }

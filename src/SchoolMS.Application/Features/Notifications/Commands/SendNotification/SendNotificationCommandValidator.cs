@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace SchoolMS.Application.Features.Notifications.Commands;
+namespace SchoolMS.Application.Features.Notifications.Commands.SendNotification;
 
 public class SendNotificationCommandValidator : AbstractValidator<SendNotificationCommand>
 {

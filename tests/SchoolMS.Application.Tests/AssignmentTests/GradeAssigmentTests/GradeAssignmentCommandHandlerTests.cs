@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Moq;
 using SchoolMS.Application.Common.Interfaces;
 using SchoolMS.Application.Features.Assignments.Commands.GradeAssignement;
+using SchoolMS.Application.Features.Classes.Commands.CreateClass;
 using SchoolMS.Application.Tests.Shared;
 using SchoolMS.Domain.Assignments;
 using SchoolMS.Domain.Classes;
@@ -16,6 +18,8 @@ namespace SchoolMS.Application.Tests.AssignmentTests.GradeAssigmentTests;
 
 public class GradeAssignmentCommandHandlerTests
 {
+    public Mock<ILogger<GradeAssignmentCommandHandler>> Logger { get; set; } = new();
+
     public TestAppDbContext Context { get; set; }
     public Mock<IUser> User { get; set; } = new Mock<IUser>();
     public GradeAssignmentCommandHandlerTests()
@@ -64,11 +68,10 @@ public class GradeAssignmentCommandHandlerTests
         {
             SubmissionId = submission.Id,
             Grade = 10,
-            StudentId = student.Id,
             Remarks = "Remark SS"
         };
 
-        GradeAssignmentCommandHandler handler = new GradeAssignmentCommandHandler(Context, User.Object);
+        GradeAssignmentCommandHandler handler = new GradeAssignmentCommandHandler(Context, User.Object, Logger.Object);
         //Act
 
         Result<Success> result = await handler.Handle(command, CancellationToken.None);
@@ -81,7 +84,6 @@ public class GradeAssignmentCommandHandlerTests
         Submission? sb = await Context.Submissions.FirstOrDefaultAsync(s => s.Id == submission.Id);
         Assert.Equal(command.Grade, sb.Grade);
         Assert.Equal(command.Remarks, sb.Remarks);
-        Assert.Equal(command.StudentId, sb.StudentId);
 
     }
 
@@ -112,11 +114,10 @@ public class GradeAssignmentCommandHandlerTests
         {
             SubmissionId = submission.Id,
             Grade = 10,
-            StudentId = student.Id,
             Remarks = "Remark SS"
         };
 
-        GradeAssignmentCommandHandler handler = new GradeAssignmentCommandHandler(Context, User.Object);
+        GradeAssignmentCommandHandler handler = new GradeAssignmentCommandHandler(Context, User.Object, Logger.Object);
         //Act
 
         Result<Success> result = await handler.Handle(command, CancellationToken.None);

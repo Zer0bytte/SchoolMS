@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Moq;
 using SchoolMS.Application.Common.Interfaces;
 using SchoolMS.Application.Features.Assignments.Commands.CreateAssignment;
@@ -24,6 +25,7 @@ public class CreateAssignmentCommandHandlerTests
         context.Classes.Add(cls);
         await context.SaveChangesAsync();
         var user = new Mock<IUser>();
+        var logger = new Mock<ILogger<CreateAssignmentCommandHandler>>();
         user.Setup(u => u.Id).Returns(teacher.Id.ToString());
 
         var command = new CreateAssignmentCommand
@@ -34,7 +36,7 @@ public class CreateAssignmentCommandHandlerTests
             Title = "Title"
         };
 
-        var handler = new CreateAssignmentCommandHandler(context, user.Object);
+        var handler = new CreateAssignmentCommandHandler(context, user.Object, logger.Object);
 
         var result = await handler.Handle(command, CancellationToken.None);
 
@@ -59,6 +61,8 @@ public class CreateAssignmentCommandHandlerTests
         var teacher = TestDbHelper.CreateTeacher();
         await context.SaveChangesAsync();
         var user = new Mock<IUser>();
+        var logger = new Mock<ILogger<CreateAssignmentCommandHandler>>();
+
         user.Setup(u => u.Id).Returns(teacher.Id.ToString());
 
         var command = new CreateAssignmentCommand
@@ -69,7 +73,7 @@ public class CreateAssignmentCommandHandlerTests
             Title = "Title"
         };
 
-        var handler = new CreateAssignmentCommandHandler(context, user.Object);
+        var handler = new CreateAssignmentCommandHandler(context, user.Object, logger.Object);
 
         var result = await handler.Handle(command, CancellationToken.None);
 

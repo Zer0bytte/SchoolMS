@@ -3,6 +3,7 @@ using MediatR;
 using SchoolMS.Api.Extensions;
 using SchoolMS.Application.Common.Models;
 using SchoolMS.Application.Features.Courses.Commands.CreateCourse;
+using SchoolMS.Application.Features.Courses.Commands.DeleteCourse;
 using SchoolMS.Application.Features.Courses.Commands.UpdateCourse;
 using SchoolMS.Application.Features.Courses.Dtos;
 using SchoolMS.Application.Features.Courses.Queries.GetCourseById;
@@ -45,6 +46,13 @@ public static class CourseEndpoints
             .ProducesProblem(StatusCodes.Status404NotFound)
             .ProducesProblem(StatusCodes.Status400BadRequest);
 
+        group.MapDelete("/{id:guid}", DeleteCourse)
+            .WithSummary("Delete an existing course")
+            .WithDescription("Deletes an existing course using its ID.")
+            .Produces(StatusCodes.Status204NoContent)
+            .ProducesProblem(StatusCodes.Status404NotFound)
+            .ProducesProblem(StatusCodes.Status400BadRequest);
+
 
         app.MapGet("/api/teacher/courses", GetTeacherCourses)
             .RequireAuthorization("Teacher")
@@ -56,6 +64,15 @@ public static class CourseEndpoints
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden)
             .Produces(StatusCodes.Status500InternalServerError);
+    }
+
+    private static async Task<IResult> DeleteCourse(Guid id, ISender sender)
+    {
+        var result = await sender.Send(new DeleteCourseCommand { Id = id });
+
+        return result.Match(
+            _ => Results.NoContent(),
+            errors => Results.Problem());
     }
 
     private static async Task<IResult> GetTeacherCourses(ISender sender)

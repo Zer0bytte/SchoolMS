@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Castle.Core.Logging;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Moq;
 using SchoolMS.Application.Common.Interfaces;
 using SchoolMS.Application.Features.Classes.Commands.CreateClass;
@@ -9,6 +11,7 @@ namespace SchoolMS.Application.Tests.ClassTests.Teacher.CreateClassTests;
 
 public class CreateClassCommandHandlerTests
 {
+    public Mock<ILogger<CreateClassCommandHandler>> Logger { get; set; } = new();
     [Fact]
     public async Task Handle_WithValidParams_ShouldCreateClass()
     {
@@ -25,7 +28,7 @@ public class CreateClassCommandHandlerTests
 
         user.Setup(u => u.Id).Returns(teacher.Id.ToString());
         user.Setup(u => u.Role).Returns("Teacher");
-        var handler = new CreateClassCommandHandler(context, user.Object);
+        var handler = new CreateClassCommandHandler(context, user.Object, Logger.Object);
 
         var command = new CreateClassCommand
         {
@@ -61,7 +64,7 @@ public class CreateClassCommandHandlerTests
         await context.SaveChangesAsync();
         user.Setup(u => u.Id).Returns(teacher.Id.ToString());
         user.Setup(u => u.Role).Returns("Teacher");
-        var handler = new CreateClassCommandHandler(context, user.Object);
+        var handler = new CreateClassCommandHandler(context, user.Object, Logger.Object);
         var command = new CreateClassCommand
         {
             CourseId = Guid.NewGuid(),

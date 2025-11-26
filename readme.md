@@ -314,7 +314,7 @@ The Postman collection included in the repository folder called "Project Submiss
 
 A demonstration video showcasing the complete API flow is available:
 
-The video included in the repository folder called "Project Submission"
+https://youtu.be/yoVY62xfiYU
 
 **Demo Flow:**
 1. Admin login and department/course creation

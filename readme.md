@@ -35,7 +35,7 @@ A comprehensive backend API built with .NET Core Web API for managing students, 
 
 ## Tech Stack
 
-- **.NET Core 9.0** - Web API Framework
+- **.NET Core 9.0** - Web API
 - **Entity Framework Core** - ORM
 - **SQL Server** - Database
 - **JWT Bearer** - Authentication
@@ -44,7 +44,7 @@ A comprehensive backend API built with .NET Core Web API for managing students, 
 - **Scalar/OpenAPI** - API documentation
 
 ## Testing Live
-You can skip the setup steps below and test the API directly using this live URL: http://schoolms.markomedhat.com/scalar
+You can skip the setup steps below and test the API directly using this live URL: https://schoolms.markomedhat.com/scalar
 
 ## Prerequisites
 

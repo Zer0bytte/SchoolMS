@@ -60,5 +60,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .WithOne(s => s.Student)
             .HasForeignKey(s => s.StudentId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasQueryFilter(p => p.IsActive);
+
     }
 }

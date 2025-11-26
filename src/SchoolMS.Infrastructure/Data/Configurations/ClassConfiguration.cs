@@ -60,5 +60,7 @@ public class ClassConfiguration : IEntityTypeConfiguration<Class>
             .WithOne(a => a.Class)
             .HasForeignKey(a => a.ClassId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasQueryFilter(p => p.IsActive);
     }
 }
